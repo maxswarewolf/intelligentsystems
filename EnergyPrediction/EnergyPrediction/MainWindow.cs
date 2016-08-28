@@ -27,6 +27,15 @@
 // THE SOFTWARE.
 using System;
 using Gtk;
+using GeneticSharp.Domain;
+using GeneticSharp.Domain.Chromosomes;
+using GeneticSharp.Domain.Crossovers;
+using GeneticSharp.Domain.Fitnesses;
+using GeneticSharp.Domain.Mutations;
+using GeneticSharp.Domain.Populations;
+using GeneticSharp.Domain.Selections;
+using GeneticSharp.Domain.Reinsertions;
+using GeneticSharp.Domain.Terminations
 
 public partial class MainWindow : Gtk.Window {
 	public MainWindow () : base ( Gtk.WindowType.Toplevel ) {

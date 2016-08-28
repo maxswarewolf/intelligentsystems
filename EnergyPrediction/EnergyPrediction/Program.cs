@@ -33,10 +33,7 @@ namespace EnergyPrediction {
 		public static void Main ( string [] args ) {
 			Application.Init ();
 			MainWindow win = new MainWindow ();
-			win.Title = "Energy Prediction System";
-			win.Resize ( 400, 400 );
 			win.Show ();
-
 			Application.Run ();
 			}
 		}
