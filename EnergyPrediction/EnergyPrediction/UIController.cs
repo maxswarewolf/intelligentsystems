@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// Window.cs
+// UIController.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -26,27 +26,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using Gdk;
 using Gtk;
-using GeneticSharp.Domain;
-using GeneticSharp.Domain.Chromosomes;
-using GeneticSharp.Domain.Crossovers;
-using GeneticSharp.Domain.Fitnesses;
-using GeneticSharp.Domain.Mutations;
-using GeneticSharp.Domain.Populations;
-using GeneticSharp.Domain.Selections;
-using GeneticSharp.Domain.Reinsertions;
-using GeneticSharp.Domain.Terminations;
-
-public partial class MainWindow : Gtk.Window
+namespace EnergyPrediction
 {
-    public MainWindow() : base(Gtk.WindowType.Toplevel)
+    public class UIController
     {
-        Build();
-    }
+        #region Fields
+        public Gdk.Window gGdkWindow { get; private set; }
 
-    protected void OnDeleteEvent(object sender, DeleteEventArgs a)
-    {
-        Application.Quit();
-        a.RetVal = true;
+        public Gtk.Window gGtkWindow { get; private set; }
+
+        public event EventHandler gHook;
+        #endregion
+
+        public UIController(Gdk.Window aGdkWindow, Gtk.Window aGtkWindow)
+        {
+            gGdkWindow = aGdkWindow;
+            gGtkWindow = aGtkWindow;
+        }
+
+        //public Gtk.Widget CreateMenu()
+        //{
+        //    var container = new VBox();
+
+        //}
+
     }
 }
+

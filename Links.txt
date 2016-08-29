@@ -1,6 +1,5 @@
 Here is the file that we can use to store the link that we find
 Please put a description of what the link is linking to
 
-git clone git@bitbucket.org:adrianpellegrino/intelligentsystems.git
 Genetic Algorithim (GeneticSharp) - https://github.com/giacomelli/GeneticSharp
-
+GUI reference https://developer.gnome.org/gtk2/stable/
