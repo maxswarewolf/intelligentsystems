@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// Chromosome.cs
+// GeneticAlgoFitness.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -27,23 +27,40 @@
 // THE SOFTWARE.
 using System;
 using GeneticSharp.Domain.Chromosomes;
+using GeneticSharp.Domain.Fitnesses;
+using EnergyPrediction;
+
 namespace EnergyPrediction
 {
-    public class Chromosome : ChromosomeBase
+    public class GeneticAlgoFitnessPercentage : IFitness
     {
-        public Chromosome() : base(20)
+        private CommonXY[] gExpectedResults;
+        public GeneticAlgoFitnessPercentage(CommonXY[] aExpectedResults)
         {
-            CreateGenes();
+            gExpectedResults = aExpectedResults;
         }
 
-        public override Gene GenerateGene(int geneIndex)
+        /// <summary>
+        /// Gives the sum of the difference between Expected and Calaulated results
+        /// </summary>
+        /// <param name="aChromosome">A chromosome.</param>
+        public double Evaluate(IChromosome aChromosome)
         {
-            throw new NotImplementedException();
-        }
+            var lChromosome = aChromosome as GeneticAlgoChromosome;
 
-        public override IChromosome CreateNew()
-        {
-            return new Chromosome();
+            double fitness = 0;
+            double calculatedY = 0;
+            for (int i = 0; i < gExpectedResults.Length; i++)
+            {
+                calculatedY = (double)aChromosome.GetGene(0).Value *
+                                                Math.Sin((double)aChromosome.GetGene(1).Value *
+                                                         Math.Pow(gExpectedResults[i].X, (double)aChromosome.GetGene(2).Value)) +
+                                                (double)aChromosome.GetGene(3).Value;
+                fitness += (Math.Sqrt(Math.Pow(gExpectedResults[i].Y - calculatedY, 2)) / gExpectedResults[i].Y);
+            }
+
+            fitness = 100 - (fitness * 100);
+            return fitness;
         }
     }
 }

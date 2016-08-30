@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// Chromosome.cs
+// GeneticAlgoGenome.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -27,23 +27,47 @@
 // THE SOFTWARE.
 using System;
 using GeneticSharp.Domain.Chromosomes;
+using GeneticSharp.Domain.Randomizations;
 namespace EnergyPrediction
 {
-    public class Chromosome : ChromosomeBase
+    public class GeneticAlgoChromosome : ChromosomeBase
     {
-        public Chromosome() : base(20)
+
+        int gNumberOfGenes;
+        public int gRangePeek { get; internal set; };
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:EnergyPrediction.GeneticAlgoChromosome"/> class.
+        /// </summary>
+        /// <param name="aResultRange">A result range. eg -20 to 20</param>
+        public GeneticAlgoChromosome(int aResultPeek) : base(4)
         {
-            CreateGenes();
+            gNumberOfGenes = 4;
+            gRangePeek = aResultPeek;
+
+            for (int i = 0; i < gNumberOfGenes; i++)
+            {
+                ReplaceGene(i, this.GenerateGene(i));
+            }
         }
 
+        /// <summary>
+        /// Generates a gene with a random integer between -RangePeek and RangePeek.
+        /// </summary>
+        /// <returns>The gene.</returns>
+        /// <param name="geneIndex">Gene index.</param>
         public override Gene GenerateGene(int geneIndex)
         {
-            throw new NotImplementedException();
+            return new Gene(RandomizationProvider.Current.GetInt(gRangePeek * -1, gRangePeek + 1));
         }
 
-        public override IChromosome CreateNew()
+        /// <summary>
+        /// Creates a new Chromosome.
+        /// </summary>
+        /// <returns>The new.</returns>
+        public override public override IChromosome CreateNew()
         {
-            return new Chromosome();
+            return new GeneticAlgoChromosome(gRangePeek);
         }
     }
 }

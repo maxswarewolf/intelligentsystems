@@ -82,9 +82,18 @@
     <Compile Include="ErrorValueFitness.cs" />
     <Compile Include="Chromosome.cs" />
     <Compile Include="EnergyGene.cs" />
+    <Compile Include="Genetic Algorithim\GeneticAlgoChromosome.cs" />
+    <Compile Include="Genetic Algorithim\GeneticAlgoFitnessPercentage.cs" />
+    <Compile Include="Common Shared\CommonXY.cs" />
+    <Compile Include="Genetic Algorithim\GeneticAlgoController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Genetic Algorithim\" />
+    <Folder Include="Genetic Program\" />
+    <Folder Include="Common Shared\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

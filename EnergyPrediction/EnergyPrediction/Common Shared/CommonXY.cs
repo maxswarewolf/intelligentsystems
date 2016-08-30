@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// EnergyGene.cs
+// CommonXY.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -28,13 +28,16 @@
 using System;
 namespace EnergyPrediction
 {
-    public struct EnergyGene
+    public struct CommonXY
     {
-        enum sEquation { LOG, EXP, POLY };
+        public double X { get; set; };
+        public double Y { get; set; };
 
-        double sParameterA { get; set; };
-        double sParameterB { get; set; };
-
+        public CommonXY(double a, double b)
+        {
+            X = a;
+            Y = b;
+        }
     }
 }
 
