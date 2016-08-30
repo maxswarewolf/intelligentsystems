@@ -34,7 +34,7 @@ namespace EnergyPrediction
     {
 
         int gNumberOfGenes;
-        public int gRangePeek { get; internal set; };
+        public int gRangePeek { get; internal set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:EnergyPrediction.GeneticAlgoChromosome"/> class.
@@ -65,7 +65,7 @@ namespace EnergyPrediction
         /// Creates a new Chromosome.
         /// </summary>
         /// <returns>The new.</returns>
-        public override public override IChromosome CreateNew()
+        public override IChromosome CreateNew()
         {
             return new GeneticAlgoChromosome(gRangePeek);
         }
