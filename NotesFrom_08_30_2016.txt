@@ -1,0 +1,19 @@
+Notes for 30/08/16
+Gene structure:
+	- Possibly a tree representation
+	- Genetic programming for trees Wikipedia
+	- More research required, how to structure genes, how to equate genes
+
+Crossovers and mutations:
+ 	- Must decide on which ones to use, which ones are preferred, and which ones would be more efficient/effective for our problem
+	- More research required
+
+GUI:
+	- 
+
+Genetic Programming:
+	-
+
+Tasks:
+	- Research crossovers and mutations - Sean
+	- Research genetic programming - Katie
