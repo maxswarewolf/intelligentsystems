@@ -37,7 +37,7 @@ namespace EnergyPrediction
 {
     public class GeneticAlgoController
     {
-        GeneticAlgorithm GA { get; private set; };
+        public GeneticAlgorithm GA { get; private set; }
         int gPopulationSize;
         //y = Sin(x) + 2
         CommonXY[] gDataSet = new CommonXY[]
@@ -90,6 +90,7 @@ namespace EnergyPrediction
         {
             return new UniformMutation();
         }
+
 
 
     }

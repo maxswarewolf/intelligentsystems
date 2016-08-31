@@ -8,21 +8,53 @@
     <widget-library name="../bin/Debug/EnergyPrediction.exe" internal="true" />
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
   </import>
-  <widget class="Gtk.Window" id="MainWindow" design-size="400 300">
+  <widget class="Gtk.Window" id="MainWindow" design-size="818 615">
+    <action-group name="Default">
+      <action id="HelpNotSureIfThisIsRightAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Help Not sure if this is right</property>
+        <property name="ShortLabel" translatable="yes">Help Not sure if this is right</property>
+      </action>
+    </action-group>
     <property name="MemberName" />
     <property name="Title" translatable="yes">MainWindow</property>
     <property name="WindowPosition">CenterOnParent</property>
+    <property name="BorderWidth">3</property>
+    <property name="DefaultWidth">400</property>
+    <property name="DefaultHeight">600</property>
     <signal name="DeleteEvent" handler="OnDeleteEvent" />
     <child>
-      <placeholder />
-    </child>
-  </widget>
-  <widget class="Gtk.Window" id="EnergyPrediction.Window" design-size="400 300">
-    <property name="MemberName" />
-    <property name="Title" translatable="yes">Window</property>
-    <property name="WindowPosition">CenterOnParent</property>
-    <child>
-      <placeholder />
+      <widget class="Gtk.HPaned" id="HPanPanel">
+        <property name="MemberName" />
+        <property name="Visible">False</property>
+        <property name="CanFocus">True</property>
+        <property name="Position">550</property>
+        <property name="BorderWidth">3</property>
+        <child>
+          <widget class="Gtk.Fixed" id="fixed1">
+            <property name="MemberName" />
+            <property name="HasWindow">False</property>
+          </widget>
+          <packing>
+            <property name="Resize">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.VBox" id="vbox3">
+            <property name="MemberName" />
+            <property name="Spacing">6</property>
+            <child>
+              <placeholder />
+            </child>
+            <child>
+              <placeholder />
+            </child>
+            <child>
+              <placeholder />
+            </child>
+          </widget>
+        </child>
+      </widget>
     </child>
   </widget>
 </stetic-interface>
