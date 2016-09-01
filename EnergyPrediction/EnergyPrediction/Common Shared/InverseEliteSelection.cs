@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// GeneticAlgoFitness.cs
+// InverseEliteSelection.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -26,41 +26,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using GeneticSharp.Domain.Chromosomes;
-using GeneticSharp.Domain.Fitnesses;
-using EnergyPrediction;
-
+using GeneticSharp.Domain.Populations;
+using GeneticSharp.Domain.Selections;
 namespace EnergyPrediction
 {
-    public class GeneticAlgoFitnessPercentage : IFitness
+    public class InverseEliteSelection : SelectionBase
     {
-        private CommonXY[] gExpectedResults;
-        public GeneticAlgoFitnessPercentage(CommonXY[] aExpectedResults)
+        public InverseEliteSelection() : base(2)
         {
-            gExpectedResults = aExpectedResults;
         }
 
-        /// <summary>
-        /// Gives the sum of the difference between Expected and Calaulated results
-        /// </summary>
-        /// <param name="aChromosome">A chromosome.</param>
-        public double Evaluate(IChromosome aChromosome)
+        protected override IList<IChromosome> PerformSelectChromosomes(int number, Generation generation)
         {
-            var lChromosome = aChromosome as GeneticAlgoChromosome;
-
-            double fitness = 0;
-            double calculatedY = 0;
-            for (int i = 0; i < gExpectedResults.Length; i++)
-            {
-                calculatedY = (double)aChromosome.GetGene(0).Value *
-                                                Math.Sin((double)aChromosome.GetGene(1).Value *
-                                                         Math.Pow(gExpectedResults[i].X, (double)aChromosome.GetGene(2).Value)) +
-                                                (double)aChromosome.GetGene(3).Value;
-                fitness += (Math.Sqrt(Math.Pow(gExpectedResults[i].Y - calculatedY, 2)) / gExpectedResults[i].Y);
-            }
-
-            fitness = 100 - (fitness * 100);
-            return fitness;
+            var ordered = generation.Chromosomes.OrderBy(c => c.Fitness);
+            return ordered.Take(number).ToList();
         }
     }
 }

@@ -34,10 +34,12 @@ namespace EnergyPrediction
     {
         public static void Main(string[] args)
         {
-            Application.Init();
-            var win = new MainWindow();
-            win.Show();
-            Application.Run();
+            var test1 = new EnergyPrediction.GeneticAlgoController(200);
+            test1.Start();
+            //Application.Init();
+            //var win = new MainWindow();
+            //win.Show();
+            //Application.Run();
         }
     }
 }

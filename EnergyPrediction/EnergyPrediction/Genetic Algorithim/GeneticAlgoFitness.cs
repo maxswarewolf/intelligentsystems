@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// GeneticAlgoGenome.cs
+// GeneticAlgoFitness.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -27,47 +27,43 @@
 // THE SOFTWARE.
 using System;
 using GeneticSharp.Domain.Chromosomes;
-using GeneticSharp.Domain.Randomizations;
+using GeneticSharp.Domain.Fitnesses;
+using EnergyPrediction;
+
 namespace EnergyPrediction
 {
-    public class GeneticAlgoChromosome : ChromosomeBase
+    public class GeneticAlgoFitness : IFitness
     {
-
-        int gNumberOfGenes;
-        public int gRangePeek { get; internal set; }
+        double[] gExpectedResults = { Math.Sin(0),
+                                  Math.Sin(2),
+                                  Math.Sin(4),
+                                  Math.Sin(6),
+                                  Math.Sin(8),
+                                  Math.Sin(10),
+                                  Math.Sin(12),
+                                  Math.Sin(14),
+                                  Math.Sin(16),
+                                  Math.Sin(18)};
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:EnergyPrediction.GeneticAlgoChromosome"/> class.
+        /// Gives the sum of the difference between Expected and Calaulated results
         /// </summary>
-        /// <param name="aResultRange">A result range. eg -20 to 20</param>
-        public GeneticAlgoChromosome(int aResultPeek) : base(4)
+        /// <param name="aChromosome">A chromosome.</param>
+        public double Evaluate(IChromosome aChromosome)
         {
-            gNumberOfGenes = 4;
-            gRangePeek = aResultPeek;
+            var lChromosome = aChromosome as GeneticAlgoChromosome;
 
-            for (int i = 0; i < gNumberOfGenes; i++)
+            double lErrorSum = 0.0;
+            double lCalculatedY = 0.0;
+            double lActualY = 0.0;
+            for (double i = 0; i < 10; i += 0.5)
             {
-                ReplaceGene(i, GenerateGene(i));
+                // A * Sin(Bx^C) + D
+                lCalculatedY = (double)lChromosome.GetGene(0).Value * Math.Sin((double)lChromosome.GetGene(1).Value * Math.Pow(i, (double)lChromosome.GetGene(2).Value)) + (double)lChromosome.GetGene(3).Value;
+                lActualY = 0.5 * Math.Sin(2 * i) + 1;
+                lErrorSum += Math.Abs(lActualY - lCalculatedY);
             }
-        }
-
-        /// <summary>
-        /// Generates a gene with a random integer between -RangePeek and RangePeek.
-        /// </summary>
-        /// <returns>The gene.</returns>
-        /// <param name="geneIndex">Gene index.</param>
-        public override Gene GenerateGene(int geneIndex)
-        {
-            return new Gene(RandomizationProvider.Current.GetDouble(gRangePeek * -1, gRangePeek + 1));
-        }
-
-        /// <summary>
-        /// Creates a new Chromosome.
-        /// </summary>
-        /// <returns>The new.</returns>
-        public override IChromosome CreateNew()
-        {
-            return new GeneticAlgoChromosome(gRangePeek);
+            return 100 / (lErrorSum + 1);
         }
     }
 }

@@ -1,8 +1,11 @@
 ﻿<Properties StartupItem="EnergyPrediction/EnergyPrediction.csproj">
-  <MonoDevelop.Ide.Workbench ActiveDocument="EnergyPrediction/MainWindow.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EnergyPrediction/Genetic Algorithim/GeneticAlgoController.cs">
     <Files>
-      <File FileName="EnergyPrediction/Program.cs" Line="38" Column="34" />
-      <File FileName="EnergyPrediction/MainWindow.cs" Line="1" Column="1" />
+      <File FileName="EnergyPrediction/Program.cs" Line="40" Column="42" />
+      <File FileName="EnergyPrediction/Genetic Algorithim/GeneticAlgoController.cs" Line="109" Column="52" />
+      <File FileName="EnergyPrediction/Genetic Algorithim/GeneticAlgoFitness.cs" Line="64" Column="47" />
+      <File FileName="EnergyPrediction/Genetic Algorithim/GeneticAlgoChromosome.cs" Line="53" Column="9" />
+      <File FileName="../GeneticSharp-master/src/GeneticSharp.Domain/Selections/EliteSelection.cs" Line="3" Column="1" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

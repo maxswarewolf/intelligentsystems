@@ -7,16 +7,6 @@ public partial class MainWindow
 
 	private global::Gtk.Action HelpNotSureIfThisIsRightAction;
 
-	private global::Gtk.HBox Panel1;
-
-	private global::Gtk.MenuBar menubar1;
-
-	private global::Gtk.VSeparator vseparator1;
-
-	private global::Gtk.VBox vbox1;
-
-	private global::Gtk.HSeparator hseparator2;
-
 	protected virtual void Build()
 	{
 		global::Stetic.Gui.Initialize(this);
@@ -28,52 +18,14 @@ public partial class MainWindow
 		w1.Add(this.HelpNotSureIfThisIsRightAction, null);
 		this.UIManager.InsertActionGroup(w1, 0);
 		this.AddAccelGroup(this.UIManager.AccelGroup);
+		this.WidthRequest = 0;
+		this.HeightRequest = 500;
 		this.Name = "MainWindow";
 		this.Title = global::Mono.Unix.Catalog.GetString("MainWindow");
 		this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 		this.BorderWidth = ((uint)(3));
 		this.DefaultWidth = 400;
 		this.DefaultHeight = 600;
-		// Container child MainWindow.Gtk.Container+ContainerChild
-		this.Panel1 = new global::Gtk.HBox();
-		this.Panel1.WidthRequest = 7;
-		this.Panel1.HeightRequest = 8;
-		this.Panel1.Name = "Panel1";
-		this.Panel1.Spacing = 2;
-		this.Panel1.BorderWidth = ((uint)(6));
-		// Container child Panel1.Gtk.Box+BoxChild
-		this.UIManager.AddUiFromString("<ui><menubar name='menubar1'><menu name='HelpNotSureIfThisIsRightAction' action='HelpNotSureIfThisIsRightAction'/></menubar></ui>");
-		this.menubar1 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget("/menubar1")));
-		this.menubar1.Name = "menubar1";
-		this.Panel1.Add(this.menubar1);
-		global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.Panel1[this.menubar1]));
-		w2.Position = 0;
-		w2.Expand = false;
-		w2.Fill = false;
-		// Container child Panel1.Gtk.Box+BoxChild
-		this.vseparator1 = new global::Gtk.VSeparator();
-		this.vseparator1.Name = "vseparator1";
-		this.Panel1.Add(this.vseparator1);
-		global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.Panel1[this.vseparator1]));
-		w3.Position = 1;
-		w3.Expand = false;
-		w3.Fill = false;
-		// Container child Panel1.Gtk.Box+BoxChild
-		this.vbox1 = new global::Gtk.VBox();
-		this.vbox1.Name = "vbox1";
-		this.vbox1.Spacing = 6;
-		// Container child vbox1.Gtk.Box+BoxChild
-		this.hseparator2 = new global::Gtk.HSeparator();
-		this.hseparator2.Name = "hseparator2";
-		this.vbox1.Add(this.hseparator2);
-		global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.hseparator2]));
-		w4.Position = 1;
-		w4.Expand = false;
-		w4.Fill = false;
-		this.Panel1.Add(this.vbox1);
-		global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.Panel1[this.vbox1]));
-		w5.Position = 2;
-		this.Add(this.Panel1);
 		if ((this.Child != null))
 		{
 			this.Child.ShowAll();

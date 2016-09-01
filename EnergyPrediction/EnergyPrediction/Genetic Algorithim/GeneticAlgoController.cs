@@ -33,33 +33,15 @@ using GeneticSharp.Domain.Fitnesses;
 using GeneticSharp.Domain.Mutations;
 using GeneticSharp.Domain.Selections;
 using GeneticSharp.Domain.Terminations;
+using GeneticSharp.Domain.Populations;
+using GeneticSharp.Domain.Reinsertions;
 namespace EnergyPrediction
 {
     public class GeneticAlgoController
     {
         public GeneticAlgorithm GA { get; private set; }
         int gPopulationSize;
-        //y = Sin(x) + 2
-        CommonXY[] gDataSet = new CommonXY[]
-        {
-            new CommonXY(0, 2) ,
-            new CommonXY(30, 2.5),
-            new CommonXY(90, 3),
-            new CommonXY(150, 2.5),
-            new CommonXY(180, 2),
-            new CommonXY(210, 1.5),
-            new CommonXY(270, 1),
-            new CommonXY(330, 1.5),
-            new CommonXY(360, 2) ,
-            new CommonXY(390, 2.5),
-            new CommonXY(450, 3),
-            new CommonXY(510, 2.5),
-            new CommonXY(540, 2),
-            new CommonXY(570, 1.5),
-            new CommonXY(630, 1),
-            new CommonXY(690, 1.5),
-            new CommonXY(720, 2)
-        };
+        //y = Sin(2x)
 
         public GeneticAlgoController(int aPopulationSize)
         {
@@ -68,22 +50,24 @@ namespace EnergyPrediction
 
         public ITermination CreateTermination()
         {
-            return new FitnessThresholdTermination(0.02);
+            //return new FitnessThresholdTermination(44);
+            //return new GenerationNumberTermination(1000);
+            return new TimeEvolvingTermination(TimeSpan.FromSeconds(60));
         }
 
         public IChromosome CreateChromosome()
         {
-            return new GeneticAlgoChromosome(50);
+            return new GeneticAlgoChromosome(2);
         }
 
         public IFitness CreateFitness()
         {
-            return new GeneticAlgoFitnessPercentage(gDataSet);
+            return new GeneticAlgoFitness();
         }
 
         public ICrossover CreateCrossover()
         {
-            return new OnePointCrossover(2);
+            return new ThreeParentCrossover();
         }
 
         public IMutation CreateMutation()
@@ -91,7 +75,65 @@ namespace EnergyPrediction
             return new UniformMutation();
         }
 
+        public ISelection CreateSelection()
+        {
+            return new EliteSelection();
+        }
 
+        public IPopulation CreatePopulation()
+        {
+            var lPopulation = new Population(gPopulationSize, gPopulationSize * 2, CreateChromosome());
+            //lPopulation.GenerationStrategy = new PerformanceGenerationStrategy();
+            return lPopulation;
+        }
+
+        public void Draw(IChromosome aBestChromosome)
+        {
+            var lBest = aBestChromosome.GetGenes();
+            Console.Clear();
+
+            Console.WriteLine();
+            Console.WriteLine("Generations: {0}", GA.Population.GenerationsNumber);
+            Console.WriteLine("Accuracy: {0:00.00}%", aBestChromosome.Fitness);
+            Console.WriteLine("Genes: {0:00.####}, {1:00.####}, {2:00.####}, {3:00.####}", lBest[0].Value, lBest[1].Value, lBest[2].Value, lBest[3].Value);
+            Console.WriteLine("Time: {0}", GA.TimeEvolving);
+
+        }
+
+        public void Start()
+        {
+            GA = new GeneticAlgorithm(CreatePopulation(), CreateFitness(), CreateSelection(), CreateCrossover(), CreateMutation());
+            GA.Termination = CreateTermination();
+            GA.CrossoverProbability = 1f;
+            GA.MutationProbability = 1f;
+            GA.Reinsertion = new ElitistReinsertion();
+
+            Console.WriteLine("STARTING...");
+
+            var lTerminationName = GA.Termination.GetType().Name;
+            GA.GenerationRan += delegate
+            {
+                var lBestChromosome = GA.Population.BestChromosome;
+                Draw(lBestChromosome);
+            };
+
+            try
+            {
+                GA.Start();
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine();
+                Console.WriteLine("Error: {0}", ex.StackTrace);
+                Console.ResetColor();
+                Console.ReadKey();
+                return;
+            }
+            var lBest = GA.Population.BestChromosome.GetGenes();
+            Console.WriteLine();
+            Console.WriteLine("Evolved: " + lBest[0].Value + ", " + lBest[1].Value + ", " + lBest[2].Value + ", " + lBest[3].Value);
+        }
 
     }
 }

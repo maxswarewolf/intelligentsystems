@@ -22,3 +22,10 @@ Curve fitting with Genetic Algorithms
 
 Curve fitting with Genetic Programm
 	IEEE report - http://ieeexplore.ieee.org/document/1014581/?arnumber=1014581&tag=1
+
+National Electricity Market POSSIBLE DATA
+	http://www.aemo.com.au/Electricity/National-Electricity-Market-NEM/Planning-and-forecasting/-/media/1D041EB8DDFD406A98EC337F264EBDBD.ashx
+
+	https://www.aer.gov.au/wholesale-markets/wholesale-statistics/seasonal-peak-demand-region
+
+	https://www.aer.gov.au/wholesale-markets/wholesale-statistics/seasonal-peak-demand-occurrence-region
