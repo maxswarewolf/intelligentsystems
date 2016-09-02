@@ -57,7 +57,7 @@ namespace EnergyPrediction
 
         public IChromosome CreateChromosome()
         {
-            return new GeneticAlgoChromosome(2);
+            return new GeneticAlgoChromosome(10);
         }
 
         public IFitness CreateFitness()
@@ -67,7 +67,7 @@ namespace EnergyPrediction
 
         public ICrossover CreateCrossover()
         {
-            return new ThreeParentCrossover();
+            return new OnePointCrossover(2);
         }
 
         public IMutation CreateMutation()
@@ -77,7 +77,7 @@ namespace EnergyPrediction
 
         public ISelection CreateSelection()
         {
-            return new EliteSelection();
+            return new StochasticSelection();
         }
 
         public IPopulation CreatePopulation()
@@ -94,7 +94,7 @@ namespace EnergyPrediction
 
             Console.WriteLine();
             Console.WriteLine("Generations: {0}", GA.Population.GenerationsNumber);
-            Console.WriteLine("Accuracy: {0:00.00}%", aBestChromosome.Fitness);
+            Console.WriteLine("Fitness: {0}", aBestChromosome.Fitness);
             Console.WriteLine("Genes: {0:00.####}, {1:00.####}, {2:00.####}, {3:00.####}", lBest[0].Value, lBest[1].Value, lBest[2].Value, lBest[3].Value);
             Console.WriteLine("Time: {0}", GA.TimeEvolving);
 
@@ -104,8 +104,8 @@ namespace EnergyPrediction
         {
             GA = new GeneticAlgorithm(CreatePopulation(), CreateFitness(), CreateSelection(), CreateCrossover(), CreateMutation());
             GA.Termination = CreateTermination();
-            GA.CrossoverProbability = 1f;
-            GA.MutationProbability = 1f;
+            GA.CrossoverProbability = 0.90f;
+            GA.MutationProbability = 0.2f;
             GA.Reinsertion = new ElitistReinsertion();
 
             Console.WriteLine("STARTING...");
@@ -125,7 +125,8 @@ namespace EnergyPrediction
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine();
-                Console.WriteLine("Error: {0}", ex.StackTrace);
+                Console.WriteLine("Error Message: {0}", ex.Message);
+                Console.WriteLine("Stack: {0}", ex.StackTrace);
                 Console.ResetColor();
                 Console.ReadKey();
                 return;

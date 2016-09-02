@@ -1,16 +1,27 @@
 ﻿<Properties StartupItem="EnergyPrediction/EnergyPrediction.csproj">
-  <MonoDevelop.Ide.Workbench ActiveDocument="EnergyPrediction/Genetic Algorithim/GeneticAlgoController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EnergyPrediction/Common Shared/StochasticSelection.cs">
     <Files>
-      <File FileName="EnergyPrediction/Program.cs" Line="40" Column="42" />
-      <File FileName="EnergyPrediction/Genetic Algorithim/GeneticAlgoController.cs" Line="109" Column="52" />
-      <File FileName="EnergyPrediction/Genetic Algorithim/GeneticAlgoFitness.cs" Line="64" Column="47" />
-      <File FileName="EnergyPrediction/Genetic Algorithim/GeneticAlgoChromosome.cs" Line="53" Column="9" />
-      <File FileName="../GeneticSharp-master/src/GeneticSharp.Domain/Selections/EliteSelection.cs" Line="3" Column="1" NotebookId="1" />
+      <File FileName="EnergyPrediction/Program.cs" Line="35" Column="47" />
+      <File FileName="EnergyPrediction/Genetic Algorithim/GeneticAlgoController.cs" Line="125" Column="1" />
+      <File FileName="EnergyPrediction/Genetic Algorithim/GeneticAlgoFitness.cs" Line="78" Column="21" />
+      <File FileName="EnergyPrediction/Genetic Algorithim/GeneticAlgoChromosome.cs" Line="70" Column="1" />
+      <File FileName="../GeneticSharp-master/src/GeneticSharp.Domain/GeneticAlgorithm.cs" Line="482" Column="1" />
+      <File FileName="EnergyPrediction/Common Shared/StochasticSelection.cs" Line="66" Column="39" />
     </Files>
+    <Pads>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State>
+          <Value>lTotalFitness</Value>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/Adrian/intelligentsystems/EnergyPrediction/EnergyPrediction/Common Shared/StochasticSelection.cs" line="85" column="1" />
+      <Breakpoint file="/Users/Adrian/intelligentsystems/EnergyPrediction/EnergyPrediction/Common Shared/StochasticSelection.cs" line="67" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <AuthorInfo Name="Katie Clark, Sean Grinter, Adrian Pellegrino" Email="Energy Prediction" Copyright="Katie Clark, Sean Grinter, Adrian Pellegrino" Company="Intelligent Systems Project " Trademark="" />

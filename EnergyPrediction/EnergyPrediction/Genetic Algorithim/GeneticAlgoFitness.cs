@@ -43,27 +43,39 @@ namespace EnergyPrediction
                                   Math.Sin(12),
                                   Math.Sin(14),
                                   Math.Sin(16),
-                                  Math.Sin(18)};
+                                  Math.Sin(18),
+                                  Math.Sin(20),
+                                  Math.Sin(22),
+                                  Math.Sin(24),
+                                  Math.Sin(26),
+                                  Math.Sin(28),
+                                  Math.Sin(30),
+                                  Math.Sin(32),
+                                  Math.Sin(34),
+                                  Math.Sin(36),
+                                  Math.Sin(38),
+                                  Math.Sin(40)};
 
         /// <summary>
-        /// Gives the sum of the difference between Expected and Calaulated results
+        /// Gives the sum of the difference between Expected and Calaulated results Squared
         /// </summary>
         /// <param name="aChromosome">A chromosome.</param>
         public double Evaluate(IChromosome aChromosome)
         {
+            //Error of the Difference Squared
             var lChromosome = aChromosome as GeneticAlgoChromosome;
 
             double lErrorSum = 0.0;
             double lCalculatedY = 0.0;
             double lActualY = 0.0;
-            for (double i = 0; i < 10; i += 0.5)
+            for (int i = 0; i < gExpectedResults.Length; i++)
             {
                 // A * Sin(Bx^C) + D
                 lCalculatedY = (double)lChromosome.GetGene(0).Value * Math.Sin((double)lChromosome.GetGene(1).Value * Math.Pow(i, (double)lChromosome.GetGene(2).Value)) + (double)lChromosome.GetGene(3).Value;
-                lActualY = 0.5 * Math.Sin(2 * i) + 1;
-                lErrorSum += Math.Abs(lActualY - lCalculatedY);
+                lActualY = gExpectedResults[i];
+                lErrorSum += Math.Pow(lActualY - lCalculatedY, 2);
             }
-            return 100 / (lErrorSum + 1);
+            return (lErrorSum);
         }
     }
 }
