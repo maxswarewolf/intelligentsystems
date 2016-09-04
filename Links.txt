@@ -22,3 +22,6 @@ Curve fitting with Genetic Algorithms
 
 Curve fitting with Genetic Programm
 	IEEE report - http://ieeexplore.ieee.org/document/1014581/?arnumber=1014581&tag=1
+
+A definition of genetic algorithms and genetic programming:
+	http://stackoverflow.com/questions/3819977/what-are-the-differences-between-genetic-algorithms-and-genetic-programming
