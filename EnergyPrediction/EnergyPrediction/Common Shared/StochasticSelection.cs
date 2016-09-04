@@ -36,40 +36,63 @@ namespace EnergyPrediction
 {
     public class StochasticSelection : SelectionBase
     {
-        public StochasticSelection() : base(2)
-        {
+        #region Fields
+        double gPercentage = 0.1;
+        #endregion
 
+        #region Construstors
+        public StochasticSelection(double aPercentage) : base(2)
+        {
+            if (aPercentage > 100)
+            {
+                gPercentage = aPercentage % 100;
+                gPercentage = gPercentage / 100;
+            }
+            else if (aPercentage > 0)
+            {
+                gPercentage = (aPercentage / 100);
+            }
         }
+
+        public StochasticSelection() : base(2)
+        { }
+        #endregion
+
+        /// <summary>
+        /// Performs the select chromosomes.
+        /// It provides an even spread of then entire range
+        /// </summary>
+        /// <returns>The select chromosomes.</returns>
+        /// <param name="number">Number.</param>
+        /// <param name="generation">Generation.</param>
         protected override IList<IChromosome> PerformSelectChromosomes(int number, Generation generation)
         {
             var r = new Random(DateTime.Now.Second);
+            int lNumGeneration = (int)(number * gPercentage);
+            double lTotalFitness = 0;
 
-            long lTotalFitness = 0;
-            foreach (IChromosome c in generation.Chromosomes)
-            {
-                if ((c.Fitness != null) && (c.Fitness >= 0))
-                {
-                    lTotalFitness += (long)Math.Round((double)c.Fitness);
-                    Console.WriteLine("Fitness: {0}, Total Fitness: {1}", c.Fitness, lTotalFitness);
-
-                }
-            }
-            foreach (IChromosome c in generation.Chromosomes)
-            {
-                c.Fitness = c.Fitness / lTotalFitness;
-            }
             var lOrdered = generation.Chromosomes.OrderByDescending(c => c.Fitness);
-            var lNumOffspring = number;
-            var lDistance = lTotalFitness / lNumOffspring;
+            foreach (IChromosome c in lOrdered)
+            {
+                if (Double.IsNaN((double)c.Fitness))
+                {
+                    c.Fitness = 0.0;
+                }
+                lTotalFitness += (double)c.Fitness;
+            }
 
-            var lStartingPoint = r.Next(0, (int)lDistance);
-            IList<double> lPointers = new IList<double>();
-            for (int i = 0; i < lNumOffspring - 1; i++)
+            double lDistance = lTotalFitness / lNumGeneration;
+            int lStartingPoint = r.Next(0, (int)lDistance);
+            IList<double> lPointers = new List<double>();
+
+            for (int i = 0; i < lNumGeneration - 1; i++)
             {
                 lPointers.Add(lStartingPoint + (i * lDistance));
             }
+
             IList<IChromosome> lOrderedSet = lOrdered.ToArray();
-            IList<IChromosome> lKeep = null;
+            IList<IChromosome> lKeep = new List<IChromosome>();
+
             foreach (var P in lPointers)
             {
                 int i = 0;

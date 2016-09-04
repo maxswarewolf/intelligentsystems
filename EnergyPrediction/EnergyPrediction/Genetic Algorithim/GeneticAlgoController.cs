@@ -52,7 +52,7 @@ namespace EnergyPrediction
         {
             //return new FitnessThresholdTermination(44);
             //return new GenerationNumberTermination(1000);
-            return new TimeEvolvingTermination(TimeSpan.FromSeconds(60));
+            return new TimeEvolvingTermination(TimeSpan.FromMinutes(4));
         }
 
         public IChromosome CreateChromosome()
@@ -77,7 +77,7 @@ namespace EnergyPrediction
 
         public ISelection CreateSelection()
         {
-            return new StochasticSelection();
+            return new EliteSelection();
         }
 
         public IPopulation CreatePopulation()

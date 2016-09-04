@@ -73,7 +73,7 @@ namespace EnergyPrediction
                 // A * Sin(Bx^C) + D
                 lCalculatedY = (double)lChromosome.GetGene(0).Value * Math.Sin((double)lChromosome.GetGene(1).Value * Math.Pow(i, (double)lChromosome.GetGene(2).Value)) + (double)lChromosome.GetGene(3).Value;
                 lActualY = gExpectedResults[i];
-                lErrorSum += Math.Pow(lActualY - lCalculatedY, 2);
+                lErrorSum -= Math.Pow(lActualY - lCalculatedY, 2);
             }
             return (lErrorSum);
         }
