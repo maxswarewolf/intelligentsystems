@@ -4,6 +4,7 @@ Please put a description of what the link is linking to
 Genetic Algorithim (GeneticSharp) - https://github.com/giacomelli/GeneticSharp
 GUI reference https://developer.gnome.org/gtk2/stable/
 
+
 Forecasting Models (scroll down to the time series table)
 https://hbr.org/1971/07/how-to-choose-the-right-forecasting-technique
 
@@ -19,6 +20,9 @@ Curve fitting with Genetic Algorithms
 	Text Book - http://www.dtic.mil/dtic/tr/fulltext/u2/a247206.pdf
 
 	Java Script example - http://subprotocol.com/system/genetic-regression-curve.html
+
+
+GENETIC PROGRAMMING - http://www.genetic-programming.org
 
 Curve fitting with Genetic Programm
 	IEEE report - http://ieeexplore.ieee.org/document/1014581/?arnumber=1014581&tag=1
