@@ -1,19 +1,19 @@
 ﻿<Properties StartupItem="EnergyPrediction/EnergyPrediction.csproj">
-  <MonoDevelop.Ide.Workbench ActiveDocument="EnergyPrediction/Common Shared/StochasticSelection.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EnergyPrediction/Genetic Algorithim/GeneticAlgoController.cs">
     <Files>
       <File FileName="EnergyPrediction/Program.cs" Line="35" Column="47" />
-      <File FileName="EnergyPrediction/Genetic Algorithim/GeneticAlgoController.cs" Line="125" Column="1" />
-      <File FileName="EnergyPrediction/Genetic Algorithim/GeneticAlgoFitness.cs" Line="78" Column="21" />
-      <File FileName="EnergyPrediction/Genetic Algorithim/GeneticAlgoChromosome.cs" Line="70" Column="1" />
+      <File FileName="EnergyPrediction/Genetic Algorithim/GeneticAlgoController.cs" Line="66" Column="10" />
+      <File FileName="EnergyPrediction/Genetic Algorithim/GeneticAlgoFitness.cs" Line="73" Column="37" />
+      <File FileName="EnergyPrediction/Genetic Algorithim/GeneticAlgoChromosome.cs" Line="43" Column="16" />
       <File FileName="../GeneticSharp-master/src/GeneticSharp.Domain/GeneticAlgorithm.cs" Line="482" Column="1" />
-      <File FileName="EnergyPrediction/Common Shared/StochasticSelection.cs" Line="70" Column="65" />
+      <File FileName="EnergyPrediction/Common Shared/StochasticSelection.cs" Line="80" Column="18" />
+      <File FileName="EnergyPrediction/Common Shared/InverseEliteSelection.cs" Line="1" Column="1" />
+      <File FileName="../GeneticSharp-master/src/GeneticSharp.Domain/Mutations/UniformMutation.cs" Line="48" Column="18" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/Adrian/intelligentsystems/EnergyPrediction/EnergyPrediction/Common Shared/StochasticSelection.cs" line="84" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <AuthorInfo Name="Katie Clark, Sean Grinter, Adrian Pellegrino" Email="Energy Prediction" Copyright="Katie Clark, Sean Grinter, Adrian Pellegrino" Company="Intelligent Systems Project " Trademark="" />
