@@ -34,28 +34,6 @@ namespace EnergyPrediction
 {
     public class GeneticAlgoFitness : IFitness
     {
-        double[] gExpectedResults = { Math.Sin(0),
-                                  Math.Sin(2),
-                                  Math.Sin(4),
-                                  Math.Sin(6),
-                                  Math.Sin(8),
-                                  Math.Sin(10),
-                                  Math.Sin(12),
-                                  Math.Sin(14),
-                                  Math.Sin(16),
-                                  Math.Sin(18),
-                                  Math.Sin(20),
-                                  Math.Sin(22),
-                                  Math.Sin(24),
-                                  Math.Sin(26),
-                                  Math.Sin(28),
-                                  Math.Sin(30),
-                                  Math.Sin(32),
-                                  Math.Sin(34),
-                                  Math.Sin(36),
-                                  Math.Sin(38),
-                                  Math.Sin(40)};
-
         /// <summary>
         /// Gives the sum of the difference between Expected and Calaulated results Squared
         /// </summary>
@@ -68,14 +46,14 @@ namespace EnergyPrediction
             double lErrorSum = 0.0;
             double lCalculatedY = 0.0;
             double lActualY = 0.0;
-            for (int i = 0; i < gExpectedResults.Length; i++)
+            for (int x = 0; x < 100; x++)
             {
                 // A * Sin(Bx^C) + D
-                lCalculatedY = (double)lChromosome.GetGene(0).Value * Math.Sin((double)lChromosome.GetGene(1).Value * Math.Pow(i, (double)lChromosome.GetGene(2).Value)) + (double)lChromosome.GetGene(3).Value;
-                lActualY = gExpectedResults[i];
-                lErrorSum -= Math.Pow(lActualY - lCalculatedY, 2);
+                lCalculatedY = (int)lChromosome.GetGene(0).Value * Math.Sin((int)lChromosome.GetGene(1).Value * Math.Pow(x, (int)lChromosome.GetGene(2).Value)) + (int)lChromosome.GetGene(3).Value;
+                lActualY = Math.Sin(2 * x);
+                lErrorSum += Math.Pow(lActualY - lCalculatedY, 2);
             }
-            return (lErrorSum);
+            return (-1 * lErrorSum);
         }
     }
 }

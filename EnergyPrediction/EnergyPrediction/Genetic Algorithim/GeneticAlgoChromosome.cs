@@ -58,7 +58,7 @@ namespace EnergyPrediction
         /// <param name="geneIndex">Gene index.</param>
         public override Gene GenerateGene(int geneIndex)
         {
-            return new Gene(RandomizationProvider.Current.GetDouble(gRangePeek * -1, gRangePeek + 1));
+            return new Gene(RandomizationProvider.Current.GetInt(gRangePeek * -1, gRangePeek + 1));
         }
 
         /// <summary>

@@ -50,14 +50,15 @@ namespace EnergyPrediction
 
         public ITermination CreateTermination()
         {
-            //return new FitnessThresholdTermination(44);
-            //return new GenerationNumberTermination(1000);
-            return new TimeEvolvingTermination(TimeSpan.FromMinutes(4));
+
+            //ITermination[] term = { new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromMinutes(1)) };
+
+            return new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromMinutes(1)));
         }
 
         public IChromosome CreateChromosome()
         {
-            return new GeneticAlgoChromosome(10);
+            return new GeneticAlgoChromosome(5);
         }
 
         public IFitness CreateFitness()
@@ -104,8 +105,8 @@ namespace EnergyPrediction
         {
             GA = new GeneticAlgorithm(CreatePopulation(), CreateFitness(), CreateSelection(), CreateCrossover(), CreateMutation());
             GA.Termination = CreateTermination();
-            GA.CrossoverProbability = 0.90f;
-            GA.MutationProbability = 0.2f;
+            GA.CrossoverProbability = 0.6f;
+            GA.MutationProbability = 0.6f;
             GA.Reinsertion = new ElitistReinsertion();
 
             Console.WriteLine("STARTING...");
