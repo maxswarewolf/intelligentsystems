@@ -46,7 +46,7 @@ namespace EnergyPrediction
             double lErrorSum = 0.0;
             double lCalculatedY = 0.0;
             double lActualY = 0.0;
-            for (int x = 0; x < 100; x++)
+            for (int x = -100; x < 100; x++)
             {
                 // A * Sin(Bx^C) + D
                 lCalculatedY = (int)lChromosome.GetGene(0).Value * Math.Sin((int)lChromosome.GetGene(1).Value * Math.Pow(x, (int)lChromosome.GetGene(2).Value)) + (int)lChromosome.GetGene(3).Value;

@@ -76,13 +76,13 @@ namespace EnergyPrediction
             {
                 if (Double.IsNaN((double)c.Fitness))
                 {
-                    c.Fitness = 0.0;
+                    c.Fitness = double.MinValue;
                 }
                 lTotalFitness += (double)c.Fitness;
             }
 
             double lDistance = lTotalFitness / lNumGeneration;
-            int lStartingPoint = r.Next(0, (int)lDistance);
+            int lStartingPoint = r.Next((int)lDistance, 0);
             IList<double> lPointers = new List<double>();
 
             for (int i = 0; i < lNumGeneration - 1; i++)

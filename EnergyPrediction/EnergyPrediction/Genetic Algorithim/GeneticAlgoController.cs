@@ -58,7 +58,7 @@ namespace EnergyPrediction
 
         public IChromosome CreateChromosome()
         {
-            return new GeneticAlgoChromosome(5);
+            return new GeneticAlgoChromosome(7);
         }
 
         public IFitness CreateFitness()
@@ -78,7 +78,7 @@ namespace EnergyPrediction
 
         public ISelection CreateSelection()
         {
-            return new EliteSelection();
+            return new StochasticSelection();
         }
 
         public IPopulation CreatePopulation()
