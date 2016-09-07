@@ -34,26 +34,10 @@ using GeneticSharp.Domain.Populations;
 using GeneticSharp.Domain.Selections;
 namespace EnergyPrediction
 {
+    [DisplayName("Stochastic")]
     public class StochasticSelection : SelectionBase
     {
-        #region Fields
-        double gPercentage = 0.1;
-        #endregion
-
         #region Construstors
-        public StochasticSelection(double aPercentage) : base(2)
-        {
-            if (aPercentage > 100)
-            {
-                gPercentage = aPercentage % 100;
-                gPercentage = gPercentage / 100;
-            }
-            else if (aPercentage > 0)
-            {
-                gPercentage = (aPercentage / 100);
-            }
-        }
-
         public StochasticSelection() : base(2)
         { }
         #endregion
@@ -68,7 +52,7 @@ namespace EnergyPrediction
         protected override IList<IChromosome> PerformSelectChromosomes(int number, Generation generation)
         {
             var r = new Random(DateTime.Now.Second);
-            int lNumGeneration = (int)(number * gPercentage);
+            int lNumGeneration = number;
             double lTotalFitness = 0;
 
             var lOrdered = generation.Chromosomes.OrderByDescending(c => c.Fitness);

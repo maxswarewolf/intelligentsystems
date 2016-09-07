@@ -34,6 +34,7 @@ using GeneticSharp.Domain.Populations;
 using GeneticSharp.Domain.Selections;
 namespace EnergyPrediction
 {
+    [DisplayName("Inverse Elite")]
     public class InverseEliteSelection : SelectionBase
     {
         public InverseEliteSelection() : base(2)

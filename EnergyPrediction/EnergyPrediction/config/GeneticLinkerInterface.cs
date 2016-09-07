@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// Program.cs
+// GeneticLinkerInterface.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -26,20 +26,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Gtk;
+using GeneticSharp.Domain;
+using GeneticSharp.Domain.Terminations;
+using GeneticSharp.Domain.Reinsertions;
 
 namespace EnergyPrediction
 {
-    class MainClass
+    public interface GeneticLinkerInterface
     {
-        public static void Main(string[] args)
-        {
-            var test1 = new EnergyPrediction.GeneticAlgoController(200);
-            test1.Start();
-            Application.Init();
-            var win = new MainWindow();
-            win.Show();
-            Application.Run();
-        }
+        GeneticAlgorithm getConfig();
+
+        ITermination getTermination();
+
+        IReinsertion getReinsertion();
+
+        int getTimeOut();
+
+        float getCrossoverProbility();
+
+        float getMutationProbility();
     }
 }
+

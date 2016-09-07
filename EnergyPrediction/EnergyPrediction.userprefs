@@ -1,14 +1,21 @@
 ﻿<Properties StartupItem="EnergyPrediction/EnergyPrediction.csproj">
-  <MonoDevelop.Ide.Workbench ActiveDocument="../../Projects/DataFiltering/DataFiltering/Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EnergyPrediction/config/GeneticLinker.cs">
     <Files>
-      <File FileName="../../Projects/DataFiltering/DataFiltering/Program.cs" Line="41" Column="4" />
+      <File FileName="EnergyPrediction/Program.cs" Line="41" Column="24" />
+      <File FileName="EnergyPrediction/MainWindow.cs" Line="1" Column="1" />
+      <File FileName="EnergyPrediction/config/UILinkerInterface.cs" Line="34" Column="39" />
+      <File FileName="EnergyPrediction/config/GeneticLinkerInterface.cs" Line="47" Column="38" />
+      <File FileName="EnergyPrediction/config/GeneticLinker.cs" Line="93" Column="10" />
+      <File FileName="EnergyPrediction/Genetic Algorithim/GeneticAlgoController.cs" Line="81" Column="43" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
+    <Watch file="../../Projects/DataFiltering/DataFiltering/Program.cs" line="103" offsetX="487" offsetY="1499" expression="lCompletedFiles" liveUpdate="False" />
+  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
   <AuthorInfo Name="Katie Clark, Sean Grinter, Adrian Pellegrino" Email="Energy Prediction" Copyright="Katie Clark, Sean Grinter, Adrian Pellegrino" Company="Intelligent Systems Project " Trademark="" />
   <MonoDevelop.Ide.ItemProperties.EnergyPrediction PreferredExecutionTarget="MonoDevelop.Default" />
 </Properties>

@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// Program.cs
+// UILinkerInterface.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -26,20 +26,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Gtk;
-
+using System.Collections.Generic;
 namespace EnergyPrediction
 {
-    class MainClass
+    public interface UILinkerInterface
     {
-        public static void Main(string[] args)
-        {
-            var test1 = new EnergyPrediction.GeneticAlgoController(200);
-            test1.Start();
-            Application.Init();
-            var win = new MainWindow();
-            win.Show();
-            Application.Run();
-        }
+        List<string> getAlgorithims();
+        bool setAlgorithm(string aOption);
+
+        List<string> getMutations();
+        bool setMutation(string aOption);
+
+        List<string> getCrossovers();
+        bool seCrossover(string aOption);
+
+        List<string> getFitnessFunctions();
+        bool setFitnessFunctions(string aOption);
+
+        List<string> getSelections();
+        bool setSelection(string aOption);
+
+        List<string> getTerminations();
+        bool setTermination(string aOption);
+
+        List<string> getReinsertions();
+        bool setResertion(string aOption);
+
+        int getPopulationSize();
+        bool setPopulationSize(int aSize);
+
+        int getTimeOut();
+        bool setTimeOut(int aSize);
     }
 }
+
