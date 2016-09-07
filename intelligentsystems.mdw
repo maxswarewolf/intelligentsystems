@@ -1,0 +1,6 @@
+<WorkspaceItem ctype="Workspace">
+  <Items>
+    <Item>EnergyPrediction/EnergyPrediction.sln</Item>
+    <Item>GeneticSharp-master/src/GeneticSharp.sln</Item>
+  </Items>
+</WorkspaceItem>
