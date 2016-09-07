@@ -80,16 +80,22 @@
     <Compile Include="Genetic Algorithim\GeneticAlgoChromosome.cs" />
     <Compile Include="Genetic Algorithim\GeneticAlgoFitness.cs" />
     <Compile Include="Genetic Algorithim\GeneticAlgoController.cs" />
-    <Compile Include="Common Shared\InverseEliteSelection.cs" />
-    <Compile Include="Common Shared\StochasticSelection.cs" />
+    <Compile Include="CommonPrediction\InverseEliteSelection.cs" />
+    <Compile Include="CommonPrediction\StochasticSelection.cs" />
+    <Compile Include="FileIO\CsvFileCommon.cs" />
+    <Compile Include="FileIO\CsvFileReader.cs" />
+    <Compile Include="FileIO\CsvFileWriter.cs" />
+    <Compile Include="FileIO\EmptyLineBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="GeneratorLinkingData.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Genetic Algorithim\" />
     <Folder Include="Genetic Program\" />
-    <Folder Include="Common Shared\" />
+    <Folder Include="CommonPrediction\" />
+    <Folder Include="FileIO\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
