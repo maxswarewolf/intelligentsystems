@@ -12,3 +12,13 @@
 /Users/Adrian/intelligentsystems/EnergyPrediction/EnergyPrediction/bin/Debug/HelperSharp.dll
 /Users/Adrian/intelligentsystems/EnergyPrediction/EnergyPrediction/bin/Debug/NCalc.dll
 /Users/Adrian/intelligentsystems/EnergyPrediction/EnergyPrediction/bin/Debug/GeneticSharp.Infrastructure.Threading.dll
+/Users/katieclark/Documents/WS16IntelligentSystems/EnergyPrediction/EnergyPrediction/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/Users/katieclark/Documents/WS16IntelligentSystems/EnergyPrediction/EnergyPrediction/obj/x86/Debug/EnergyPrediction.gtk-gui.gui.stetic
+/Users/katieclark/Documents/WS16IntelligentSystems/EnergyPrediction/EnergyPrediction/bin/Debug/nunit.framework.dll
+/Users/katieclark/Documents/WS16IntelligentSystems/EnergyPrediction/EnergyPrediction/bin/Debug/SmartThreadPool.dll
+/Users/katieclark/Documents/WS16IntelligentSystems/EnergyPrediction/EnergyPrediction/bin/Debug/GeneticSharp.Domain.dll
+/Users/katieclark/Documents/WS16IntelligentSystems/EnergyPrediction/EnergyPrediction/bin/Debug/GeneticSharp.Extensions.dll
+/Users/katieclark/Documents/WS16IntelligentSystems/EnergyPrediction/EnergyPrediction/bin/Debug/GeneticSharp.Infrastructure.Framework.dll
+/Users/katieclark/Documents/WS16IntelligentSystems/EnergyPrediction/EnergyPrediction/bin/Debug/HelperSharp.dll
+/Users/katieclark/Documents/WS16IntelligentSystems/EnergyPrediction/EnergyPrediction/bin/Debug/NCalc.dll
+/Users/katieclark/Documents/WS16IntelligentSystems/EnergyPrediction/EnergyPrediction/bin/Debug/GeneticSharp.Infrastructure.Threading.dll

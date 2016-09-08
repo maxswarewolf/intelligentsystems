@@ -10,9 +10,7 @@
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
     <Watch file="../../Projects/DataFiltering/DataFiltering/Program.cs" line="103" offsetX="487" offsetY="1499" expression="lCompletedFiles" liveUpdate="False" />
   </MonoDevelop.Ide.DebuggingService.PinnedWatches>

@@ -89,6 +89,10 @@
     <Compile Include="config\UILinkerInterface.cs" />
     <Compile Include="config\GeneticLinkerInterface.cs" />
     <Compile Include="config\GeneticLinker.cs" />
+    <Compile Include="Genetic Program\GeneticProgChromosome.cs" />
+    <Compile Include="Genetic Program\GeneticProgFitness.cs" />
+    <Compile Include="Genetic Program\TreeNode.cs" />
+    <Compile Include="Genetic Program\MathObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
