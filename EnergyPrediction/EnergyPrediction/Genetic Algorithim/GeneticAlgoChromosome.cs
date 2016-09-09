@@ -51,6 +51,11 @@ namespace EnergyPrediction
             }
         }
 
+        internal double getCalculatedY(int x)
+        {
+            return (int)this.GetGene(0).Value * Math.Sin((int)this.GetGene(1).Value * Math.Pow(x, (int)this.GetGene(2).Value)) + (int)this.GetGene(3).Value;
+        }
+
         /// <summary>
         /// Generates a gene with a random integer between -RangePeek and RangePeek.
         /// </summary>

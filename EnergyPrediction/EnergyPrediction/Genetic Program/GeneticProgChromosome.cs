@@ -121,7 +121,7 @@ namespace EnergyPrediction
 
             double result = doRecursiveCalc(root, x); 
 
-            throw new NotImplementedException();
+            return result
         }
 
         double doRecursiveCalc(TreeNode<MathObject> currentRoot, int x)
