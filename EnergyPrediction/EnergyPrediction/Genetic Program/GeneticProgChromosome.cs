@@ -52,35 +52,37 @@ namespace EnergyPrediction
         public GeneticProgChromosome(int aResultPeek) : base(0)
         {
             int depth = 3; //wanted depth in initial tree
-            int valueRange = gRangePeek; 
-            int currentDepth = 1; 
-           
+            int valueRange = gRangePeek;
+            int currentDepth = 1;
+
             root = new TreeNode<MathObject>(createRandomMathObject(true)); //  data is randomly chosen at initiallization 
 
             List<TreeNode<MathObject>> parentList = new List<TreeNode<MathObject>>();
             parentList.Add(root);
 
             //initial construction of tree
-            while (currentDepth < depth){
+            while (currentDepth < depth)
+            {
                 // add math operation (attention: can also be number - exception handling?!)  
                 foreach (TreeNode<MathObject> pL in parentList)
-                {  
+                {
                     TreeNode<MathObject> nodeLeft = pL.AddChild(new MathObject());
 
                     TreeNode<MathObject> nodeRight = pL.AddChild(new MathObject());
-                    if (! nodeLeft.Data.getMathObjectType().equals( new MathNumber(0)) ) 
+                    if (!nodeLeft.Data.getMathObjectType().equals(new MathNumber(0)))
                     {
                         parentList.Add(nodeLeft);
-                    }   
-                    if (! nodeRight.Data.getMathObjectType().equals(new MathNumber(0))) 
+                    }
+                    if (!nodeRight.Data.getMathObjectType().equals(new MathNumber(0)))
                     {
                         parentList.Add(nodeRight);
                     }
                 }
             }// last layer: add number instead of math op for leafs
             foreach (TreeNode<MathObject> pL in parentList)
-            {TreeNode<MathObject> nodeLeft = pL.AddChild(new MathNumber(valueRange));
-             TreeNode<MathObject> nodeRight = pL.AddChild(new MathNumber(valueRange));
+            {
+                TreeNode<MathObject> nodeLeft = pL.AddChild(new MathNumber(valueRange));
+                TreeNode<MathObject> nodeRight = pL.AddChild(new MathNumber(valueRange));
             }
 
         }
@@ -97,19 +99,19 @@ namespace EnergyPrediction
             Random R = new Random();
             int rand = R.Next(0, MathObject.totalNrMathObjects);
             while (mustBranch && rand < MathObject.unbranchableNrMathObjects)
-            { 
+            {
                 rand = R.Next(MathObject.unbranchableNrMathObjects, MathObject.totalNrMathObjects);
             }
             switch (rand)
             {
                 case 0:
-                    return new MathX(); 
+                    return new MathX();
                 case 1:
                     return new MathNumber(gRangePeek);
                 case 2:
                     return new MathOpAdd();
                 default:
-                    return new MathOpMult(); 
+                    return new MathOpMult();
             }
 
         }
@@ -139,7 +141,7 @@ namespace EnergyPrediction
                     return result;
                 }
                 else {  // child 2 not of type MathNumber
-                    return   currentRoot.Data.doCalc(child1.Data.getNumberValue(), doRecursiveCalc(child2, x), x);
+                    return currentRoot.Data.doCalc(child1.Data.getNumberValue(), doRecursiveCalc(child2, x), x);
                 }
             }
             else { // child 1 not MathNumber 
@@ -154,7 +156,7 @@ namespace EnergyPrediction
 
         }
 
-       
+
 
         /// <summary>
         /// Creates a new Chromosome.

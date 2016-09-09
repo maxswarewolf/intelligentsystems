@@ -37,14 +37,14 @@ namespace EnergyPrediction
 
     public class GeneticProgFitness : IFitness
     {
-      
+
 
 
         /// <summary>
         /// Gives the sum of the difference between Expected and Calaulated results Squared
         /// </summary>
         /// <param name="aChromosome">A chromosome.</param>
-       public double Evaluate(IChromosome aChromosome)
+        public double Evaluate(IChromosome aChromosome)
         {
             //Error of the Difference Squared
             var lChromosome = aChromosome as GeneticProgChromosome;
@@ -57,17 +57,18 @@ namespace EnergyPrediction
             for (int x = -100; x < 100; x++) // todo: make x range abstrakt! put in config file
             {
                 // generic function instead of fixed such as A * Sin(Bx^C) + D
-                lCalculatedY = lChromosome.getCalculatedY( x);
-                lActualY = getActualY(x); 
-                lErrorSum += Math.Pow(lActualY - lCalculatedY, 2);
+                lCalculatedY = lChromosome.getCalculatedY(x);
+                lActualY = getActualY(x);
+                lErrorSum += FitnessBase.EvaluateErrorSquared(lCalculatedY, lActualY);
             }
             return (-1 * lErrorSum);
         }
 
+        //consider a static data class
         double getActualY(int x) // todo: move to abstract place!
         {
             return Math.Sin(2 * x);
         }
-   }
+    }
 }
 

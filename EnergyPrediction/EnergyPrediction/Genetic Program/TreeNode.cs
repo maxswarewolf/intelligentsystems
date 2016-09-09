@@ -30,34 +30,46 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace EnergyPrediction
-
-{public class TreeNode<T> : IEnumerable<TreeNode<T>>
+{
+    public class TreeNode<T>
     { // source: http://stackoverflow.com/questions/66893/tree-data-structure-in-c-sharp (scroll down!) 
         internal double getChild2;
 
         public T Data { get; set; }
         public TreeNode<T> Parent { get; set; }
-        public ICollection<TreeNode<T>> Children { get; set; }
+        public TreeNode<T> ChildOne { get; set; }
+        public TreeNode<T> ChildTwo { get; set; }
+        //public ICollection<TreeNode<T>> Children { get; set; }
 
         public TreeNode(T data)
         {
             this.Data = data;
-            this.Children = new LinkedList<TreeNode<T>>();
+            //this.Children = new LinkedList<TreeNode<T>>();
         }
-
-
         public TreeNode<T> AddChild(T child)
         {
-            if (Children.Count < 2)
+            if (ChildOne == null)
             {
-                TreeNode<T> childNode = new TreeNode<T>(child) { Parent = this };
-                this.Children.Add(childNode);
-                return childNode;
+                return ChildOne = new TreeNode<T>(child);
             }
-            else throw new Exception("This should be used as a binary tree- cannot have more than 2 children");
+            else if (ChildTwo == null)
+            {
+                return ChildTwo = new TreeNode<T>(child);
+            }
+            else
+                throw new Exception("This should be used as a binary tree- cannot have more than 2 children");
         }
 
-
+        //public TreeNode<T> AddChild(T child)
+        //{
+        //    if (Children.Count < 2)
+        //    {
+        //        TreeNode<T> childNode = new TreeNode<T>(child) { Parent = this };
+        //        this.Children.Add(childNode);
+        //        return childNode;
+        //    }
+        //    else throw new Exception("This should be used as a binary tree- cannot have more than 2 children");
+        //}
         // other features ...
     }
 

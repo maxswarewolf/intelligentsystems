@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// GeneticAlgoFitness.cs
+// FitnessBase.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -26,30 +26,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using GeneticSharp.Domain.Chromosomes;
-using GeneticSharp.Domain.Fitnesses;
-using EnergyPrediction;
-
 namespace EnergyPrediction
 {
-    public class GeneticAlgoFitness : IFitness
+    public static class FitnessBase
     {
-        /// <summary>
-        /// Gives the sum of the difference between Expected and Calaulated results Squared
-        /// </summary>
-        /// <param name="aChromosome">A chromosome.</param>
-        public double Evaluate(IChromosome aChromosome)
+        public static double EvaluateErrorSquared(double aCalY, double aActY)
         {
-            //Error of the Difference Squared
-            var lChromosome = aChromosome as GeneticAlgoChromosome;
-
-            double lErrorSum = 0.0;
-            for (int x = -100; x < 100; x++)
-            {
-                lErrorSum += FitnessBase.EvaluateErrorSquared(lChromosome.getCalculatedY(x), DataIO.getActualY(x));
-            }
-            return (-1 * lErrorSum);
+            return Math.Pow(aActY - aCalY, 2);
         }
+
+        //ADD MORE FITNESS FUNCTIONS AS NEEDED
     }
 }
 

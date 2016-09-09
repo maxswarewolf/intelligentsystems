@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// FitnessBase.cs
+// DataIO.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -28,14 +28,16 @@
 using System;
 namespace EnergyPrediction
 {
-    public static class FitnessBase
+    public static class DataIO
     {
-        public static double EvaluateErrorSum(double aCalY, double aActY)
+
+        public static double getActualY(int x)
         {
-            return Math.Pow(aActY - aCalY, 2);
+            return Math.Sin(2 * x);
         }
 
-
+        //todo: Add File IO
+        //todo: Add Internal Storage
     }
 }
 

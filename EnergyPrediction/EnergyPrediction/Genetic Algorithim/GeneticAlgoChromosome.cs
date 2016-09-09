@@ -51,7 +51,7 @@ namespace EnergyPrediction
             }
         }
 
-        internal double getCalculatedY(int x)
+        public double getCalculatedY(int x)
         {
             return (int)this.GetGene(0).Value * Math.Sin((int)this.GetGene(1).Value * Math.Pow(x, (int)this.GetGene(2).Value)) + (int)this.GetGene(3).Value;
         }

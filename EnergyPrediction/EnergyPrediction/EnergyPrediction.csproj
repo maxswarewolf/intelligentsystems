@@ -80,20 +80,20 @@
     <Compile Include="Genetic Algorithim\GeneticAlgoChromosome.cs" />
     <Compile Include="Genetic Algorithim\GeneticAlgoFitness.cs" />
     <Compile Include="Genetic Algorithim\GeneticAlgoController.cs" />
-    <Compile Include="CommonPrediction\InverseEliteSelection.cs" />
-    <Compile Include="CommonPrediction\StochasticSelection.cs" />
+    <Compile Include="Genetic Shared\InverseEliteSelection.cs" />
+    <Compile Include="Genetic Shared\StochasticSelection.cs" />
     <Compile Include="FileIO\CsvFileCommon.cs" />
     <Compile Include="FileIO\CsvFileReader.cs" />
     <Compile Include="FileIO\CsvFileWriter.cs" />
     <Compile Include="FileIO\EmptyLineBehavior.cs" />
     <Compile Include="config\Config.cs" />
-    <Compile Include="CommonPrediction\FitnessBase.cs" />
-    <Compile Include="Genetic Program\GeneticAlgoController.cs" />
+    <Compile Include="Genetic Shared\FitnessBase.cs" />
     <Compile Include="Genetic Program\GeneticProgChromosome.cs" />
     <Compile Include="Genetic Program\GeneticProgController.cs" />
     <Compile Include="Genetic Program\GeneticProgFitness.cs" />
     <Compile Include="Genetic Program\MathObject.cs" />
     <Compile Include="Genetic Program\TreeNode.cs" />
+    <Compile Include="FileIO\DataIO.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -102,7 +102,7 @@
   <ItemGroup>
     <Folder Include="Genetic Algorithim\" />
     <Folder Include="Genetic Program\" />
-    <Folder Include="CommonPrediction\" />
+    <Folder Include="Genetic Shared\" />
     <Folder Include="FileIO\" />
     <Folder Include="config\" />
     <Folder Include="Testing\" />
