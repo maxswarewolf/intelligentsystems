@@ -91,9 +91,12 @@
     <Compile Include="Genetic Program\GeneticProgChromosome.cs" />
     <Compile Include="Genetic Program\GeneticProgController.cs" />
     <Compile Include="Genetic Program\GeneticProgFitness.cs" />
-    <Compile Include="Genetic Program\MathObject.cs" />
     <Compile Include="Genetic Program\TreeNode.cs" />
     <Compile Include="FileIO\DataIO.cs" />
+    <Compile Include="Genetic Program\Tree Math\MathObject.cs" />
+    <Compile Include="Genetic Program\Tree Math\MathNumber.cs" />
+    <Compile Include="Genetic Program\Tree Math\MathSymbol.cs" />
+    <Compile Include="Genetic Program\Tree Math\SymbolTypes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -106,6 +109,7 @@
     <Folder Include="FileIO\" />
     <Folder Include="config\" />
     <Folder Include="Testing\" />
+    <Folder Include="Genetic Program\Tree Math\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// EmptyStruct.cs
+// SymbolTypes.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -26,26 +26,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Collections;
-using System.Collections.Generic;
-
 namespace EnergyPrediction
 {
-    public class TreeNode<T>
-    { // source: http://stackoverflow.com/questions/66893/tree-data-structure-in-c-sharp (scroll down!) 
-
-        public T Data { get; set; }
-        public TreeNode<T> Parent { get; set; }
-        public TreeNode<T> ChildRight { get; set; }
-        public TreeNode<T> ChildLeft { get; set; }
-
-        public TreeNode(T data)
-        {
-            this.Data = data;
-        }
-
-        // other features ...
+    public enum SymbolTypes
+    {
+        Add, Multiply, Devide, Sin, Cos, Sinh, Cosh, Log, Exp, Pow, Sqrt
     }
-
 }
 

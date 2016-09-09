@@ -31,9 +31,10 @@ using GeneticSharp.Domain.Randomizations;
 
 namespace EnergyPrediction
 {
-    
+
     public class MathObject
     {
+        public static Random Rand = new Random();
         public static int totalNrMathObjects { get; private set; } = 3;
         public static int unbranchableNrMathObjects { get; private set; } = 2; // mathX= case0, mathNr = case1
         MathObject type;
@@ -71,56 +72,6 @@ namespace EnergyPrediction
             return 0;  // should not be reached
         }
 
-   }
-
-    //case 0
-    public class MathX : MathObject
-    { 
-        public override double doCalc(double leftVal, double rightVal, int x)
-        {// leftVal and rightVal will be null!
-            return x; 
-        }
     }
-
-    //case 1
-    public class MathNumber : MathObject {
-        double value;
-
-        public MathNumber(int gRangePeek)
-        {
-            value = RandomizationProvider.Current.GetInt(gRangePeek * -1, gRangePeek + 1);
-        }
-        public override double getNumberValue()
-        { return value; 
-        }
-
-    }
-
-    /// <summary>
-    /// CASE 2
-    /// Implements Math operation add (addition) 
-    /// result = a + b
-    /// </summary>
-    public class MathOpAdd : MathObject 
-    {
-        public override double doCalc(double leftVal, double rightVal, int x)
-        {
-            return (leftVal)+ rightVal;
-        }
-    }
-
-    /// <summary>
-    /// CASE 3
-    /// Implements Math operation sub (subtraction) #### change, not needed 
-    /// result = a * b 
-    /// </summary>
-    public class MathOpMult : MathObject
-    {
-        public override double doCalc(double leftVal, double rightVal, int x)
-        {
-            return (leftVal) * rightVal; 
-        }
-    }
-
     // todo: every new math object implementation must be included in the switch statement in the chromosone creation
-   }
+}

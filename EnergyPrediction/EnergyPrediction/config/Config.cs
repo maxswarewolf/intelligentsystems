@@ -42,8 +42,14 @@ namespace EnergyPrediction
             CrossoversAlgo = new List<string>() { "Uniform", "One Point", "Two Point", "Three Parent" };
             CrossoversProg = new List<string>() { "PLACE HOLDER" };
 
-            Fitness = new List<string>() { "Error Sum", "Stochastic" };
+            Fitness = new List<string>() { "Error Sum" };
 
+            MutationAlgo = new List<string>() { "Uniform", "Twors", "Reverse Sequence" };
+            MutationProg = new List<string>() { "Uniform", "Branch", "Reverse Sequence" };
+
+            Selection = new List<string>() { "Elite", "Stochastic", "Inverse Elite" };
+
+            Reinsertion = new List<string>() { "PLACE HOLDER" };
         }
 
         #region DefaultFields
@@ -54,25 +60,19 @@ namespace EnergyPrediction
         public List<string> MutationAlgo { get; private set; }
         public List<string> MutationProg { get; private set; }
         public List<string> Selection { get; private set; }
-        public List<string> Termintion { get; private set; }
         public List<string> Reinsertion { get; private set; }
+
+        public int TerminationTimeMinutes { get; set; }
+        public int TerminationGenerationThreshold { get; set; }
+        public double TerminationFitnessThreshold { get; set; }
+        public double CrossoverProbility { get; set; }
+        public double MutationProbility { get; set; }
+        public int Population { get; set; }
         #endregion
 
-        string fCurrentAlgoOption;
+
 
         public GeneticAlgorithm getConfig()
-        {
-            throw new NotImplementedException();
-        }
-        public float getCrossoverProbility()
-        {
-            throw new NotImplementedException();
-        }
-        public float getMutationProbility()
-        {
-            throw new NotImplementedException();
-        }
-        public int getPopulationSize()
         {
             throw new NotImplementedException();
         }
@@ -81,10 +81,6 @@ namespace EnergyPrediction
             throw new NotImplementedException();
         }
         public ITermination getTermination()
-        {
-            throw new NotImplementedException();
-        }
-        public int getTimeOut()
         {
             throw new NotImplementedException();
         }
@@ -98,15 +94,11 @@ namespace EnergyPrediction
         {
             throw new NotImplementedException();
         }
-        public bool setFitnessFunctions(string aOption)
+        public bool setFitnessFunction(string aOption)
         {
             throw new NotImplementedException();
         }
         public bool setMutation(string aOption)
-        {
-            throw new NotImplementedException();
-        }
-        public bool setPopulationSize(int aSize)
         {
             throw new NotImplementedException();
         }
@@ -115,14 +107,6 @@ namespace EnergyPrediction
             throw new NotImplementedException();
         }
         public bool setSelection(string aOption)
-        {
-            throw new NotImplementedException();
-        }
-        public bool setTermination(string aOption)
-        {
-            throw new NotImplementedException();
-        }
-        public bool setTimeOut(int aSize)
         {
             throw new NotImplementedException();
         }

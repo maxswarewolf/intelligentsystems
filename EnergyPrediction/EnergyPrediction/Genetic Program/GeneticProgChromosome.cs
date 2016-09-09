@@ -64,25 +64,25 @@ namespace EnergyPrediction
             while (currentDepth < depth)
             {
                 // add math operation (attention: can also be number - exception handling?!)  
-                foreach (TreeNode<MathObject> pL in parentList)
+                foreach (TreeNode<MathObject> currentNode in parentList)
                 {
-                    TreeNode<MathObject> nodeLeft = pL.AddChild(new MathObject());
+                    currentNode.ChildRight = new TreeNode<MathObject>(new MathObject()); //Right Child
+                    currentNode.ChildLeft = new TreeNode<MathObject>(new MathObject()); //Left Child
 
-                    TreeNode<MathObject> nodeRight = pL.AddChild(new MathObject());
-                    if (!nodeLeft.Data.getMathObjectType().equals(new MathNumber(0)))
+                    if (!currentNode.ChildLeft.Data.GetType().Equals(new MathNumber(0)))
                     {
-                        parentList.Add(nodeLeft);
+                        parentList.Add(currentNode.ChildLeft);
                     }
-                    if (!nodeRight.Data.getMathObjectType().equals(new MathNumber(0)))
+                    if (!currentNode.ChildRight.Data.GetType().Equals(new MathNumber(0)))
                     {
-                        parentList.Add(nodeRight);
+                        parentList.Add(currentNode.ChildRight);
                     }
                 }
             }// last layer: add number instead of math op for leafs
-            foreach (TreeNode<MathObject> pL in parentList)
+            foreach (TreeNode<MathObject> currentNode in parentList)
             {
-                TreeNode<MathObject> nodeLeft = pL.AddChild(new MathNumber(valueRange));
-                TreeNode<MathObject> nodeRight = pL.AddChild(new MathNumber(valueRange));
+                currentNode.ChildRight = new TreeNode<MathObject>(new MathNumber(valueRange));
+                currentNode.ChildLeft = new TreeNode<MathObject>(new MathNumber(valueRange));
             }
 
         }
@@ -100,7 +100,7 @@ namespace EnergyPrediction
             int rand = R.Next(0, MathObject.totalNrMathObjects);
             while (mustBranch && rand < MathObject.unbranchableNrMathObjects)
             {
-                rand = R.Next(MathObject.unbranchableNrMathObjects, MathObject.totalNrMathObjects);
+                rand = MathObject.Rand.Next(MathObject.unbranchableNrMathObjects, MathObject.totalNrMathObjects);
             }
             switch (rand)
             {
