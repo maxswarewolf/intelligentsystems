@@ -37,6 +37,15 @@ namespace EnergyPrediction
             Value = (Rand.NextDouble() * gRangePeek * 2) - gRangePeek;
             isX = Equals(Value, 0);
         }
+        /// <summary>
+        /// Will return the value of the number, but this should not be used.
+        /// Call object.Value instead
+        /// </summary>
+        /// <returns>Value.</returns>
+        public override double doCalculation(double aLeftValue, double aRightValue, int x)
+        {
+            return Value;
+        }
     }
 }
 

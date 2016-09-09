@@ -55,7 +55,7 @@ namespace EnergyPrediction
             int valueRange = gRangePeek;
             int currentDepth = 1;
 
-            root = new TreeNode<MathObject>(createRandomMathObject(true)); //  data is randomly chosen at initiallization 
+            root = new TreeNode<MathObject>(new MathSymbol(), 0); //  data is randomly chosen at initiallization 
 
             List<TreeNode<MathObject>> parentList = new List<TreeNode<MathObject>>();
             parentList.Add(root);
@@ -95,24 +95,32 @@ namespace EnergyPrediction
         /// <param name="mustBranch">If set to <c>true</c> must branch.</param>
         MathObject createRandomMathObject(Boolean mustBranch)
         {
-            Contract.Ensures(Contract.Result<MathObject>() != null);
-            Random R = new Random();
-            int rand = R.Next(0, MathObject.totalNrMathObjects);
-            while (mustBranch && rand < MathObject.unbranchableNrMathObjects)
+            if (mustBranch)
             {
-                rand = MathObject.Rand.Next(MathObject.unbranchableNrMathObjects, MathObject.totalNrMathObjects);
+                return new MathSymbol();
             }
-            switch (rand)
-            {
-                case 0:
-                    return new MathX();
-                case 1:
-                    return new MathNumber(gRangePeek);
-                case 2:
-                    return new MathOpAdd();
-                default:
-                    return new MathOpMult();
+            else {
+                return new MathNumber(gRangePeek);
             }
+
+            //Contract.Ensures(Contract.Result<MathObject>() != null);
+            //Random R = new Random();
+            //int rand = R.Next(0, MathObject.totalNrMathObjects);
+            //while (mustBranch && rand < MathObject.unbranchableNrMathObjects)
+            //{
+            //    rand = MathObject.Rand.Next(MathObject.unbranchableNrMathObjects, MathObject.totalNrMathObjects);
+            //}
+            //switch (rand)
+            //{
+            //    case 0:
+            //        return new MathX();
+            //    case 1:
+            //        return new MathNumber(gRangePeek);
+            //    case 2:
+            //        return new MathOpAdd();
+            //    default:
+            //        return new MathOpMult();
+            //}
 
         }
 
@@ -121,40 +129,38 @@ namespace EnergyPrediction
             // recursive calculation of tree value for given x
             TreeNode<MathObject> resultTree = root; // todo: DOUBLE AND TRIPLE CHECK THAT THIS IS A COPY; OTHERWISE IMPLEMENTE A COPY FUNCTION
 
-            double result = doRecursiveCalc(root, x);
+            double result = root.doCalculation(x);
             // TODO test!
             return result;
         }
 
-        double doRecursiveCalc(TreeNode<MathObject> currentRoot, int x)
-        {            //  LinkedList<TreeNode<MathObject>> list = (System.Collections.Generic.LinkedList<EnergyPrediction.TreeNode<EnergyPrediction.MathObject>>)root.Children;
-            LinkedList<TreeNode<MathObject>> children = (System.Collections.Generic.LinkedList<EnergyPrediction.TreeNode<EnergyPrediction.MathObject>>)currentRoot.Children; ;
-            TreeNode<MathObject> child1 = children.First.Value;
-            TreeNode<MathObject> child2 = children.Last.Value;
+        //double doRecursiveCalc(TreeNode<MathObject> currentRoot, int x)
+        //{            //  LinkedList<TreeNode<MathObject>> list = (System.Collections.Generic.LinkedList<EnergyPrediction.TreeNode<EnergyPrediction.MathObject>>)root.Children;
+        //    LinkedList<TreeNode<MathObject>> children = (System.Collections.Generic.LinkedList<EnergyPrediction.TreeNode<EnergyPrediction.MathObject>>)currentRoot.Children; ;
+        //    TreeNode<MathObject> child1 = children.First.Value;
+        //    TreeNode<MathObject> child2 = children.Last.Value;
 
-            // end of recursion reached when booth children are of type MathNumer
-            if (child1.Data.getMathObjectType().equals(new MathNumber(0)))
-            {
-                if (child2.Data.getMathObjectType().equals(new MathNumber(0)))
-                {// END of recursion 
-                    double result = currentRoot.Data.doCalc(child1.Data.getNumberValue(), child2.Data.getNumberValue(), x);
-                    return result;
-                }
-                else {  // child 2 not of type MathNumber
-                    return currentRoot.Data.doCalc(child1.Data.getNumberValue(), doRecursiveCalc(child2, x), x);
-                }
-            }
-            else { // child 1 not MathNumber 
-                if (child2.Data.getMathObjectType().equals(new MathNumber(0)))
-                {
-                    return currentRoot.Data.doCalc(doRecursiveCalc(child1, x), child2.Data.getNumberValue(), x);
-                }
-                else {
-                    return currentRoot.Data.doCalc(doRecursiveCalc(child1, x), doRecursiveCalc(child2, x), x);
-                }
-            }
+        //    // end of recursion reached when booth children are of type MathNumer
+        //    if (child1.Data.getMathObjectType().equals(new MathNumber(0)))
+        //    {
+        //        if (child2.Data.getMathObjectType().equals(new MathNumber(0)))
+        //        {// END of recursion 
+        //            double result = currentRoot.Data.doCalc(child1.Data.getNumberValue(), child2.Data.getNumberValue(), x);
+        //            return result;
+        //        }
+        //        else {  // child 2 not of type MathNumber
+        //            return currentRoot.Data.doCalc(child1.Data.getNumberValue(), doRecursiveCalc(child2, x), x);
+        //        }
+        //    }
+        //    else { // child 1 not MathNumber 
+        //        if (child2.Data.getMathObjectType().equals(new MathNumber(0)))
+        //        {
+        //            return currentRoot.Data.doCalc(doRecursiveCalc(child1, x), child2.Data.getNumberValue(), x);
+        //        }
+        //        else {
+        //            return currentRoot.Data.doCalc(doRecursiveCalc(child1, x), doRecursiveCalc(child2, x), x);
+        //        }
 
-        }
 
 
 
@@ -171,10 +177,5 @@ namespace EnergyPrediction
         {
             throw new NotImplementedException(); // not needed here - alternatively one may have to break the tree down into an array-ish structure
         }
-
-
     }
-
-
 }
-

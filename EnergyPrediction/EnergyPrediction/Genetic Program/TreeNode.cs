@@ -35,13 +35,32 @@ namespace EnergyPrediction
     { // source: http://stackoverflow.com/questions/66893/tree-data-structure-in-c-sharp (scroll down!) 
 
         public T Data { get; set; }
+        public int Depth { get; private set; }
         public TreeNode<T> Parent { get; set; }
         public TreeNode<T> ChildRight { get; set; }
         public TreeNode<T> ChildLeft { get; set; }
 
-        public TreeNode(T data)
+        public TreeNode(T data, int depth)
         {
             this.Data = data;
+            this.Depth = depth;
+        }
+
+        public double doCalculation(int x)
+        {
+            if (Data.GetType().Equals(typeof(MathNumber)))
+            {
+                MathNumber temp = Data as MathNumber;
+                if (temp.isX)
+                    return x;
+                else
+                    return temp.Value;
+            }
+            else
+            {
+                MathSymbol temp = Data as MathSymbol;
+                return temp.doCalculation(ChildLeft.doCalculation(x), ChildRight.doCalculation(x), x);
+            }
         }
 
         // other features ...

@@ -35,43 +35,37 @@ namespace EnergyPrediction
     public class MathObject
     {
         public static Random Rand = new Random();
-        public static int totalNrMathObjects { get; private set; } = 3;
-        public static int unbranchableNrMathObjects { get; private set; } = 2; // mathX= case0, mathNr = case1
-        MathObject type;
-        double value;
+        //public static int totalNrMathObjects { get; private set; } = 3;
+        //public static int unbranchableNrMathObjects { get; private set; } = 2; // mathX= case0, mathNr = case1
+        //MathObject type;
+        //double value;
 
-        public MathObject()
+        public virtual double doCalculation(double aLeftValue, double aRightValue, int x)
         {
-            type = getRandomOperandType();
+            throw new System.NotImplementedException();
         }
 
-        public MathObject getMathObjectType()
-        {
-            return type;
-        }
+        //public MathObject getMathObjectType()
+        //{
+        //    return type;
+        //}
 
-        public virtual double getNumberValue() // todo: does override work correctly? 
-        {
-            throw new Exception("Object is not a MathObject");
-        }
+        //public virtual double getNumberValue() // todo: does override work correctly? 
+        //{
+        //    throw new Exception("Object is not a MathObject");
+        //}
 
-        public Boolean equals(MathObject m)
-        {
-            if (type == m) return true;
-            else return false;
-        }
+        //public Boolean equals(MathObject m)
+        //{
+        //    if (type == m) return true;
+        //    else return false;
+        //}
 
-        MathObject getRandomOperandType()
-        {
-            //todo: get some sort of collection of implemented operand, select one at random
-            throw new NotImplementedException();
-        }
-
-        public virtual double doCalc(double leftVal, double rightVal, int x)
-        {
-            return 0;  // should not be reached
-        }
-
+        //MathObject getRandomOperandType()
+        //{
+        //    //todo: get some sort of collection of implemented operand, select one at random
+        //    throw new NotImplementedException();
+        //}
     }
     // todo: every new math object implementation must be included in the switch statement in the chromosone creation
 }
