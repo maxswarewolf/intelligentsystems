@@ -33,89 +33,32 @@ using GeneticSharp.Domain.Terminations;
 
 namespace EnergyPrediction
 {
-    public class GeneticLinker : GeneticLinkerInterface, UILinkerInterface
+    public class Config
     {
-        #region Fields
-        IDictionary<string, string> gAlgorithimOptions = new Dictionary<string, string>() {
-            {"Genetic Algorithm", "A"},
-            {"Genetic Program", "P"}
-        };
+        public Config()
+        {
+            SolutionOptions = new List<string>() { "Genetic Algorithm", "Genetic Programming" };
 
-        IDictionary<string, string> gCrossoverOptions = new Dictionary<string, string>() {
-            {"UNI-A", "Uniform"},
-            {"ONE-A", "One Point"},
-            {"TWO-A", "Two Point"},
-            {"PAR-A", "Three Parent"},
-            {"SWP-P", "Branch Swap - Place Holder"},
-            {"SWR-P", "Branch Swap and Rotate - Place Holder"},
-            {"UNI-P", "Uniform - Place Holder"}
-        };
+            CrossoversAlgo = new List<string>() { "Uniform", "One Point", "Two Point", "Three Parent" };
+            CrossoversProg = new List<string>() { "PLACE HOLDER" };
 
-        IDictionary<string, string> gFitnessOptions = new Dictionary<string, string>(){
-            {"ESUM-A","Error Sum"},
-            {"ESUM-P","Error Sum"}
-        };
+            Fitness = new List<string>() { "Error Sum", "Stochastic" };
 
-        IDictionary<string, string> gMutationOptions = new Dictionary<string, string>(){
-            {"UNI-A", "Uniform"},
-            {"UNI-P", "Uniform"},
-            {"WOR-A", "Twors"},
-            {"BRA-P", "Branch"},
-            {"RSM-A", "Reverse Sequence Mutation"},
-            {"RSM-P", "Reverse Sequence Mutation"}
-        };
+        }
 
-        IDictionary<string, string> gSelectionOptions = new Dictionary<string, string>() {
-            {"ELITE", "Elite"},
-            {"STOCH", "Stochastic Uniform Sampling"},
-            {"I-ELE", "Inverse Elite"},
-            {"TOURM", "Tournament"}
-        };
-
-        IDictionary<string, string> gTerminationOptions = new Dictionary<string, string>() {
-            {"T-MIN", "Time in Minutes"},
-            {"N-GEN", "Generation Number"},
-            {"T-FIT", "Fitness Threshold"},
-            {"OR-TE", "OR Termination"}
-        };
-
-        IDictionary<string, string> gReinsertionOptions = new Dictionary<string, string>(){
-            {"ELITE","Elite"},
-            {"FITNE","Fitness Based"},
-            {"IPURE","Pure"},
-            {"UNIFO","Uniform"}
-        };
+        #region DefaultFields
+        public List<string> SolutionOptions { get; private set; }
+        public List<string> CrossoversAlgo { get; private set; }
+        public List<string> CrossoversProg { get; private set; }
+        public List<string> Fitness { get; private set; }
+        public List<string> MutationAlgo { get; private set; }
+        public List<string> MutationProg { get; private set; }
+        public List<string> Selection { get; private set; }
+        public List<string> Termintion { get; private set; }
+        public List<string> Reinsertion { get; private set; }
         #endregion
 
-        public List<string> getAlgorithims()
-        {
-            throw new NotImplementedException();
-        }
-        public List<string> getCrossovers()
-        {
-            throw new NotImplementedException();
-        }
-        public List<string> getFitnessFunctions()
-        {
-            throw new NotImplementedException();
-        }
-        public List<string> getMutations()
-        {
-            throw new NotImplementedException();
-        }
-        public List<string> getSelections()
-        {
-            throw new NotImplementedException();
-        }
-        public List<string> getTerminations()
-        {
-            throw new NotImplementedException();
-        }
-        public List<string> getReinsertions()
-        {
-            throw new NotImplementedException();
-        }
-
+        string fCurrentAlgoOption;
 
         public GeneticAlgorithm getConfig()
         {
@@ -146,48 +89,39 @@ namespace EnergyPrediction
             throw new NotImplementedException();
         }
 
-
         #region SetFunctions
-        public bool seCrossover(string aOption)
+        public bool setCrossover(string aOption)
         {
             throw new NotImplementedException();
         }
-
         public bool setAlgorithm(string aOption)
         {
             throw new NotImplementedException();
         }
-
         public bool setFitnessFunctions(string aOption)
         {
             throw new NotImplementedException();
         }
-
         public bool setMutation(string aOption)
         {
             throw new NotImplementedException();
         }
-
         public bool setPopulationSize(int aSize)
         {
             throw new NotImplementedException();
         }
-
         public bool setResertion(string aOption)
         {
             throw new NotImplementedException();
         }
-
         public bool setSelection(string aOption)
         {
             throw new NotImplementedException();
         }
-
         public bool setTermination(string aOption)
         {
             throw new NotImplementedException();
         }
-
         public bool setTimeOut(int aSize)
         {
             throw new NotImplementedException();

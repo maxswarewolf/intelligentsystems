@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// GeneticLinkerInterface.cs
+// LinkerTesting.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -26,25 +26,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using GeneticSharp.Domain;
-using GeneticSharp.Domain.Terminations;
-using GeneticSharp.Domain.Reinsertions;
+using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace EnergyPrediction
 {
-    public interface GeneticLinkerInterface
+    [TestFixture]
+    public class LinkerTesting
     {
-        GeneticAlgorithm getConfig();
-
-        ITermination getTermination();
-
-        IReinsertion getReinsertion();
-
-        int getTimeOut();
-
-        float getCrossoverProbility();
-
-        float getMutationProbility();
+        [Test]
+        public void getAlgorithmsTest()
+        {
+            Assert.Equals(test.Count, 2);
+            Assert.Equals(test[0], "Genetic Algorithm");
+            Assert.Equals();
+        }
     }
 }
 

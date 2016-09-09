@@ -86,14 +86,12 @@
     <Compile Include="FileIO\CsvFileReader.cs" />
     <Compile Include="FileIO\CsvFileWriter.cs" />
     <Compile Include="FileIO\EmptyLineBehavior.cs" />
-    <Compile Include="config\UILinkerInterface.cs" />
-    <Compile Include="config\GeneticLinkerInterface.cs" />
-    <Compile Include="config\GeneticLinker.cs" />
+    <Compile Include="config\Config.cs" />
+    <Compile Include="CommonPrediction\FitnessBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="config\GeneratorLinkingData.txt" />
-    <None Include="config\GeneticAlgorithm.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Genetic Algorithim\" />
@@ -101,6 +99,7 @@
     <Folder Include="CommonPrediction\" />
     <Folder Include="FileIO\" />
     <Folder Include="config\" />
+    <Folder Include="Testing\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
