@@ -32,30 +32,42 @@ using EnergyPrediction;
 
 namespace EnergyPrediction
 {
-    public class GeneticAlgoFitness : IFitness
+    // todo:  what has to be on which abstraction level ??????
+
+
+    public class GeneticProgFitness : IFitness
     {
+      
+
+
         /// <summary>
         /// Gives the sum of the difference between Expected and Calaulated results Squared
         /// </summary>
         /// <param name="aChromosome">A chromosome.</param>
-        public double Evaluate(IChromosome aChromosome)
+       public double Evaluate(IChromosome aChromosome)
         {
             //Error of the Difference Squared
-            var lChromosome = aChromosome as GeneticAlgoChromosome;
+            var lChromosome = aChromosome as GeneticProgChromosome;
 
+            //initial values
             double lErrorSum = 0.0;
             double lCalculatedY = 0.0;
             double lActualY = 0.0;
-            for (int x = -100; x < 100; x++)
+
+            for (int x = -100; x < 100; x++) // todo: make x range abstrakt! put in config file
             {
-                // A * Sin(Bx^C) + D
-                lCalculatedY = lChromosome.getCalculatedY(x);
-                    //(int)lChromosome.GetGene(0).Value * Math.Sin((int)lChromosome.GetGene(1).Value * Math.Pow(x, (int)lChromosome.GetGene(2).Value)) + (int)lChromosome.GetGene(3).Value;
-                lActualY = Math.Sin(2 * x);
+                // generic function instead of fixed such as A * Sin(Bx^C) + D
+                lCalculatedY = lChromosome.getCalculatedY( x);
+                lActualY = getActualY(x); 
                 lErrorSum += Math.Pow(lActualY - lCalculatedY, 2);
             }
             return (-1 * lErrorSum);
         }
-    }
+
+        double getActualY(int x) // todo: move to abstract place!
+        {
+            return Math.Sin(2 * x);
+        }
+   }
 }
 
