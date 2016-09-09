@@ -37,11 +37,14 @@ namespace EnergyPrediction
 
     public class GeneticProgFitness : IFitness
     {
+      
+
+
         /// <summary>
         /// Gives the sum of the difference between Expected and Calaulated results Squared
         /// </summary>
         /// <param name="aChromosome">A chromosome.</param>
-        double IFitness.Evaluate(GeneticProgChromosome aChromosome)
+       public double Evaluate(IChromosome aChromosome)
         {
             //Error of the Difference Squared
             var lChromosome = aChromosome as GeneticProgChromosome;
@@ -54,7 +57,7 @@ namespace EnergyPrediction
             for (int x = -100; x < 100; x++) // todo: make x range abstrakt! put in config file
             {
                 // generic function instead of fixed such as A * Sin(Bx^C) + D
-                lCalculatedY = aChromosome.getCalculatedY( x);
+                lCalculatedY = lChromosome.getCalculatedY( x);
                 lActualY = getActualY(x); 
                 lErrorSum += Math.Pow(lActualY - lCalculatedY, 2);
             }
