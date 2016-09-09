@@ -119,9 +119,9 @@ namespace EnergyPrediction
             // recursive calculation of tree value for given x
             TreeNode<MathObject> resultTree = root; // todo: DOUBLE AND TRIPLE CHECK THAT THIS IS A COPY; OTHERWISE IMPLEMENTE A COPY FUNCTION
 
-            double result = doRecursiveCalc(root, x); 
-
-            return result
+            double result = doRecursiveCalc(root, x);
+            // TODO test!
+            return result;
         }
 
         double doRecursiveCalc(TreeNode<MathObject> currentRoot, int x)
