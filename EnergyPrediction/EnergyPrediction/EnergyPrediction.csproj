@@ -88,6 +88,12 @@
     <Compile Include="FileIO\EmptyLineBehavior.cs" />
     <Compile Include="config\Config.cs" />
     <Compile Include="CommonPrediction\FitnessBase.cs" />
+    <Compile Include="Genetic Program\GeneticAlgoController.cs" />
+    <Compile Include="Genetic Program\GeneticProgChromosome.cs" />
+    <Compile Include="Genetic Program\GeneticProgController.cs" />
+    <Compile Include="Genetic Program\GeneticProgFitness.cs" />
+    <Compile Include="Genetic Program\MathObject.cs" />
+    <Compile Include="Genetic Program\TreeNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
