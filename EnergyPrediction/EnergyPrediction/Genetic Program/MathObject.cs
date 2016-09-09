@@ -31,8 +31,11 @@ using GeneticSharp.Domain.Randomizations;
 
 namespace EnergyPrediction
 {
+    
     public class MathObject
     {
+        public static int totalNrMathObjects { get; private set; } = 3;
+        public static int unbranchableNrMathObjects { get; private set; } = 2; // mathX= case0, mathNr = case1
         MathObject type;
         double value;
 
@@ -67,10 +70,19 @@ namespace EnergyPrediction
         {
             return 0;  // should not be reached
         }
+
+   }
+
+    //case 0
+    public class MathX : MathObject
+    { 
+        public override double doCalc(double leftVal, double rightVal, int x)
+        {// leftVal and rightVal will be null!
+            return x; 
+        }
     }
 
-     
-
+    //case 1
     public class MathNumber : MathObject {
         double value;
 
@@ -84,30 +96,31 @@ namespace EnergyPrediction
 
     }
 
-
     /// <summary>
+    /// CASE 2
     /// Implements Math operation add (addition) 
-    /// result = a*x + b
+    /// result = a + b
     /// </summary>
     public class MathOpAdd : MathObject 
     {
-        
-
         public override double doCalc(double leftVal, double rightVal, int x)
         {
-            return (leftVal* x)+ rightVal;
+            return (leftVal)+ rightVal;
         }
     }
 
     /// <summary>
-    /// Implements Math operation sub (subtraction) 
-    /// result = (a*x) -b 
+    /// CASE 3
+    /// Implements Math operation sub (subtraction) #### change, not needed 
+    /// result = a * b 
     /// </summary>
-    public class MathOpSub : MathObject
+    public class MathOpMult : MathObject
     {
         public override double doCalc(double leftVal, double rightVal, int x)
         {
-            return (leftVal*x) - rightVal; 
+            return (leftVal) * rightVal; 
         }
     }
+
+    // todo: every new math object implementation must be included in the switch statement in the chromosone creation
    }

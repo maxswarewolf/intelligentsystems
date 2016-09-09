@@ -27,6 +27,7 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using EnergyPrediction;
 using GeneticSharp.Domain.Chromosomes;
 using GeneticSharp.Domain.Randomizations;
@@ -48,13 +49,13 @@ namespace EnergyPrediction
         /// KC: chromosone is initialized as a tree from file TreeNode
         /// must use "root" object to access tree
         /// last level (i.e. level == depth) is ensured to be a numerical value, everything else is a MathObject 
-        public GeneticProgChromosome(int aResultPeek) : base(4)
+        public GeneticProgChromosome(int aResultPeek) : base(0)
         {
             int depth = 3; //wanted depth in initial tree
-            int valueRange = 5; // todo: is this aResultRange or gRangePeek???
+            int valueRange = gRangePeek; 
             int currentDepth = 1; 
            
-            root = new TreeNode<MathObject>(new MathObject()); //  data is randomly chosen at initiallization 
+            root = new TreeNode<MathObject>(createRandomMathObject(true)); //  data is randomly chosen at initiallization 
 
             List<TreeNode<MathObject>> parentList = new List<TreeNode<MathObject>>();
             parentList.Add(root);
@@ -67,11 +68,11 @@ namespace EnergyPrediction
                     TreeNode<MathObject> nodeLeft = pL.AddChild(new MathObject());
 
                     TreeNode<MathObject> nodeRight = pL.AddChild(new MathObject());
-                    if (nodeLeft.Data.getMathObjectType().equals( new MathNumber(0))) 
+                    if (! nodeLeft.Data.getMathObjectType().equals( new MathNumber(0)) ) 
                     {
                         parentList.Add(nodeLeft);
                     }   
-                    if (nodeRight.Data.getMathObjectType().equals(new MathNumber(0))) 
+                    if (! nodeRight.Data.getMathObjectType().equals(new MathNumber(0))) 
                     {
                         parentList.Add(nodeRight);
                     }
@@ -84,20 +85,48 @@ namespace EnergyPrediction
 
         }
 
+        /// <summary>
+        /// Creates a random math object. If the Boolean mustBranch is true only Object types that have children can be selected, 
+        /// meaning MathX anf MathNumber are not created
+        /// </summary>
+        /// <returns>The random math object.</returns>
+        /// <param name="mustBranch">If set to <c>true</c> must branch.</param>
+        MathObject createRandomMathObject(Boolean mustBranch)
+        {
+            Contract.Ensures(Contract.Result<MathObject>() != null);
+            Random R = new Random();
+            int rand = R.Next(0, MathObject.totalNrMathObjects);
+            while (mustBranch && rand < MathObject.unbranchableNrMathObjects)
+            { 
+                rand = R.Next(MathObject.unbranchableNrMathObjects, MathObject.totalNrMathObjects);
+            }
+            switch (rand)
+            {
+                case 0:
+                    return new MathX(); 
+                case 1:
+                    return new MathNumber(gRangePeek);
+                case 2:
+                    return new MathOpAdd();
+                default:
+                    return new MathOpMult(); 
+            }
+
+        }
 
         public double getCalculatedY(int x)
         {
             // recursive calculation of tree value for given x
             TreeNode<MathObject> resultTree = root; // todo: DOUBLE AND TRIPLE CHECK THAT THIS IS A COPY; OTHERWISE IMPLEMENTE A COPY FUNCTION
 
-            double result = doRecursiveCalc(root); 
+            double result = doRecursiveCalc(root, x); 
 
             throw new NotImplementedException();
         }
 
-        double doRecursiveCalc(TreeNode<MathObject> root)
+        double doRecursiveCalc(TreeNode<MathObject> currentRoot, int x)
         {            //  LinkedList<TreeNode<MathObject>> list = (System.Collections.Generic.LinkedList<EnergyPrediction.TreeNode<EnergyPrediction.MathObject>>)root.Children;
-            LinkedList<TreeNode<MathObject>> children = (System.Collections.Generic.LinkedList<EnergyPrediction.TreeNode<EnergyPrediction.MathObject>>)root.Children; ;
+            LinkedList<TreeNode<MathObject>> children = (System.Collections.Generic.LinkedList<EnergyPrediction.TreeNode<EnergyPrediction.MathObject>>)currentRoot.Children; ;
             TreeNode<MathObject> child1 = children.First.Value;
             TreeNode<MathObject> child2 = children.Last.Value;
 
@@ -106,20 +135,20 @@ namespace EnergyPrediction
             {
                 if (child2.Data.getMathObjectType().equals(new MathNumber(0)))
                 {// END of recursion 
-                    double result = root.Data.doCalc(child1.Data.getNumberValue(), child2.Data.getNumberValue());
+                    double result = currentRoot.Data.doCalc(child1.Data.getNumberValue(), child2.Data.getNumberValue(), x);
                     return result;
                 }
                 else {  // child 2 not of type MathNumber
-                    return   root.Data.doCalc(child1.Data.getNumberValue(), doRecursiveCalc(child2));
+                    return   currentRoot.Data.doCalc(child1.Data.getNumberValue(), doRecursiveCalc(child2, x), x);
                 }
             }
             else { // child 1 not MathNumber 
                 if (child2.Data.getMathObjectType().equals(new MathNumber(0)))
                 {
-                    return root.Data.doCalc(doRecursiveCalc(child1), child2.Data.getNumberValue());
+                    return currentRoot.Data.doCalc(doRecursiveCalc(child1, x), child2.Data.getNumberValue(), x);
                 }
                 else {
-                    return root.Data.doCalc(doRecursiveCalc(child1), doRecursiveCalc(child2));
+                    return currentRoot.Data.doCalc(doRecursiveCalc(child1, x), doRecursiveCalc(child2, x), x);
                 }
             }
 
