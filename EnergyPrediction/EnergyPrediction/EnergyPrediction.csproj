@@ -78,7 +78,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="Genetic Algorithim\GeneticAlgoChromosome.cs" />
-    <Compile Include="Genetic Algorithim\GeneticAlgoFitness.cs" />
     <Compile Include="Genetic Algorithim\GeneticAlgoController.cs" />
     <Compile Include="Genetic Shared\InverseEliteSelection.cs" />
     <Compile Include="Genetic Shared\StochasticSelection.cs" />
@@ -90,7 +89,6 @@
     <Compile Include="Genetic Shared\FitnessBase.cs" />
     <Compile Include="Genetic Program\GeneticProgChromosome.cs" />
     <Compile Include="Genetic Program\GeneticProgController.cs" />
-    <Compile Include="Genetic Program\GeneticProgFitness.cs" />
     <Compile Include="Genetic Program\TreeNode.cs" />
     <Compile Include="FileIO\DataIO.cs" />
     <Compile Include="Genetic Program\Tree Math\MathObject.cs" />

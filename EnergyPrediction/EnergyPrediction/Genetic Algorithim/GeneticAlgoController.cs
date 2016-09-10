@@ -50,9 +50,6 @@ namespace EnergyPrediction
 
         public ITermination CreateTermination()
         {
-
-            //ITermination[] term = { new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromMinutes(1)) };
-
             return new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromMinutes(1)));
         }
 
