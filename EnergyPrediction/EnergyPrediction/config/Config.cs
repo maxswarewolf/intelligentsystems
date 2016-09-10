@@ -52,6 +52,12 @@ namespace EnergyPrediction
 
             Reinsertion = new List<string>() { "PLACE HOLDER" };
 
+            DefaultPopulation = 200;
+            DefaultMutationProbility = 0.4f;
+            DefaultCrossoverProbility = 0.7f;
+            DefaultTerminationTimeMinutes = 1;
+            DefaultTerminationFitnessThreshold = 0;
+            DefaultTerminationGenerationThreshold = 1000000;
         }
 
         #region Default Options
