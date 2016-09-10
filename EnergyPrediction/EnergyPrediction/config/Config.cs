@@ -28,6 +28,7 @@
 using System;
 using System.Collections.Generic;
 using GeneticSharp.Domain;
+using GeneticSharp.Domain.Crossovers;
 using GeneticSharp.Domain.Reinsertions;
 using GeneticSharp.Domain.Terminations;
 
@@ -50,9 +51,10 @@ namespace EnergyPrediction
             Selection = new List<string>() { "Elite", "Stochastic", "Inverse Elite" };
 
             Reinsertion = new List<string>() { "PLACE HOLDER" };
+
         }
 
-        #region DefaultFields
+        #region Default Options
         public List<string> SolutionOptions { get; private set; }
         public List<string> CrossoversAlgo { get; private set; }
         public List<string> CrossoversProg { get; private set; }
@@ -61,55 +63,15 @@ namespace EnergyPrediction
         public List<string> MutationProg { get; private set; }
         public List<string> Selection { get; private set; }
         public List<string> Reinsertion { get; private set; }
-
-        public int TerminationTimeMinutes { get; set; }
-        public int TerminationGenerationThreshold { get; set; }
-        public double TerminationFitnessThreshold { get; set; }
-        public double CrossoverProbility { get; set; }
-        public double MutationProbility { get; set; }
-        public int Population { get; set; }
         #endregion
 
-
-
-        public GeneticAlgorithm getConfig()
-        {
-            throw new NotImplementedException();
-        }
-        public IReinsertion getReinsertion()
-        {
-            throw new NotImplementedException();
-        }
-        public ITermination getTermination()
-        {
-            throw new NotImplementedException();
-        }
-
-        #region SetFunctions
-        public bool setCrossover(string aOption)
-        {
-            throw new NotImplementedException();
-        }
-        public bool setAlgorithm(string aOption)
-        {
-            throw new NotImplementedException();
-        }
-        public bool setFitnessFunction(string aOption)
-        {
-            throw new NotImplementedException();
-        }
-        public bool setMutation(string aOption)
-        {
-            throw new NotImplementedException();
-        }
-        public bool setResertion(string aOption)
-        {
-            throw new NotImplementedException();
-        }
-        public bool setSelection(string aOption)
-        {
-            throw new NotImplementedException();
-        }
+        #region Option Choice
+        public int DefaultTerminationTimeMinutes { get; private set; }
+        public int DefaultTerminationGenerationThreshold { get; private set; }
+        public double DefaultTerminationFitnessThreshold { get; private set; }
+        public double DefaultCrossoverProbility { get; private set; }
+        public double DefaultMutationProbility { get; private set; }
+        public int DefaultPopulation { get; private set; }
         #endregion
     }
 }

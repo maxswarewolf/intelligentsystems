@@ -38,7 +38,7 @@ namespace EnergyPrediction
     public class GeneticProgChromosome : ChromosomeBase
     {
 
-        int gNumberOfGenes;
+        //int gNumberOfGenes;
         public int gRangePeek { get; internal set; }
         TreeNode<MathObject> root;
 
@@ -51,118 +51,42 @@ namespace EnergyPrediction
         /// last level (i.e. level == depth) is ensured to be a numerical value, everything else is a MathObject 
         public GeneticProgChromosome(int aResultPeek) : base(0)
         {
+            MathObject.RangePeek = aResultPeek;
+            Queue<TreeNode<MathObject>> parentList = new Queue<TreeNode<MathObject>>();
             int depth = 3; //wanted depth in initial tree
             int valueRange = gRangePeek;
-            int currentDepth = 1;
 
-            root = new TreeNode<MathObject>(new MathSymbol(), 0); //  data is randomly chosen at initiallization 
+            root = new TreeNode<MathObject>(new MathSymbol(), 1); //  data is randomly chosen at initiallization 
+            TreeNode<MathObject> currentNode;
 
-            List<TreeNode<MathObject>> parentList = new List<TreeNode<MathObject>>();
-            parentList.Add(root);
+            parentList.Enqueue(root);
 
             //initial construction of tree
-            while (currentDepth < depth)
+            while (parentList.Count > 0)
             {
-                // add math operation (attention: can also be number - exception handling?!)  
-                foreach (TreeNode<MathObject> currentNode in parentList)
+                currentNode = parentList.Dequeue();
+                if (currentNode.GetType().Equals(typeof(MathSymbol)))
                 {
-                    currentNode.ChildRight = new TreeNode<MathObject>(new MathObject()); //Right Child
-                    currentNode.ChildLeft = new TreeNode<MathObject>(new MathObject()); //Left Child
-
-                    if (!currentNode.ChildLeft.Data.GetType().Equals(new MathNumber(0)))
+                    if (currentNode.Depth + 1 < depth)
                     {
-                        parentList.Add(currentNode.ChildLeft);
+                        currentNode.setChildLeft(new TreeNode<MathObject>(MathObject.randomMathObject(), currentNode.Depth + 1));
+                        currentNode.setChildRight(new TreeNode<MathObject>(MathObject.randomMathObject(), currentNode.Depth + 1));
+                        parentList.Enqueue(currentNode.ChildLeft);
+                        parentList.Enqueue(currentNode.ChildRight);
                     }
-                    if (!currentNode.ChildRight.Data.GetType().Equals(new MathNumber(0)))
-                    {
-                        parentList.Add(currentNode.ChildRight);
+                    else {
+                        currentNode.setChildLeft(new TreeNode<MathObject>(new MathNumber(), currentNode.Depth + 1));
+                        currentNode.setChildRight(new TreeNode<MathObject>(new MathNumber(), currentNode.Depth + 1));
                     }
                 }
-            }// last layer: add number instead of math op for leafs
-            foreach (TreeNode<MathObject> currentNode in parentList)
-            {
-                currentNode.ChildRight = new TreeNode<MathObject>(new MathNumber(valueRange));
-                currentNode.ChildLeft = new TreeNode<MathObject>(new MathNumber(valueRange));
             }
-
-        }
-
-        /// <summary>
-        /// Creates a random math object. If the Boolean mustBranch is true only Object types that have children can be selected, 
-        /// meaning MathX anf MathNumber are not created
-        /// </summary>
-        /// <returns>The random math object.</returns>
-        /// <param name="mustBranch">If set to <c>true</c> must branch.</param>
-        MathObject createRandomMathObject(Boolean mustBranch)
-        {
-            if (mustBranch)
-            {
-                return new MathSymbol();
-            }
-            else {
-                return new MathNumber(gRangePeek);
-            }
-
-            //Contract.Ensures(Contract.Result<MathObject>() != null);
-            //Random R = new Random();
-            //int rand = R.Next(0, MathObject.totalNrMathObjects);
-            //while (mustBranch && rand < MathObject.unbranchableNrMathObjects)
-            //{
-            //    rand = MathObject.Rand.Next(MathObject.unbranchableNrMathObjects, MathObject.totalNrMathObjects);
-            //}
-            //switch (rand)
-            //{
-            //    case 0:
-            //        return new MathX();
-            //    case 1:
-            //        return new MathNumber(gRangePeek);
-            //    case 2:
-            //        return new MathOpAdd();
-            //    default:
-            //        return new MathOpMult();
-            //}
-
         }
 
         public double getCalculatedY(int x)
         {
-            // recursive calculation of tree value for given x
-            TreeNode<MathObject> resultTree = root; // todo: DOUBLE AND TRIPLE CHECK THAT THIS IS A COPY; OTHERWISE IMPLEMENTE A COPY FUNCTION
-
-            double result = root.doCalculation(x);
             // TODO test!
-            return result;
+            return root.doCalculation(x);
         }
-
-        //double doRecursiveCalc(TreeNode<MathObject> currentRoot, int x)
-        //{            //  LinkedList<TreeNode<MathObject>> list = (System.Collections.Generic.LinkedList<EnergyPrediction.TreeNode<EnergyPrediction.MathObject>>)root.Children;
-        //    LinkedList<TreeNode<MathObject>> children = (System.Collections.Generic.LinkedList<EnergyPrediction.TreeNode<EnergyPrediction.MathObject>>)currentRoot.Children; ;
-        //    TreeNode<MathObject> child1 = children.First.Value;
-        //    TreeNode<MathObject> child2 = children.Last.Value;
-
-        //    // end of recursion reached when booth children are of type MathNumer
-        //    if (child1.Data.getMathObjectType().equals(new MathNumber(0)))
-        //    {
-        //        if (child2.Data.getMathObjectType().equals(new MathNumber(0)))
-        //        {// END of recursion 
-        //            double result = currentRoot.Data.doCalc(child1.Data.getNumberValue(), child2.Data.getNumberValue(), x);
-        //            return result;
-        //        }
-        //        else {  // child 2 not of type MathNumber
-        //            return currentRoot.Data.doCalc(child1.Data.getNumberValue(), doRecursiveCalc(child2, x), x);
-        //        }
-        //    }
-        //    else { // child 1 not MathNumber 
-        //        if (child2.Data.getMathObjectType().equals(new MathNumber(0)))
-        //        {
-        //            return currentRoot.Data.doCalc(doRecursiveCalc(child1, x), child2.Data.getNumberValue(), x);
-        //        }
-        //        else {
-        //            return currentRoot.Data.doCalc(doRecursiveCalc(child1, x), doRecursiveCalc(child2, x), x);
-        //        }
-
-
-
 
         /// <summary>
         /// Creates a new Chromosome.

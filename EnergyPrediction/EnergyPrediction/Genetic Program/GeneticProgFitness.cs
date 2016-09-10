@@ -59,7 +59,7 @@ namespace EnergyPrediction
                 // generic function instead of fixed such as A * Sin(Bx^C) + D
                 lCalculatedY = lChromosome.getCalculatedY(x);
                 lActualY = getActualY(x);
-                lErrorSum += FitnessBase.EvaluateErrorSquared(lCalculatedY, lActualY);
+                lErrorSum += FitnessBase.EvaluateErrorSquared(lCalculatedY, DataIO.getActualY(x));
             }
             return (-1 * lErrorSum);
         }

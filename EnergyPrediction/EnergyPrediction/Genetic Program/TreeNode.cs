@@ -36,14 +36,28 @@ namespace EnergyPrediction
 
         public T Data { get; set; }
         public int Depth { get; private set; }
-        public TreeNode<T> Parent { get; set; }
-        public TreeNode<T> ChildRight { get; set; }
-        public TreeNode<T> ChildLeft { get; set; }
+        public TreeNode<T> Parent { get; protected set; }
+        public TreeNode<T> ChildRight { get; private set; }
+        public TreeNode<T> ChildLeft { get; private set; }
 
         public TreeNode(T data, int depth)
         {
             this.Data = data;
             this.Depth = depth;
+            this.ChildLeft = null;
+            this.ChildRight = null;
+        }
+
+        public void setChildRight(TreeNode<T> aChild)
+        {
+            this.ChildRight = aChild;
+            this.ChildRight.Parent = this;
+        }
+
+        public void setChildLeft(TreeNode<T> aChild)
+        {
+            this.ChildLeft = aChild;
+            this.ChildLeft.Parent = this;
         }
 
         public double doCalculation(int x)
@@ -51,15 +65,12 @@ namespace EnergyPrediction
             if (Data.GetType().Equals(typeof(MathNumber)))
             {
                 MathNumber temp = Data as MathNumber;
-                if (temp.isX)
-                    return x;
-                else
-                    return temp.Value;
+                return temp.doCalculation(x);
             }
             else
             {
                 MathSymbol temp = Data as MathSymbol;
-                return temp.doCalculation(ChildLeft.doCalculation(x), ChildRight.doCalculation(x), x);
+                return temp.doCalculation(ChildLeft.doCalculation(x), ChildRight.doCalculation(x));
             }
         }
 

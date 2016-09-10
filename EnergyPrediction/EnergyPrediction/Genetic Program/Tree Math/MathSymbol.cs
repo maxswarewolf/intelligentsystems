@@ -37,7 +37,7 @@ namespace EnergyPrediction
             Symbol = (SymbolTypes)(Enum.GetValues(typeof(SymbolTypes)).GetValue(r));
         }
         //todo: add in other operands
-        public override double doCalculation(double aLeftValue, double aRightValue, int x)
+        public override double doCalculation(double aLeftValue, double aRightValue)
         {
             switch (Symbol)
             {
@@ -51,10 +51,21 @@ namespace EnergyPrediction
                     return aLeftValue * Math.Sin(aRightValue);
                 case SymbolTypes.Cos:
                     return aLeftValue * Math.Cos(aRightValue);
+                case SymbolTypes.Log:
+                    return aLeftValue * Math.Log10(aRightValue);
+                case SymbolTypes.Exp:
+                    return aLeftValue * Math.Exp(aRightValue);
+                case SymbolTypes.Pow:
+                    return Math.Pow(aLeftValue, aRightValue);
+                case SymbolTypes.Sqrt:
+                    return aLeftValue * Math.Sqrt(aRightValue);
+                case SymbolTypes.Sinh:
+                    return aLeftValue * Math.Sinh(aRightValue);
+                case SymbolTypes.Cosh:
+                    return aLeftValue * Math.Cosh(aRightValue);
                 default:
                     return 0;
             }
-
         }
     }
 }

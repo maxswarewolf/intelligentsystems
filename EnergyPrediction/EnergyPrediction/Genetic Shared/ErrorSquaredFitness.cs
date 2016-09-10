@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// MathNumber.cs
+// ErrorSquared.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -26,27 +26,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using GeneticSharp.Domain.Chromosomes;
+using GeneticSharp.Domain.Fitnesses;
+
 namespace EnergyPrediction
 {
-    public class MathNumber : MathObject
+    public class ErrorSquaredFitness : IFitness
     {
-        public double Value { get; private set; }
-        public bool isX { get; private set; }
-        public MathNumber()
+        public double Evaluate(IChromosome aChromosome)
         {
-            Value = (Rand.NextDouble() * MathObject.RangePeek * 2) - MathObject.RangePeek;
-            isX = Equals(Value, 0);
-        }
-        /// <summary>
-        /// Will return the value of the number, but this should not be used.
-        /// Call object.Value instead
-        /// </summary>
-        /// <returns>Value.</returns>
-        public override double doCalculation(int x)
-        {
-            return isX ? x : Value;
-        }
+            //Error of the Difference Squared
+            var lChromosome = aChromosome as GeneticAlgoChromosome;
 
+            double lErrorSum = 0.0;
+            for (int x = 0; x < 100; x++)
+            {
+                lErrorSum += FitnessBase.EvaluateErrorSquared(lChromosome.getCalculatedY(x), DataIO.getActualY(x));
+            }
+            return (-1 * lErrorSum);
+        }
     }
 }
 

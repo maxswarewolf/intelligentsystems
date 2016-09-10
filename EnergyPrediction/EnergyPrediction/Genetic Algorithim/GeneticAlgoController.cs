@@ -58,12 +58,12 @@ namespace EnergyPrediction
 
         public IChromosome CreateChromosome()
         {
-            return new GeneticAlgoChromosome(7);
+            return new GeneticAlgoChromosome(5);
         }
 
         public IFitness CreateFitness()
         {
-            return new GeneticAlgoFitness();
+            return new ErrorSquaredFitness();
         }
 
         public ICrossover CreateCrossover()
