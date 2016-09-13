@@ -35,41 +35,41 @@ namespace EnergyPrediction
 {
     public class CsvFileReader : CsvFileCommon, IDisposable
     {
-        private StreamReader Reader;
-        private string CurrLine;
-        private int CurrPos;
-        private EmptyLineBehavior EmptyLineBehavior;
+        private StreamReader fReader;
+        private string fCurrLine;
+        private int fCurrPos;
+        private EmptyLineBehavior fEmptyLineBehavior;
 
         public CsvFileReader(Stream stream,
-            EmptyLineBehavior emptyLineBehavior = EmptyLineBehavior.NoColumns)
+                             EmptyLineBehavior aEmptyLineBehavior = EmptyLineBehavior.NoColumns)
         {
-            Reader = new StreamReader(stream);
-            EmptyLineBehavior = emptyLineBehavior;
+            fReader = new StreamReader(stream);
+            fEmptyLineBehavior = aEmptyLineBehavior;
         }
 
         public CsvFileReader(string path,
-            EmptyLineBehavior emptyLineBehavior = EmptyLineBehavior.NoColumns)
+                             EmptyLineBehavior aEmptyLineBehavior = EmptyLineBehavior.NoColumns)
         {
-            Reader = new StreamReader(path);
-            EmptyLineBehavior = emptyLineBehavior;
+            fReader = new StreamReader(path);
+            fEmptyLineBehavior = aEmptyLineBehavior;
         }
 
-        public bool ReadRow(List<string> columns)
+        public bool ReadRow(List<string> aColumns)
         {
-            if (columns == null)
+            if (aColumns == null)
                 throw new ArgumentNullException("columns");
 
             ReadNextLine:
-            CurrLine = Reader.ReadLine();
-            CurrPos = 0;
-            if (CurrLine == null)
+            fCurrLine = fReader.ReadLine();
+            fCurrPos = 0;
+            if (fCurrLine == null)
                 return false;
-            if (CurrLine.Length == 0)
+            if (fCurrLine.Length == 0)
             {
-                switch (EmptyLineBehavior)
+                switch (fEmptyLineBehavior)
                 {
                     case EmptyLineBehavior.NoColumns:
-                        columns.Clear();
+                        aColumns.Clear();
                         return true;
                     case EmptyLineBehavior.Ignore:
                         goto ReadNextLine;
@@ -78,83 +78,83 @@ namespace EnergyPrediction
                 }
             }
 
-            string column;
-            int numColumns = 0;
+            string lColumn;
+            int lNumColumns = 0;
             while (true)
             {
-                if (CurrPos < CurrLine.Length && CurrLine[CurrPos] == Quote)
-                    column = ReadQuotedColumn();
+                if (fCurrPos < fCurrLine.Length && fCurrLine[fCurrPos] == Quote)
+                    lColumn = ReadQuotedColumn();
                 else
-                    column = ReadUnquotedColumn();
-                if (numColumns < columns.Count)
-                    columns[numColumns] = column;
+                    lColumn = ReadUnquotedColumn();
+                if (lNumColumns < aColumns.Count)
+                    aColumns[lNumColumns] = lColumn;
                 else
-                    columns.Add(column);
-                numColumns++;
-                if (CurrLine == null || CurrPos == CurrLine.Length)
+                    aColumns.Add(lColumn);
+                lNumColumns++;
+                if (fCurrLine == null || fCurrPos == fCurrLine.Length)
                     break;
-                Debug.Assert(CurrLine[CurrPos] == Delimiter);
-                CurrPos++;
+                Debug.Assert(fCurrLine[fCurrPos] == Delimiter);
+                fCurrPos++;
             }
-            if (numColumns < columns.Count)
-                columns.RemoveRange(numColumns, columns.Count - numColumns);
+            if (lNumColumns < aColumns.Count)
+                aColumns.RemoveRange(lNumColumns, aColumns.Count - lNumColumns);
             return true;
         }
 
         private string ReadQuotedColumn()
         {
-            Debug.Assert(CurrPos < CurrLine.Length && CurrLine[CurrPos] == Quote);
-            CurrPos++;
+            Debug.Assert(fCurrPos < fCurrLine.Length && fCurrLine[fCurrPos] == Quote);
+            fCurrPos++;
 
-            StringBuilder builder = new StringBuilder();
+            StringBuilder lBuilder = new StringBuilder();
             while (true)
             {
-                while (CurrPos == CurrLine.Length)
+                while (fCurrPos == fCurrLine.Length)
                 {
-                    CurrLine = Reader.ReadLine();
-                    CurrPos = 0;
-                    if (CurrLine == null)
-                        return builder.ToString();
-                    builder.Append(Environment.NewLine);
+                    fCurrLine = fReader.ReadLine();
+                    fCurrPos = 0;
+                    if (fCurrLine == null)
+                        return lBuilder.ToString();
+                    lBuilder.Append(Environment.NewLine);
                 }
-                if (CurrLine[CurrPos] == Quote)
+                if (fCurrLine[fCurrPos] == Quote)
                 {
-                    int nextPos = (CurrPos + 1);
-                    if (nextPos < CurrLine.Length && CurrLine[nextPos] == Quote)
-                        CurrPos++;
+                    int nextPos = (fCurrPos + 1);
+                    if (nextPos < fCurrLine.Length && fCurrLine[nextPos] == Quote)
+                        fCurrPos++;
                     else
                         break;
                 }
 
-                builder.Append(CurrLine[CurrPos++]);
+                lBuilder.Append(fCurrLine[fCurrPos++]);
             }
 
-            if (CurrPos < CurrLine.Length)
+            if (fCurrPos < fCurrLine.Length)
             {
 
-                Debug.Assert(CurrLine[CurrPos] == Quote);
-                CurrPos++;
+                Debug.Assert(fCurrLine[fCurrPos] == Quote);
+                fCurrPos++;
 
-                builder.Append(ReadUnquotedColumn());
+                lBuilder.Append(ReadUnquotedColumn());
             }
 
-            return builder.ToString();
+            return lBuilder.ToString();
         }
 
 
         private string ReadUnquotedColumn()
         {
-            int startPos = CurrPos;
-            CurrPos = CurrLine.IndexOf(Delimiter, CurrPos);
-            if (CurrPos == -1)
-                CurrPos = CurrLine.Length;
-            if (CurrPos > startPos)
-                return CurrLine.Substring(startPos, CurrPos - startPos);
+            int lStartPos = fCurrPos;
+            fCurrPos = fCurrLine.IndexOf(Delimiter, fCurrPos);
+            if (fCurrPos == -1)
+                fCurrPos = fCurrLine.Length;
+            if (fCurrPos > lStartPos)
+                return fCurrLine.Substring(lStartPos, fCurrPos - lStartPos);
             return String.Empty;
         }
         public void Dispose()
         {
-            Reader.Dispose();
+            fReader.Dispose();
         }
     }
 }

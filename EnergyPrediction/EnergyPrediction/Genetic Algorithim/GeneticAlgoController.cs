@@ -39,13 +39,13 @@ namespace EnergyPrediction
 {
     public class GeneticAlgoController
     {
-        public GeneticAlgorithm GA { get; private set; }
-        int gPopulationSize;
+        public GeneticAlgorithm fGA { get; private set; }
+        int fPopulationSize;
         //y = Sin(2x)
 
         public GeneticAlgoController(int aPopulationSize)
         {
-            gPopulationSize = aPopulationSize;
+            fPopulationSize = aPopulationSize;
         }
 
         public ITermination CreateTermination()
@@ -80,7 +80,7 @@ namespace EnergyPrediction
 
         public IPopulation CreatePopulation()
         {
-            var lPopulation = new Population(gPopulationSize, gPopulationSize * 2, CreateChromosome());
+            var lPopulation = new Population(fPopulationSize, fPopulationSize * 2, CreateChromosome());
             //lPopulation.GenerationStrategy = new PerformanceGenerationStrategy();
             return lPopulation;
         }
@@ -91,33 +91,33 @@ namespace EnergyPrediction
             Console.Clear();
 
             Console.WriteLine();
-            Console.WriteLine("Generations: {0}", GA.Population.GenerationsNumber);
+            Console.WriteLine("Generations: {0}", fGA.Population.GenerationsNumber);
             Console.WriteLine("Fitness: {0}", aBestChromosome.Fitness);
             Console.WriteLine("Genes: {0:00.####}, {1:00.####}, {2:00.####}, {3:00.####}", lBest[0].Value, lBest[1].Value, lBest[2].Value, lBest[3].Value);
-            Console.WriteLine("Time: {0}", GA.TimeEvolving);
+            Console.WriteLine("Time: {0}", fGA.TimeEvolving);
 
         }
 
         public void Start()
         {
-            GA = new GeneticAlgorithm(CreatePopulation(), CreateFitness(), CreateSelection(), CreateCrossover(), CreateMutation());
-            GA.Termination = CreateTermination();
-            GA.CrossoverProbability = 0.6f;
-            GA.MutationProbability = 0.6f;
-            GA.Reinsertion = new ElitistReinsertion();
+            fGA = new GeneticAlgorithm(CreatePopulation(), CreateFitness(), CreateSelection(), CreateCrossover(), CreateMutation());
+            fGA.Termination = CreateTermination();
+            fGA.CrossoverProbability = 0.6f;
+            fGA.MutationProbability = 0.6f;
+            fGA.Reinsertion = new ElitistReinsertion();
 
             Console.WriteLine("STARTING...");
 
-            var lTerminationName = GA.Termination.GetType().Name;
-            GA.GenerationRan += delegate
+            var lTerminationName = fGA.Termination.GetType().Name;
+            fGA.GenerationRan += delegate
             {
-                var lBestChromosome = GA.Population.BestChromosome;
+                var lBestChromosome = fGA.Population.BestChromosome;
                 Draw(lBestChromosome);
             };
 
             try
             {
-                GA.Start();
+                fGA.Start();
             }
             catch (Exception ex)
             {
@@ -129,7 +129,7 @@ namespace EnergyPrediction
                 Console.ReadKey();
                 return;
             }
-            var lBest = GA.Population.BestChromosome.GetGenes();
+            var lBest = fGA.Population.BestChromosome.GetGenes();
             Console.WriteLine();
             Console.WriteLine("Evolved: " + lBest[0].Value + ", " + lBest[1].Value + ", " + lBest[2].Value + ", " + lBest[3].Value);
         }

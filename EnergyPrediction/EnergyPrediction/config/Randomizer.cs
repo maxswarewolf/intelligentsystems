@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// MathNumber.cs
+// Randomizer.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -28,25 +28,18 @@
 using System;
 namespace EnergyPrediction
 {
-    public class MathNumber : MathObject
+    public static class Randomizer
     {
-        public double Value { get; private set; }
-        public bool isX { get; private set; }
-        public MathNumber()
+        private static Random fRand = new Random();
+        public static double NextDouble(double aMin, double aMax)
         {
-            Value = Randomizer.NextDouble(MathObject.RangePeek * -1, MathObject.RangePeek + 1);
-            isX = Equals(Value, 0);
-        }
-        /// <summary>
-        /// Will return the value of the number, but this should not be used.
-        /// Call object.Value instead
-        /// </summary>
-        /// <returns>Value.</returns>
-        public override double doCalculation(int x)
-        {
-            return isX ? x : Value;
+            return fRand.NextDouble() * (aMax - aMin) + aMin;
         }
 
+        public static int NextInt(int aMin, int aMax)
+        {
+            return fRand.Next(aMin, aMax);
+        }
     }
 }
 

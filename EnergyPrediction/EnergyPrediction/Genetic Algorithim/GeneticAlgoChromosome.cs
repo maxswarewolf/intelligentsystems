@@ -27,14 +27,13 @@
 // THE SOFTWARE.
 using System;
 using GeneticSharp.Domain.Chromosomes;
-using GeneticSharp.Domain.Randomizations;
 namespace EnergyPrediction
 {
     public class GeneticAlgoChromosome : ChromosomeBase
     {
 
-        int gNumberOfGenes;
-        public int gRangePeek { get; internal set; }
+        int fNumberOfGenes;
+        int fRangePeek { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:EnergyPrediction.GeneticAlgoChromosome"/> class.
@@ -42,10 +41,10 @@ namespace EnergyPrediction
         /// <param name="aResultRange">A result range. eg -20 to 20</param>
         public GeneticAlgoChromosome(int aResultPeek) : base(4)
         {
-            gNumberOfGenes = 4;
-            gRangePeek = aResultPeek;
+            fNumberOfGenes = 4;
+            fRangePeek = aResultPeek;
 
-            for (int i = 0; i < gNumberOfGenes; i++)
+            for (int i = 0; i < fNumberOfGenes; i++)
             {
                 ReplaceGene(i, GenerateGene(i));
             }
@@ -63,7 +62,7 @@ namespace EnergyPrediction
         /// <param name="geneIndex">Gene index.</param>
         public override Gene GenerateGene(int geneIndex)
         {
-            return new Gene(RandomizationProvider.Current.GetInt(gRangePeek * -1, gRangePeek + 1));
+            return new Gene(Randomizer.NextInt(fRangePeek * -1, fRangePeek + 1));
         }
 
         /// <summary>
@@ -72,7 +71,7 @@ namespace EnergyPrediction
         /// <returns>The new.</returns>
         public override IChromosome CreateNew()
         {
-            return new GeneticAlgoChromosome(gRangePeek);
+            return new GeneticAlgoChromosome(fRangePeek);
         }
     }
 }

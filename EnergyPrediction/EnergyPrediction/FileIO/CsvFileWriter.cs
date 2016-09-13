@@ -33,48 +33,48 @@ namespace EnergyPrediction
 {
     public class CsvFileWriter : CsvFileCommon, IDisposable
     {
-        private StreamWriter Writer;
-        private string OneQuote = null;
-        private string TwoQuotes = null;
-        private string QuotedFormat = null;
+        private StreamWriter fWriter;
+        private string fOneQuote = null;
+        private string fTwoQuotes = null;
+        private string fQuotedFormat = null;
 
-        public CsvFileWriter(Stream stream)
+        public CsvFileWriter(Stream aStream)
         {
-            Writer = new StreamWriter(stream);
+            fWriter = new StreamWriter(aStream);
         }
 
-        public CsvFileWriter(string path)
+        public CsvFileWriter(string aPath)
         {
-            Writer = new StreamWriter(path);
+            fWriter = new StreamWriter(aPath);
         }
 
-        public void WriteRow(List<string> columns)
+        public void WriteRow(List<string> aColumns)
         {
-            if (columns == null)
+            if (aColumns == null)
                 throw new ArgumentNullException("columns");
 
-            if (OneQuote == null || OneQuote[0] != Quote)
+            if (fOneQuote == null || fOneQuote[0] != Quote)
             {
-                OneQuote = String.Format("{0}", Quote);
-                TwoQuotes = String.Format("{0}{0}", Quote);
-                QuotedFormat = String.Format("{0}{{0}}{0}", Quote);
+                fOneQuote = String.Format("{0}", Quote);
+                fTwoQuotes = String.Format("{0}{0}", Quote);
+                fQuotedFormat = String.Format("{0}{{0}}{0}", Quote);
             }
 
-            for (int i = 0; i < columns.Count; i++)
+            for (int i = 0; i < aColumns.Count; i++)
             {
                 if (i > 0)
-                    Writer.Write(Delimiter);
-                if (columns[i].IndexOfAny(SpecialChars) == -1)
-                    Writer.Write(columns[i]);
+                    fWriter.Write(Delimiter);
+                if (aColumns[i].IndexOfAny(SpecialChars) == -1)
+                    fWriter.Write(aColumns[i]);
                 else
-                    Writer.Write(QuotedFormat, columns[i].Replace(OneQuote, TwoQuotes));
+                    fWriter.Write(fQuotedFormat, aColumns[i].Replace(fOneQuote, fTwoQuotes));
             }
-            Writer.WriteLine();
+            fWriter.WriteLine();
         }
 
         public void Dispose()
         {
-            Writer.Dispose();
+            fWriter.Dispose();
         }
     }
 }

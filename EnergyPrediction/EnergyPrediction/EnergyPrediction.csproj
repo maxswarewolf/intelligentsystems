@@ -96,6 +96,7 @@
     <Compile Include="Genetic Program\Tree Math\MathSymbol.cs" />
     <Compile Include="Genetic Program\Tree Math\SymbolTypes.cs" />
     <Compile Include="Genetic Shared\ErrorSquaredFitness.cs" />
+    <Compile Include="config\Randomizer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
