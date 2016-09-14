@@ -34,21 +34,26 @@ namespace EnergyPrediction
     {
         public static void Main(string[] args)
         {
-            Config setup = new Config();
-            foreach (string key in setup.GeneratorLinks.Keys)
+            //Config setup = new Config();
+            //foreach (string key in setup.GeneratorLinks.Keys)
+            //{
+            //    DataIO.Load5MinState((StateType)Enum.Parse(typeof(StateType), key, true), DateTime.Parse("2015-02-21"), DateTime.Parse("2015-03-03"));
+            //    Console.WriteLine("{0:N} MW", DataIO.getActualY(0));
+            //}
+            //foreach (string code in setup.GeneratorLinks["VIC"])
+            //{
+            //    DataIO.Load5MinGen(code, DateTime.Parse("2015-02-21"), DateTime.Parse("1/9/16"));
+            //    for (int i = 0; i < DataIO.getLength(); i++)
+            //    {
+            //        Console.WriteLine("Gen:{1} {0:N} MW", DataIO.getActualY(0), code);
+            //    }
+            //    if (DataIO.getLength() > 0)
+            //        Console.WriteLine();
+            //}
+
+            foreach (string s in DataIO.getGenerators())
             {
-                DataIO.Load5MinState((StateType)Enum.Parse(typeof(StateType), key, true), DateTime.Parse("2015-02-21"), DateTime.Parse("2015-03-03"));
-                Console.WriteLine("{0:N} MW", DataIO.getActualY(0));
-            }
-            foreach (string code in setup.GeneratorLinks["VIC"])
-            {
-                DataIO.Load5MinGen(code, DateTime.Parse("2015-02-21"), DateTime.Parse("1/9/16"));
-                for (int i = 0; i < DataIO.getLength(); i++)
-                {
-                    Console.WriteLine("Gen:{1} {0:N} MW", DataIO.getActualY(0), code);
-                }
-                if (DataIO.getLength() > 0)
-                    Console.WriteLine();
+                Console.WriteLine(s);
             }
 
             //var test1 = new EnergyPrediction.GeneticAlgoController(200);

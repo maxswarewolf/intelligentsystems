@@ -173,6 +173,45 @@ namespace EnergyPrediction
             }
         }
 
+        public static List<string> getGenerators()
+        {
+            List<string> current = new List<string>();
+            List<string> result = new List<string>();
+            List<string> lVic = new Config().GeneratorLinks["VIC"];
+            List<string> lAct = new Config().GeneratorLinks["ACT"];
+            List<string> lTas = new Config().GeneratorLinks["TAS"];
+            List<string> lSa = new Config().GeneratorLinks["SA"];
+            List<string> lQld = new Config().GeneratorLinks["QLD"];
+            List<string> lNsw = new Config().GeneratorLinks["NSW"];
+
+            current.AddRange(lVic);
+            current.AddRange(lAct);
+            current.AddRange(lTas);
+            current.AddRange(lSa);
+            current.AddRange(lQld);
+            current.AddRange(lNsw);
+
+            string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/5min";
+            string[] lFilePaths = Directory.GetFiles(Root, "*.csv", SearchOption.TopDirectoryOnly);
+            foreach (string s in lFilePaths)
+            {
+                List<string> lColumns = new List<string>();
+                using (var reader = new CsvFileReader(s))
+                {
+                    while (reader.ReadRow(lColumns))
+                    {
+                        if (!current.Contains(lColumns[1]))
+                        {
+                            current.Add(lColumns[1]);
+                            result.Add(lColumns[1]);
+                        }
+                    }
+                }
+
+            }
+            return result;
+        }
+
         public static void getData(DataType aType, string filename)
         {
             string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data";
