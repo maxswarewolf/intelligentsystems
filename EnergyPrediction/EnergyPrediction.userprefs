@@ -1,26 +1,24 @@
 ﻿<Properties StartupItem="EnergyPrediction/EnergyPrediction.csproj">
-  <MonoDevelop.Ide.Workbench ActiveDocument="EnergyPrediction/Genetic Program/MathObject.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EnergyPrediction/FileIO/DataIO.cs">
     <Files>
-      <File FileName="EnergyPrediction/Genetic Program/TreeNode.cs" Line="1" Column="1" />
-      <File FileName="EnergyPrediction/Genetic Program/GeneticProgChromosome.cs" Line="1" Column="1" />
-      <File FileName="EnergyPrediction/Genetic Program/MathObject.cs" Line="65" Column="39" />
+      <File FileName="EnergyPrediction/FileIO/DataIO.cs" Line="50" Column="77" />
+      <File FileName="EnergyPrediction/Program.cs" Line="40" Column="19" />
     </Files>
     <Pads>
-      <Pad Id="MonoDevelop.UnitTesting.TestPad">
-        <State name="__root__">
-          <Node name="EnergyPrediction" expanded="True" selected="True" />
-        </State>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/katieclark/Documents/WS16IntelligentSystems/EnergyPrediction/EnergyPrediction/Genetic Program/GeneticAlgoController.cs" line="40" column="1" />
+      <Breakpoint enabled="false" hitAction="PrintExpression" traceExpression="Result {0}, lErrorSum * -1 " file="/Users/Adrian/intelligentsystems/EnergyPrediction/EnergyPrediction/Genetic Shared/ErrorSquaredFitness.cs" line="46" column="1" />
+      <Breakpoint enabled="false" file="/Users/Adrian/intelligentsystems/EnergyPrediction/EnergyPrediction/Genetic Algorithim/GeneticAlgoController.cs" line="134" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
-    <Watch file="../../Projects/DataFiltering/DataFiltering/Program.cs" line="103" offsetX="487" offsetY="1499" expression="lCompletedFiles" liveUpdate="False" />
+    <Watch file="../../Projects/DataFiltering/DataFiltering/Program.cs" line="103" offsetX="717" offsetY="1488" expression="lCompletedFiles" liveUpdate="False" />
   </MonoDevelop.Ide.DebuggingService.PinnedWatches>
   <AuthorInfo Name="Katie Clark, Sean Grinter, Adrian Pellegrino" Email="Energy Prediction" Copyright="Katie Clark, Sean Grinter, Adrian Pellegrino" Company="Intelligent Systems Project " Trademark="" />
   <MonoDevelop.Ide.ItemProperties.EnergyPrediction PreferredExecutionTarget="MonoDevelop.Default" />

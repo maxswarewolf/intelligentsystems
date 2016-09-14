@@ -17,8 +17,9 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
+    <ConsolePause>true</ConsolePause>
     <PlatformTarget>x86</PlatformTarget>
+    <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <Optimize>true</Optimize>
@@ -97,10 +98,13 @@
     <Compile Include="Genetic Program\Tree Math\SymbolTypes.cs" />
     <Compile Include="Genetic Shared\ErrorSquaredFitness.cs" />
     <Compile Include="config\Randomizer.cs" />
+    <Compile Include="FileIO\DataType.cs" />
+    <Compile Include="FileIO\StateType.cs" />
+    <Compile Include="FileIO\GenFileData.cs" />
+    <Compile Include="FileIO\StateFileData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="config\GeneratorLinkingData.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Genetic Algorithim\" />
