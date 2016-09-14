@@ -100,8 +100,7 @@
     <Compile Include="config\Randomizer.cs" />
     <Compile Include="FileIO\DataType.cs" />
     <Compile Include="FileIO\StateType.cs" />
-    <Compile Include="FileIO\GenFileData.cs" />
-    <Compile Include="FileIO\StateFileData.cs" />
+    <Compile Include="FileIO\AppType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

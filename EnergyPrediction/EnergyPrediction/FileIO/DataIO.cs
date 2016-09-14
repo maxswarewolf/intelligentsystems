@@ -43,23 +43,20 @@ namespace EnergyPrediction
         public static DateTime StartDate { get; set; } = MinDate;
         public static DateTime EndDate { get; set; } = MaxDate;
 
-        static List<double> fGenData = new List<double>();
-
-        static List<StateFileData> fStateData = new List<StateFileData>();
+        static List<double> fData = new List<double>();
 
         public static int getLength()
         {
             switch (fDataSetType)
             {
                 case DataType.Generator:
-                    return fGenData.Count;
                 case DataType.State:
-                    return fStateData.Count;
+                    return fData.Count;
                 case DataType.Applicance:
                 case DataType.Test:
-                default:
                     return 0;
             }
+            return 0;
         }
 
         public static double getActualY(int x)
@@ -69,25 +66,39 @@ namespace EnergyPrediction
                 switch (fDataSetType)
                 {
                     case DataType.Generator:
-                        return fGenData[x];
                     case DataType.State:
-                        return fStateData[x].MegaWatts;
+                        return fData[x];
                     case DataType.Applicance:
                     case DataType.Test:
-                    default:
                         return Math.Sin(2 * x);
                 }
             }
+#pragma warning disable CS0168 // Variable is declared but never used
             catch (Exception ex)
+#pragma warning restore CS0168 // Variable is declared but never used
             {
                 //Console.WriteLine(ex.Message);
                 return 0;
             }
+            return 0;
         }
 
-        public static void Load5MinState(StateType aState, DateTime aStartDate, DateTime aEndDate)
+        public static void LoadMin(StateType aState)
         {
-            fStateData.Clear();
+            LoadMin(aState, StartDate, EndDate);
+        }
+        public static void LoadMin(string aGenCode)
+        {
+            LoadMin(aGenCode, StartDate, EndDate);
+        }
+        public static void LoadHalfHour(StateType aState)
+        {
+            LoadHalfHour(aState, StartDate, EndDate);
+        }
+
+        public static void LoadMin(StateType aState, DateTime aStartDate, DateTime aEndDate)
+        {
+            fData.Clear();
             fDataSetType = DataType.State;
             List<string> lGenerators = new Config().GeneratorLinks[aState.ToString()];
             string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/5min";
@@ -121,22 +132,22 @@ namespace EnergyPrediction
                                     value += Double.Parse(lColumns[2]);
                                 }
                                 else {
-                                    fStateData.Add(new StateFileData(aState, value));
+                                    fData.Add(value);
                                     currentTime = DateTime.Parse(lColumns[0]);
                                     value = Double.Parse(lColumns[2]);
                                 }
                             }
                         }
                     }
-                    if (fStateData.Count > 1)
-                        fStateData.RemoveAt(0);
+                    if (fData.Count > 1)
+                        fData.RemoveAt(0);
                 }
             }
         }
 
-        public static void Load5MinGen(string aGenCode, DateTime aStartDate, DateTime aEndDate)
+        public static void LoadMin(string aGenCode, DateTime aStartDate, DateTime aEndDate)
         {
-            fGenData.Clear();
+            fData.Clear();
             fDataSetType = DataType.Generator;
             string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/5min";
             string[] lFilePaths = Directory.GetFiles(Root, "*.csv", SearchOption.TopDirectoryOnly);
@@ -163,7 +174,7 @@ namespace EnergyPrediction
                         {
                             if (aGenCode.Equals(lColumns[1]))
                             {
-                                fGenData.Add(Double.Parse(lColumns[2]));
+                                fData.Add(Double.Parse(lColumns[2]));
                             }
                         }
                     }
@@ -173,43 +184,46 @@ namespace EnergyPrediction
             }
         }
 
-        public static List<string> getGenerators()
+        public static void LoadHalfHour(StateType aState, DateTime aStartDate, DateTime aEndDate)
         {
-            List<string> current = new List<string>();
-            List<string> result = new List<string>();
-            List<string> lVic = new Config().GeneratorLinks["VIC"];
-            List<string> lAct = new Config().GeneratorLinks["ACT"];
-            List<string> lTas = new Config().GeneratorLinks["TAS"];
-            List<string> lSa = new Config().GeneratorLinks["SA"];
-            List<string> lQld = new Config().GeneratorLinks["QLD"];
-            List<string> lNsw = new Config().GeneratorLinks["NSW"];
-
-            current.AddRange(lVic);
-            current.AddRange(lAct);
-            current.AddRange(lTas);
-            current.AddRange(lSa);
-            current.AddRange(lQld);
-            current.AddRange(lNsw);
-
-            string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/5min";
+            fData.Clear();
+            fDataSetType = DataType.State;
+            string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/30min";
             string[] lFilePaths = Directory.GetFiles(Root, "*.csv", SearchOption.TopDirectoryOnly);
+            List<string> lFiles = new List<string>();
             foreach (string s in lFilePaths)
             {
-                List<string> lColumns = new List<string>();
-                using (var reader = new CsvFileReader(s))
+                lFiles.Add(Path.GetFileNameWithoutExtension(s));
+            }
+
+            foreach (string s in lFiles)
+            {
+                DateTime temp = DateTime.Parse(s);
+                if (temp >= aStartDate)
                 {
-                    while (reader.ReadRow(lColumns))
+                    if (temp > aEndDate)
                     {
-                        if (!current.Contains(lColumns[1]))
+                        break;
+                    }
+                    string path = Root + "/" + s + ".csv";
+                    List<string> lColumns = new List<string>();
+                    using (var reader = new CsvFileReader(path))
+                    {
+                        while (reader.ReadRow(lColumns))
                         {
-                            current.Add(lColumns[1]);
-                            result.Add(lColumns[1]);
+                            if (lColumns[1].Equals(aState + "1"))
+                            {
+                                fData.Add(Double.Parse(lColumns[2]));
+                            }
                         }
                     }
                 }
-
             }
-            return result;
+        }
+
+        public static void LoadMin(AppType aApp, DateTime aStartData, DateTime aEndDate)
+        {
+
         }
 
         public static void getData(DataType aType, string filename)
