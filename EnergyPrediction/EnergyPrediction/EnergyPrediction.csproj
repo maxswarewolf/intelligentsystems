@@ -100,6 +100,7 @@
     <Compile Include="config\Randomizer.cs" />
     <Compile Include="FileIO\AppType.cs" />
     <Compile Include="FileIO\StateType.cs" />
+    <Compile Include="Genetic Shared\ControllerBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

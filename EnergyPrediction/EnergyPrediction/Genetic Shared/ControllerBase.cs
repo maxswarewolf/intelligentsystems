@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// Program.cs
+// ControllerInterface.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -35,32 +35,39 @@ using GeneticSharp.Domain.Selections;
 using GeneticSharp.Domain.Terminations;
 using GeneticSharp.Domain.Populations;
 using GeneticSharp.Domain.Reinsertions;
-using Gtk;
+using System.Collections.Generic;
 
 namespace EnergyPrediction
 {
-    class MainClass
+    public abstract class ControllerBase
     {
-        public static void Main(string[] args)
+        public IChromosome Chromosome { get; set; }
+        public ICrossover Crossover { get; set; }
+        public IFitness Fitness { get; set; }
+        public IMutation Mutation { get; set; }
+        public ISelection Selection { get; set; }
+        public ITermination Termination { get; set; }
+        public IReinsertion Reinsertion { get; set; }
+        public int PopulationCount { get; set; }
+        public float CrossoverProbability { get; set; } = 0.8f;
+        public float MutationProbability { get; set; } = 0.4f;
+        protected GeneticAlgorithm fGA { get; set; }
+        protected List<Func<IChromosome, bool>> fGenerationRanEventFunctions = new List<Func<IChromosome, bool>>();
+
+        public ControllerBase(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, ITermination aTer, IReinsertion aRein, int aPop)
         {
-            DataIO.LoadMin(StateType.VIC, DateTime.Parse("1/9/16"), DateTime.Parse("2/9/16"));
-            var AlgoTest = new GeneticAlgoController(new GeneticAlgoChromosome(3),
-                                                     new OnePointCrossover(2),
-                                                     new ErrorSquaredFitness(),
-                                                     new UniformMutation(),
-                                                     new EliteSelection(),
-                                                     new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromMinutes(1))),
-                                                     new ElitistReinsertion(), 200);
-            AlgoTest.CrossoverProbability = 0.6f;
-            AlgoTest.MutationProbability = 0.6f;
-            AlgoTest.addEventFunction(AlgoTest.DefaultDraw);
-            AlgoTest.Start();
-            //var test1 = new EnergyPrediction.GeneticAlgoController(200);
-            //test1.Start();
-            //Application.Init();
-            //var win = new MainWindow();
-            //win.Show();
-            //Application.Run();
+            Chromosome = aChromo;
+            Crossover = aCross;
+            Fitness = aFit;
+            Mutation = aMut;
+            Selection = aSel;
+            Termination = aTer;
+            Reinsertion = aRein;
+            PopulationCount = aPop;
         }
+
+        public abstract void addEventFunction(Func<IChromosome, bool> aFunction);
+        public abstract void removeEventFunction(Func<IChromosome, bool> aFunction);
+        public abstract void Start();
     }
 }

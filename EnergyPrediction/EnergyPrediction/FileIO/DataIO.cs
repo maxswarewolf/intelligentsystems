@@ -60,7 +60,7 @@ namespace EnergyPrediction
             {
                 return Math.Sin(2 * x);
             }
-            if (x > 0 && x < fData.Count)
+            if (x >= 0 && x < fData.Count)
                 return fData[x];
             return double.PositiveInfinity;
         }

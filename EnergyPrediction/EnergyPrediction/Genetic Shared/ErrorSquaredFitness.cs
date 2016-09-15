@@ -39,7 +39,7 @@ namespace EnergyPrediction
             var lChromosome = aChromosome as GeneticAlgoChromosome;
 
             double lErrorSum = 0.0;
-            for (int x = 0; x < 100; x++)
+            for (int x = 0; x < DataIO.getLength(); x++)
             {
                 lErrorSum += FitnessBase.EvaluateErrorSquared(lChromosome.getCalculatedY(x), DataIO.getActualY(x));
             }

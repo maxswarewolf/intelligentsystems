@@ -1,4 +1,4 @@
-﻿<Properties StartupItem="EnergyPrediction/EnergyPrediction.csproj">
+﻿<Properties StartupConfiguration="{5DB6A5CF-9686-4359-B884-37B0FB21524D}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="EnergyPrediction/FileIO/DataIO.cs">
     <Files>
       <File FileName="EnergyPrediction/FileIO/DataIO.cs" Line="50" Column="77" />

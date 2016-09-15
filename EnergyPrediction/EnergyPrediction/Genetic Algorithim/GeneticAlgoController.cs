@@ -37,83 +37,53 @@ using GeneticSharp.Domain.Populations;
 using GeneticSharp.Domain.Reinsertions;
 namespace EnergyPrediction
 {
-    public class GeneticAlgoController
+    public class GeneticAlgoController : ControllerBase
     {
-        public GeneticAlgorithm fGA { get; private set; }
-        int fPopulationSize;
-        //y = Sin(2x)
+        public GeneticAlgoController(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, ITermination aTer, IReinsertion aRein, int aPop)
+            : base(aChromo, aCross, aFit, aMut, aSel, aTer, aRein, aPop)
+        { }
 
-        public GeneticAlgoController(int aPopulationSize)
+        public bool DefaultDraw(IChromosome aChromosome)
         {
-            fPopulationSize = aPopulationSize;
-        }
-
-        public ITermination CreateTermination()
-        {
-            return new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromMinutes(1)));
-        }
-
-        public IChromosome CreateChromosome()
-        {
-            return new GeneticAlgoChromosome(5);
-        }
-
-        public IFitness CreateFitness()
-        {
-            return new ErrorSquaredFitness();
-        }
-
-        public ICrossover CreateCrossover()
-        {
-            return new OnePointCrossover(2);
-        }
-
-        public IMutation CreateMutation()
-        {
-            return new UniformMutation();
-        }
-
-        public ISelection CreateSelection()
-        {
-            return new StochasticSelection();
-        }
-
-        public IPopulation CreatePopulation()
-        {
-            var lPopulation = new Population(fPopulationSize, fPopulationSize * 2, CreateChromosome());
-            //lPopulation.GenerationStrategy = new PerformanceGenerationStrategy();
-            return lPopulation;
-        }
-
-        public void Draw(IChromosome aBestChromosome)
-        {
-            var lBest = aBestChromosome.GetGenes();
+            var lBest = aChromosome.GetGenes();
             Console.Clear();
 
             Console.WriteLine();
             Console.WriteLine("Generations: {0}", fGA.Population.GenerationsNumber);
-            Console.WriteLine("Fitness: {0}", aBestChromosome.Fitness);
+            Console.WriteLine("Fitness: {0}", aChromosome.Fitness);
             Console.WriteLine("Genes: {0:00.####}, {1:00.####}, {2:00.####}, {3:00.####}", lBest[0].Value, lBest[1].Value, lBest[2].Value, lBest[3].Value);
-            Console.WriteLine("Time: {0}", fGA.TimeEvolving);
-
+            //Console.WriteLine("Time: {0}", fGA.TimeEvolving);
+            return true;
         }
 
-        public void Start()
+        public override void addEventFunction(Func<IChromosome, bool> aFunction)
         {
-            fGA = new GeneticAlgorithm(CreatePopulation(), CreateFitness(), CreateSelection(), CreateCrossover(), CreateMutation());
-            fGA.Termination = CreateTermination();
-            fGA.CrossoverProbability = 0.6f;
-            fGA.MutationProbability = 0.6f;
-            fGA.Reinsertion = new ElitistReinsertion();
+            fGenerationRanEventFunctions.Add(aFunction);
+        }
 
-            Console.WriteLine("STARTING...");
+        public override void removeEventFunction(Func<IChromosome, bool> aFunction)
+        {
+            fGenerationRanEventFunctions.Remove(aFunction);
+        }
 
-            var lTerminationName = fGA.Termination.GetType().Name;
-            fGA.GenerationRan += delegate
+        public override void Start()
+        {
+            IPopulation lPop = new Population(PopulationCount, PopulationCount * 2, Chromosome);
+            //todo: Dicusss the Need or want for a generation strategy 
+            fGA = new GeneticAlgorithm(lPop, Fitness, Selection, Crossover, Mutation);
+            fGA.Termination = Termination;
+            fGA.CrossoverProbability = CrossoverProbability;
+            fGA.MutationProbability = MutationProbability;
+            fGA.Reinsertion = Reinsertion;
+
+
+            foreach (Func<IChromosome, bool> action in fGenerationRanEventFunctions)
             {
-                var lBestChromosome = fGA.Population.BestChromosome;
-                Draw(lBestChromosome);
-            };
+                fGA.GenerationRan += delegate
+                {
+                    action(fGA.Population.BestChromosome);
+                };
+            }
 
             try
             {
@@ -133,6 +103,101 @@ namespace EnergyPrediction
             Console.WriteLine();
             Console.WriteLine("Evolved: " + lBest[0].Value + ", " + lBest[1].Value + ", " + lBest[2].Value + ", " + lBest[3].Value);
         }
+
+        #region oldVersion
+        //public GeneticAlgorithm fGA { get; private set; }
+        //int fPopulationSize;
+
+        //public GeneticAlgoController(int aPopulationSize)
+        //{
+        //    fPopulationSize = aPopulationSize;
+        //}
+
+        //public ITermination CreateTermination()
+        //{
+        //    return new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromMinutes(1)));
+        //}
+
+        //public IChromosome CreateChromosome()
+        //{
+        //    return new GeneticAlgoChromosome(5);
+        //}
+
+        //public IFitness CreateFitness()
+        //{
+        //    return new ErrorSquaredFitness();
+        //}
+
+        //public ICrossover CreateCrossover()
+        //{
+        //    return new OnePointCrossover(2);
+        //}
+
+        //public IMutation CreateMutation()
+        //{
+        //    return new UniformMutation();
+        //}
+
+        //public ISelection CreateSelection()
+        //{
+        //    return new StochasticSelection();
+        //}
+
+        //public IPopulation CreatePopulation()
+        //{
+        //    var lPopulation = new Population(fPopulationSize, fPopulationSize * 2, CreateChromosome());
+        //    //lPopulation.GenerationStrategy = new PerformanceGenerationStrategy();
+        //    return lPopulation;
+        //}
+
+        //public void Draw(IChromosome aBestChromosome)
+        //{
+        //    var lBest = aBestChromosome.GetGenes();
+        //    Console.Clear();
+
+        //    Console.WriteLine();
+        //    Console.WriteLine("Generations: {0}", fGA.Population.GenerationsNumber);
+        //    Console.WriteLine("Fitness: {0}", aBestChromosome.Fitness);
+        //    Console.WriteLine("Genes: {0:00.####}, {1:00.####}, {2:00.####}, {3:00.####}", lBest[0].Value, lBest[1].Value, lBest[2].Value, lBest[3].Value);
+        //    Console.WriteLine("Time: {0}", fGA.TimeEvolving);
+        //}
+
+        //public void Start()
+        //{
+        //    fGA = new GeneticAlgorithm(CreatePopulation(), CreateFitness(), CreateSelection(), CreateCrossover(), CreateMutation());
+        //    fGA.Termination = CreateTermination();
+        //    fGA.CrossoverProbability = 0.6f;
+        //    fGA.MutationProbability = 0.6f;
+        //    fGA.Reinsertion = new ElitistReinsertion();
+
+        //    Console.WriteLine("STARTING...");
+
+        //    var lTerminationName = fGA.Termination.GetType().Name;
+        //    fGA.GenerationRan += delegate
+        //    {
+        //        var lBestChromosome = fGA.Population.BestChromosome;
+        //        Draw(lBestChromosome);
+        //    };
+
+        //    try
+        //    {
+        //        fGA.Start();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.ForegroundColor = ConsoleColor.DarkRed;
+        //        Console.WriteLine();
+        //        Console.WriteLine("Error Message: {0}", ex.Message);
+        //        Console.WriteLine("Stack: {0}", ex.StackTrace);
+        //        Console.ResetColor();
+        //        Console.ReadKey();
+        //        return;
+        //    }
+        //    var lBest = fGA.Population.BestChromosome.GetGenes();
+        //    Console.WriteLine();
+        //    Console.WriteLine("Evolved: " + lBest[0].Value + ", " + lBest[1].Value + ", " + lBest[2].Value + ", " + lBest[3].Value);
+        //}
+        #endregion
 
     }
 }

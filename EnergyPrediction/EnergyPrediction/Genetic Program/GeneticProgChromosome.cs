@@ -49,7 +49,7 @@ namespace EnergyPrediction
         /// KC: chromosone is initialized as a tree from file TreeNode
         /// must use "root" object to access tree
         /// last level (i.e. level == depth) is ensured to be a numerical value, everything else is a MathObject 
-        public GeneticProgChromosome(int aResultPeek) : base(0)
+        public GeneticProgChromosome(int aResultPeek) : base(2)
         {
             MathObject.RangePeek = aResultPeek;
             Queue<TreeNode<MathObject>> parentList = new Queue<TreeNode<MathObject>>();
