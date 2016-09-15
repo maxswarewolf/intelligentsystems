@@ -53,7 +53,7 @@ namespace EnergyPrediction
             Reinsertion = new List<string>() { "PLACE HOLDER" };
 
             GeneratorLinks = new Dictionary<string, List<string>>() {
-                { "ACT", new List<string>() {"ROYALLA1"}},
+                { "ACT", new List<string>() { "ROYALLA1" }},
                 { "VIC", new List<string>() { "RUBICON", "CLOVER", "YAMBUKWF", "MLWF1", "CHALLHWF", "PORTWF", "WAUBRAWF"} },
                 { "TAS", new List<string>() { "BBDISEL1", "BUTLERSG", "CATAGUN1", "CLUNY", "GEORGTN1", "GEORGTN2", "MEADOWB2", "PALOONA", "PORTLAT1", "QUERIVE1", "REPULSE", "ROWALLAN", "WOOLNTH1"} },
                 { "SA" , new List<string>() { "CNUNDAWF", "ANGAS1", "ANGAS2", "WPWF", "CATHROCK", "LKBONNY1", "MTMILLAR", "STARHLWF"} },

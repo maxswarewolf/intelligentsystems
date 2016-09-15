@@ -40,8 +40,13 @@ namespace EnergyPrediction
                 DataIO.LoadHalfHour((StateType)Enum.Parse(typeof(StateType), key));
                 Console.WriteLine(DataIO.getActualY(100));
             }
-            DataIO.LoadMin("BUTLERSG");
-            Console.WriteLine(DataIO.getActualY(100));
+            //DataIO.LoadMin("BUTLERSG");
+            //Console.WriteLine(DataIO.getActualY(100));
+            Console.WriteLine();
+            foreach (AppType app in Enum.GetValues(typeof(AppType)))
+            {
+                DataIO.LoadMin(app);
+            }
             //var test1 = new EnergyPrediction.GeneticAlgoController(200);
             //test1.Start();
             //Application.Init();

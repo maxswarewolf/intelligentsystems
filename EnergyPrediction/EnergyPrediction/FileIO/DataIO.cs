@@ -34,7 +34,7 @@ namespace EnergyPrediction
 {
     public static class DataIO
     {
-        static DataType fDataSetType = DataType.Generator;
+        static bool Testing = false;
 
         public static DateTime MinDate { get; private set; } = DateTime.Parse("21/2/2015");
         public static DateTime MaxDate { get; private set; } = DateTime.Parse("7/9/2016");
@@ -47,40 +47,20 @@ namespace EnergyPrediction
 
         public static int getLength()
         {
-            switch (fDataSetType)
+            if (Testing)
             {
-                case DataType.Generator:
-                case DataType.State:
-                    return fData.Count;
-                case DataType.Applicance:
-                case DataType.Test:
-                    return 0;
+                return 0;
             }
-            return 0;
+            return fData.Count;
         }
 
         public static double getActualY(int x)
         {
-            try
+            if (Testing)
             {
-                switch (fDataSetType)
-                {
-                    case DataType.Generator:
-                    case DataType.State:
-                        return fData[x];
-                    case DataType.Applicance:
-                    case DataType.Test:
-                        return Math.Sin(2 * x);
-                }
+                return Math.Sin(2 * x);
             }
-#pragma warning disable CS0168 // Variable is declared but never used
-            catch (Exception ex)
-#pragma warning restore CS0168 // Variable is declared but never used
-            {
-                //Console.WriteLine(ex.Message);
-                return 0;
-            }
-            return 0;
+            return fData[x];
         }
 
         public static void LoadMin(StateType aState)
@@ -91,6 +71,10 @@ namespace EnergyPrediction
         {
             LoadMin(aGenCode, StartDate, EndDate);
         }
+        public static void LoadMin(AppType aApp)
+        {
+            LoadMin(aApp, StartDate, EndDate);
+        }
         public static void LoadHalfHour(StateType aState)
         {
             LoadHalfHour(aState, StartDate, EndDate);
@@ -99,7 +83,6 @@ namespace EnergyPrediction
         public static void LoadMin(StateType aState, DateTime aStartDate, DateTime aEndDate)
         {
             fData.Clear();
-            fDataSetType = DataType.State;
             List<string> lGenerators = new Config().GeneratorLinks[aState.ToString()];
             string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/5min";
             string[] lFilePaths = Directory.GetFiles(Root, "*.csv", SearchOption.TopDirectoryOnly);
@@ -148,7 +131,6 @@ namespace EnergyPrediction
         public static void LoadMin(string aGenCode, DateTime aStartDate, DateTime aEndDate)
         {
             fData.Clear();
-            fDataSetType = DataType.Generator;
             string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/5min";
             string[] lFilePaths = Directory.GetFiles(Root, "*.csv", SearchOption.TopDirectoryOnly);
             List<string> lFiles = new List<string>();
@@ -187,7 +169,6 @@ namespace EnergyPrediction
         public static void LoadHalfHour(StateType aState, DateTime aStartDate, DateTime aEndDate)
         {
             fData.Clear();
-            fDataSetType = DataType.State;
             string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/30min";
             string[] lFilePaths = Directory.GetFiles(Root, "*.csv", SearchOption.TopDirectoryOnly);
             List<string> lFiles = new List<string>();
@@ -223,27 +204,35 @@ namespace EnergyPrediction
 
         public static void LoadMin(AppType aApp, DateTime aStartData, DateTime aEndDate)
         {
-
-        }
-
-        public static void getData(DataType aType, string filename)
-        {
-            string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data";
-
-
-            string[] folders = Directory.GetDirectories(Root);
-            Console.WriteLine(Root);
-            foreach (string folder in folders)
+            fData.Clear();
+            string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/App";
+            string[] lFilePaths = Directory.GetFiles(Root, "*.csv", SearchOption.TopDirectoryOnly);
+            List<string> lFiles = new List<string>();
+            foreach (string s in lFilePaths)
             {
-                string[] files = Directory.GetFiles(folder);
-                foreach (string file in files)
+                lFiles.Add(Path.GetFileNameWithoutExtension(s));
+            }
+            foreach (string s in lFiles)
+            {
+                DateTime temp = DateTime.Parse(s.Substring(0, 10));
+                if (temp >= aStartData)
                 {
-                    Console.WriteLine(file);
+                    if (temp > aEndDate)
+                    {
+                        break;
+                    }
+                    string path = Root + "/" + s + ".csv";
+                    List<string> lColumns = new List<string>();
+                    using (var reader = new CsvFileReader(path))
+                    {
+                        while (reader.ReadRow(lColumns))
+                        {
+                            fData.Add(Double.Parse(lColumns[(int)aApp]));
+                        }
+                    }
                 }
             }
         }
-        //todo: Add File IO
-        //todo: Add Internal Storage
     }
 }
 
