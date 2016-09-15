@@ -60,7 +60,9 @@ namespace EnergyPrediction
             {
                 return Math.Sin(2 * x);
             }
-            return fData[x];
+            if (x > 0 && x < fData.Count)
+                return fData[x];
+            return double.PositiveInfinity;
         }
 
         public static void LoadMin(StateType aState)
@@ -225,6 +227,7 @@ namespace EnergyPrediction
                     List<string> lColumns = new List<string>();
                     using (var reader = new CsvFileReader(path))
                     {
+                        //Console.WriteLine("{0}, index {1}", aApp, (int)aApp);
                         while (reader.ReadRow(lColumns))
                         {
                             fData.Add(Double.Parse(lColumns[(int)aApp]));

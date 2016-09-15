@@ -30,7 +30,6 @@ namespace EnergyPrediction
 {
     public enum StateType
     {
-        VIC, TAS, SA, QLD, NSW, ACT
+        VIC, TAS, SA, NSW, QLD, ACT
     }
 }
-
