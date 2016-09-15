@@ -29,7 +29,7 @@ using System;
 using GeneticSharp.Domain.Chromosomes;
 namespace EnergyPrediction
 {
-    public class GeneticAlgoChromosome : ChromosomeBase
+    public class GeneticAlgoChromosome : ChromosomeBase, ChromosomeExt
     {
 
         int fNumberOfGenes;

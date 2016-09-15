@@ -66,8 +66,50 @@ namespace EnergyPrediction
             PopulationCount = aPop;
         }
 
-        public abstract void addEventFunction(Func<IChromosome, bool> aFunction);
-        public abstract void removeEventFunction(Func<IChromosome, bool> aFunction);
-        public abstract void Start();
+        public virtual void addEventFunction(Func<IChromosome, bool> aFunction)
+        {
+            fGenerationRanEventFunctions.Add(aFunction);
+        }
+
+        public virtual void removeEventFunction(Func<IChromosome, bool> aFunction)
+        {
+            fGenerationRanEventFunctions.Remove(aFunction);
+        }
+
+        public abstract bool DefaultDraw(IChromosome aChromosome);
+        public virtual void Start()
+        {
+            IPopulation lPop = new ProgPopulation(PopulationCount, PopulationCount * 2, Chromosome);
+            //todo: Dicusss the Need or want for a generation strategy 
+            fGA = new GeneticAlgorithm(lPop, Fitness, Selection, Crossover, Mutation);
+            fGA.Termination = Termination;
+            fGA.CrossoverProbability = CrossoverProbability;
+            fGA.MutationProbability = MutationProbability;
+            fGA.Reinsertion = Reinsertion;
+
+
+            foreach (Func<IChromosome, bool> action in fGenerationRanEventFunctions)
+            {
+                fGA.GenerationRan += delegate
+                {
+                    action(fGA.Population.BestChromosome);
+                };
+            }
+
+            try
+            {
+                fGA.Start();
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine();
+                Console.WriteLine("Error Message: {0}", ex.Message);
+                Console.WriteLine("Stack: {0}", ex.StackTrace);
+                Console.ResetColor();
+                Console.ReadKey();
+                return;
+            }
+        }
     }
 }

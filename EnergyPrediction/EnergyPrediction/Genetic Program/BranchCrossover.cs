@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// GeneticProgController.cs
+// BranchCrossover.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -26,40 +26,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using GeneticSharp.Domain;
+using System.Collections.Generic;
 using GeneticSharp.Domain.Chromosomes;
 using GeneticSharp.Domain.Crossovers;
-using GeneticSharp.Domain.Fitnesses;
-using GeneticSharp.Domain.Mutations;
-using GeneticSharp.Domain.Selections;
-using GeneticSharp.Domain.Terminations;
-using GeneticSharp.Domain.Populations;
-using GeneticSharp.Domain.Reinsertions;
-
 namespace EnergyPrediction
 {
-    public class GeneticProgController : ControllerBase
+    public class BranchCrossover : CrossoverBase
     {
-        public GeneticProgController(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, ITermination aTer, IReinsertion aRein, int aPop)
-            : base(aChromo, aCross, aFit, aMut, aSel, aTer, aRein, aPop)
-        { }
-
-        public override bool DefaultDraw(IChromosome aChromosome)
+        public BranchCrossover() : base(2, 2)
         {
-            Console.Clear();
-
-            Console.WriteLine();
-            Console.WriteLine("Generations: {0}", fGA.Population.GenerationsNumber);
-            Console.WriteLine("Fitness: {0}", aChromosome.Fitness);
-            Console.WriteLine("Time: {0}", fGA.TimeEvolving);
-            return true;
         }
 
-        public override void Start()
+        protected override IList<IChromosome> PerformCross(IList<IChromosome> parents)
         {
-            base.Start();
-            //todo: add in final display of best chromosome or other display data
+            throw new NotImplementedException();
         }
     }
 }
-
