@@ -97,7 +97,7 @@ namespace EnergyPrediction
 
         public override Gene GenerateGene(int geneIndex)
         {
-            throw new NotImplementedException();
+            return new Gene(root);
         }
     }
 }
