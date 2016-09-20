@@ -79,15 +79,6 @@ namespace EnergyPrediction
         public abstract bool DefaultDraw(IChromosome aChromosome);
         public virtual void Start()
         {
-            IPopulation lPop = new ProgPopulation(PopulationCount, PopulationCount * 2, Chromosome);
-            //todo: Dicusss the Need or want for a generation strategy 
-            fGA = new GeneticAlgorithm(lPop, Fitness, Selection, Crossover, Mutation);
-            fGA.Termination = Termination;
-            fGA.CrossoverProbability = CrossoverProbability;
-            fGA.MutationProbability = MutationProbability;
-            fGA.Reinsertion = Reinsertion;
-
-
             foreach (Func<IChromosome, bool> action in fGenerationRanEventFunctions)
             {
                 fGA.GenerationRan += delegate

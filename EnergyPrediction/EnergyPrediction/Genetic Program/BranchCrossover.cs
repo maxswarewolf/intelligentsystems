@@ -39,7 +39,11 @@ namespace EnergyPrediction
 
         protected override IList<IChromosome> PerformCross(IList<IChromosome> parents)
         {
-            throw new NotImplementedException();
+            IChromosome lParentOne = parents[0];
+            IChromosome lParentTwo = parents[1];
+
+            TreeNode<MathObject> lNode1 = lParentOne.GetGene(0).Value as TreeNode<MathObject>;
+            return parents;
         }
     }
 }

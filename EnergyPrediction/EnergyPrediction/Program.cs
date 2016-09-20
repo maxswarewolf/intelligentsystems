@@ -41,31 +41,29 @@ namespace EnergyPrediction
         {
             DataIO.LoadMin(StateType.VIC, DateTime.Parse("1/9/16"), DateTime.Parse("1/9/16"));
 
-            var AlgoTest = new GeneticAlgoController(new GeneticAlgoChromosome(2000),
+            var AlgoTest = new GeneticAlgoController(new GeneticAlgoChromosome(1000, 4),
                                                      new OnePointCrossover(2),
                                                      new ErrorSquaredFitness(),
-                                                     new UniformMutation(),
+                                                     new TworsMutation(),
                                                      new EliteSelection(),
-                                                     new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromSeconds(20))),
+                                                     new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromSeconds(90))),
                                                      new ElitistReinsertion(), 200);
             AlgoTest.CrossoverProbability = 0.6f;
             AlgoTest.MutationProbability = 0.6f;
             AlgoTest.addEventFunction(AlgoTest.DefaultDraw);
             AlgoTest.Start();
 
-            var ProgTest = new GeneticProgController(new GeneticProgChromosome(10, 3),
-                                                     new BranchCrossover(),
-                                                     new ErrorSquaredFitness(),
-                                                     new UniformTreeMutation(),
-                                                     new EliteSelection(),
-                                                     new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromMinutes(1))),
-                                                     new ElitistReinsertion(), 200);
-            ProgTest.CrossoverProbability = 0.6f;
-            ProgTest.MutationProbability = 0.6f;
-            ProgTest.addEventFunction(ProgTest.DefaultDraw);
-            ProgTest.Start();
-            //var test1 = new EnergyPrediction.GeneticAlgoController(200);
-            //test1.Start();
+            //var ProgTest = new GeneticProgController(new GeneticProgChromosome(10, 3),
+            //                                         new BranchCrossover(),
+            //                                         new ErrorSquaredFitness(),
+            //                                         new UniformTreeMutation(),
+            //                                         new EliteSelection(),
+            //                                         new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromMinutes(1))),
+            //                                         new ElitistReinsertion(), 200);
+            //ProgTest.CrossoverProbability = 0.6f;
+            //ProgTest.MutationProbability = 0.6f;
+            //ProgTest.addEventFunction(ProgTest.DefaultDraw);
+            //ProgTest.Start();
             //Application.Init();
             //var win = new MainWindow();
             //win.Show();

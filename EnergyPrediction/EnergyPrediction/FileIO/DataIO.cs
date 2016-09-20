@@ -34,7 +34,7 @@ namespace EnergyPrediction
 {
     public static class DataIO
     {
-        static bool Testing = false;
+        static bool Testing = true;
 
         public static DateTime MinDate { get; private set; } = DateTime.Parse("21/2/2015");
         public static DateTime MaxDate { get; private set; } = DateTime.Parse("7/9/2016");
@@ -49,7 +49,7 @@ namespace EnergyPrediction
         {
             if (Testing)
             {
-                return 0;
+                return 1000;
             }
             return fData.Count;
         }
@@ -58,7 +58,7 @@ namespace EnergyPrediction
         {
             if (Testing)
             {
-                return Math.Sin(2 * x);
+                return 1.5 * Math.Sin(2 * Math.Pow(x, 2)) + 3.3;
             }
             if (x >= 0 && x < fData.Count)
                 return fData[x];

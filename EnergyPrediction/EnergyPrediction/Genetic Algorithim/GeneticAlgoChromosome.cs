@@ -31,23 +31,24 @@ namespace EnergyPrediction
 {
     public class GeneticAlgoChromosome : ChromosomeBase, ChromosomeExt
     {
-
-        int fNumberOfGenes;
-        int fRangePeek { get; set; }
-
+        public double RangePeek { get; private set; }
+        private double OldFitness = 0;
         /// <summary>
         /// Initializes a new instance of the <see cref="T:EnergyPrediction.GeneticAlgoChromosome"/> class.
         /// </summary>
         /// <param name="aResultRange">A result range. eg -20 to 20</param>
-        public GeneticAlgoChromosome(int aResultPeek) : base(4)
+        public GeneticAlgoChromosome(double aResultPeek, int aNumberOfGenes) : base(aNumberOfGenes)
         {
-            fNumberOfGenes = 4;
-            fRangePeek = aResultPeek;
+            RangePeek = aResultPeek;
 
-            for (int i = 0; i < fNumberOfGenes; i++)
+            for (int i = 0; i < Length; i++)
             {
                 ReplaceGene(i, GenerateGene(i));
             }
+        }
+        protected GeneticAlgoChromosome(double aResultPeek, int aNumberOfGenes, double aOldFitness) : this(aResultPeek, aNumberOfGenes)
+        {
+            OldFitness = aOldFitness;
         }
 
         public double getCalculatedY(int x)
@@ -62,7 +63,7 @@ namespace EnergyPrediction
         /// <param name="geneIndex">Gene index.</param>
         public override Gene GenerateGene(int geneIndex)
         {
-            return new Gene(Randomizer.NextInt(fRangePeek * -1, fRangePeek + 1));
+            return new Gene(Randomizer.NextDouble(RangePeek * -1, RangePeek + 1));
         }
 
         /// <summary>
@@ -71,7 +72,19 @@ namespace EnergyPrediction
         /// <returns>The new.</returns>
         public override IChromosome CreateNew()
         {
-            return new GeneticAlgoChromosome(fRangePeek);
+            double value = 0;
+            if (Fitness > OldFitness)
+            {
+                value = RangePeek + 2;
+            }
+            else if (Fitness < OldFitness)
+            {
+                value = RangePeek - 2;
+            }
+            else {
+                value = RangePeek / 2;
+            }
+            return new GeneticAlgoChromosome(value, Length, (double)Fitness);
         }
     }
 }

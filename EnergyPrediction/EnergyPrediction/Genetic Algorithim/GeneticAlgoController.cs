@@ -46,11 +46,13 @@ namespace EnergyPrediction
         public override bool DefaultDraw(IChromosome aChromosome)
         {
             var lBest = aChromosome.GetGenes();
+            var lChromosome = aChromosome as GeneticAlgoChromosome;
             Console.Clear();
 
             Console.WriteLine();
             Console.WriteLine("Generations: {0}", fGA.Population.GenerationsNumber);
             Console.WriteLine("Fitness: {0}", aChromosome.Fitness);
+            Console.WriteLine("+- Range Value: {0}", lChromosome.RangePeek);
             Console.WriteLine("Genes: {0:00.####}, {1:00.####}, {2:00.####}, {3:00.####}", lBest[0].Value, lBest[1].Value, lBest[2].Value, lBest[3].Value);
             Console.WriteLine("Time: {0}", fGA.TimeEvolving);
             return true;
@@ -58,7 +60,17 @@ namespace EnergyPrediction
 
         public override void Start()
         {
+            IPopulation lPop = new Population(PopulationCount, PopulationCount * 2, Chromosome);
+            lPop.GenerationStrategy = new PerformanceGenerationStrategy(100);
+            //todo: Dicusss the Need or want for a generation strategy 
+            fGA = new GeneticAlgorithm(lPop, Fitness, Selection, Crossover, Mutation);
+            fGA.Termination = Termination;
+            fGA.CrossoverProbability = CrossoverProbability;
+            fGA.MutationProbability = MutationProbability;
+            fGA.Reinsertion = Reinsertion;
+
             base.Start();
+
             var lBest = fGA.Population.BestChromosome.GetGenes();
             Console.WriteLine();
             Console.WriteLine("Evolved: " + lBest[0].Value + ", " + lBest[1].Value + ", " + lBest[2].Value + ", " + lBest[3].Value);
