@@ -39,6 +39,7 @@ namespace EnergyPrediction
     {
         public static void Main(string[] args)
         {
+            /*
             DataIO.LoadMin(StateType.VIC, DateTime.Parse("1/9/16"), DateTime.Parse("1/9/16"));
 
             var AlgoTest = new GeneticAlgoController(new GeneticAlgoChromosome(1000, 4),
@@ -52,6 +53,7 @@ namespace EnergyPrediction
             AlgoTest.MutationProbability = 0.6f;
             AlgoTest.addEventFunction(AlgoTest.DefaultDraw);
             AlgoTest.Start();
+            */
 
             //var ProgTest = new GeneticProgController(new GeneticProgChromosome(10, 3),
             //                                         new BranchCrossover(),
