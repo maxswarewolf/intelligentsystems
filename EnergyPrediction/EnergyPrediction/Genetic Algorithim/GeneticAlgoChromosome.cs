@@ -32,7 +32,6 @@ namespace EnergyPrediction
     public class GeneticAlgoChromosome : ChromosomeBase, ChromosomeExt
     {
         public double RangePeek { get; private set; }
-        private double OldFitness = 0;
         /// <summary>
         /// Initializes a new instance of the <see cref="T:EnergyPrediction.GeneticAlgoChromosome"/> class.
         /// </summary>
@@ -46,14 +45,10 @@ namespace EnergyPrediction
                 ReplaceGene(i, GenerateGene(i));
             }
         }
-        protected GeneticAlgoChromosome(double aResultPeek, int aNumberOfGenes, double aOldFitness) : this(aResultPeek, aNumberOfGenes)
-        {
-            OldFitness = aOldFitness;
-        }
 
         public double getCalculatedY(int x)
         {
-            return (int)this.GetGene(0).Value * Math.Sin((int)this.GetGene(1).Value * Math.Pow(x, (int)this.GetGene(2).Value)) + (int)this.GetGene(3).Value;
+            return (double)this.GetGene(0).Value * Math.Sin((double)this.GetGene(1).Value * Math.Pow(x, (double)this.GetGene(2).Value)) + (double)this.GetGene(3).Value;
         }
 
         /// <summary>
@@ -72,19 +67,7 @@ namespace EnergyPrediction
         /// <returns>The new.</returns>
         public override IChromosome CreateNew()
         {
-            double value = 0;
-            if (Fitness > OldFitness)
-            {
-                value = RangePeek + 2;
-            }
-            else if (Fitness < OldFitness)
-            {
-                value = RangePeek - 2;
-            }
-            else {
-                value = RangePeek / 2;
-            }
-            return new GeneticAlgoChromosome(value, Length, (double)Fitness);
+            return new GeneticAlgoChromosome(RangePeek, Length);
         }
     }
 }

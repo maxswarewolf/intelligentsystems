@@ -34,7 +34,7 @@ namespace EnergyPrediction
 {
     public static class DataIO
     {
-        static bool Testing = true;
+        static bool Testing = false;
 
         public static DateTime MinDate { get; private set; } = DateTime.Parse("21/2/2015");
         public static DateTime MaxDate { get; private set; } = DateTime.Parse("7/9/2016");
@@ -65,25 +65,37 @@ namespace EnergyPrediction
             return double.PositiveInfinity;
         }
 
+
+
         public static void LoadMin(StateType aState)
         {
+            if (Testing)
+                return;
             LoadMin(aState, StartDate, EndDate);
         }
         public static void LoadMin(string aGenCode)
         {
+            if (Testing)
+                return;
             LoadMin(aGenCode, StartDate, EndDate);
         }
         public static void LoadMin(AppType aApp)
         {
+            if (Testing)
+                return;
             LoadMin(aApp, StartDate, EndDate);
         }
         public static void LoadHalfHour(StateType aState)
         {
+            if (Testing)
+                return;
             LoadHalfHour(aState, StartDate, EndDate);
         }
 
         public static void LoadMin(StateType aState, DateTime aStartDate, DateTime aEndDate)
         {
+            if (Testing)
+                return;
             fData.Clear();
             List<string> lGenerators = new Config().GeneratorLinks[aState.ToString()];
             string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/5min";
@@ -132,6 +144,8 @@ namespace EnergyPrediction
 
         public static void LoadMin(string aGenCode, DateTime aStartDate, DateTime aEndDate)
         {
+            if (Testing)
+                return;
             fData.Clear();
             string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/5min";
             string[] lFilePaths = Directory.GetFiles(Root, "*.csv", SearchOption.TopDirectoryOnly);
@@ -170,6 +184,8 @@ namespace EnergyPrediction
 
         public static void LoadHalfHour(StateType aState, DateTime aStartDate, DateTime aEndDate)
         {
+            if (Testing)
+                return;
             fData.Clear();
             string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/30min";
             string[] lFilePaths = Directory.GetFiles(Root, "*.csv", SearchOption.TopDirectoryOnly);
@@ -206,6 +222,8 @@ namespace EnergyPrediction
 
         public static void LoadMin(AppType aApp, DateTime aStartData, DateTime aEndDate)
         {
+            if (Testing)
+                return;
             fData.Clear();
             string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/App";
             string[] lFilePaths = Directory.GetFiles(Root, "*.csv", SearchOption.TopDirectoryOnly);

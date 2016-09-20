@@ -32,6 +32,7 @@ using GeneticSharp.Domain.Selections;
 using GeneticSharp.Domain.Terminations;
 using GeneticSharp.Domain.Reinsertions;
 using Eto.Forms;
+using Eto.GtkSharp;
 
 namespace EnergyPrediction
 {
@@ -64,10 +65,7 @@ namespace EnergyPrediction
             //ProgTest.MutationProbability = 0.6f;
             //ProgTest.addEventFunction(ProgTest.DefaultDraw);
             //ProgTest.Start();
-            //Application.Init();
-            //var win = new MainWindow();
-            //win.Show();
-            //Application.Run();
+
             new Application().Run(new MainWindow());
         }
     }
