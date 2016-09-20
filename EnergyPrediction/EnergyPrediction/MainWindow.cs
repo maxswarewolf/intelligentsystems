@@ -25,34 +25,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-using Gtk;
-using GeneticSharp.Domain;
-using GeneticSharp.Domain.Chromosomes;
-using GeneticSharp.Domain.Crossovers;
-using GeneticSharp.Domain.Fitnesses;
-using GeneticSharp.Domain.Mutations;
-using GeneticSharp.Domain.Populations;
-using GeneticSharp.Domain.Selections;
-using GeneticSharp.Domain.Reinsertions;
-using GeneticSharp.Domain.Terminations;
+using Eto.Forms;
+using Eto.Drawing;
 
-public partial class MainWindow : Gtk.Window
+public class MainWindow : Form
 {
-    public MainWindow() : base(Gtk.WindowType.Toplevel)
+    public MainWindow()
     {
-        Build();
-
-        DeleteEvent += delegate
-        {
-            Application.Quit();
-        };
-
-    }
-
-    protected void OnDeleteEvent(object sender, DeleteEventArgs a)
-    {
-        Application.Quit();
-        a.RetVal = true;
+        Title = "Intelligent Systems Assignment - Energy Prediction";
+        ClientSize = new Size(600, 400);
+        Content = new Label { Text = "Hello World!" };
     }
 }

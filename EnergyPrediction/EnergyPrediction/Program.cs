@@ -26,16 +26,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using GeneticSharp.Domain;
-using GeneticSharp.Domain.Chromosomes;
 using GeneticSharp.Domain.Crossovers;
-using GeneticSharp.Domain.Fitnesses;
 using GeneticSharp.Domain.Mutations;
 using GeneticSharp.Domain.Selections;
 using GeneticSharp.Domain.Terminations;
-using GeneticSharp.Domain.Populations;
 using GeneticSharp.Domain.Reinsertions;
-using Gtk;
+using Eto.Forms;
 
 namespace EnergyPrediction
 {
@@ -74,6 +70,7 @@ namespace EnergyPrediction
             //var win = new MainWindow();
             //win.Show();
             //Application.Run();
+            new Application().Run(new MainWindow());
         }
     }
 }
