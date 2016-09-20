@@ -36,7 +36,7 @@ namespace EnergyPrediction
         public double Evaluate(IChromosome aChromosome)
         {
             //Error of the Difference Squared
-            var lChromosome = aChromosome as GeneticAlgoChromosome;
+            var lChromosome = aChromosome as ChromosomeExt;
 
             double lErrorSum = 0.0;
             for (int x = 0; x < DataIO.getLength(); x++)

@@ -43,7 +43,7 @@ namespace EnergyPrediction
             : base(aChromo, aCross, aFit, aMut, aSel, aTer, aRein, aPop)
         { }
 
-        public bool DefaultDraw(IChromosome aChromosome)
+        public override bool DefaultDraw(IChromosome aChromosome)
         {
             var lBest = aChromosome.GetGenes();
             Console.Clear();
@@ -52,53 +52,13 @@ namespace EnergyPrediction
             Console.WriteLine("Generations: {0}", fGA.Population.GenerationsNumber);
             Console.WriteLine("Fitness: {0}", aChromosome.Fitness);
             Console.WriteLine("Genes: {0:00.####}, {1:00.####}, {2:00.####}, {3:00.####}", lBest[0].Value, lBest[1].Value, lBest[2].Value, lBest[3].Value);
-            //Console.WriteLine("Time: {0}", fGA.TimeEvolving);
+            Console.WriteLine("Time: {0}", fGA.TimeEvolving);
             return true;
-        }
-
-        public override void addEventFunction(Func<IChromosome, bool> aFunction)
-        {
-            fGenerationRanEventFunctions.Add(aFunction);
-        }
-
-        public override void removeEventFunction(Func<IChromosome, bool> aFunction)
-        {
-            fGenerationRanEventFunctions.Remove(aFunction);
         }
 
         public override void Start()
         {
-            IPopulation lPop = new Population(PopulationCount, PopulationCount * 2, Chromosome);
-            //todo: Dicusss the Need or want for a generation strategy 
-            fGA = new GeneticAlgorithm(lPop, Fitness, Selection, Crossover, Mutation);
-            fGA.Termination = Termination;
-            fGA.CrossoverProbability = CrossoverProbability;
-            fGA.MutationProbability = MutationProbability;
-            fGA.Reinsertion = Reinsertion;
-
-
-            foreach (Func<IChromosome, bool> action in fGenerationRanEventFunctions)
-            {
-                fGA.GenerationRan += delegate
-                {
-                    action(fGA.Population.BestChromosome);
-                };
-            }
-
-            try
-            {
-                fGA.Start();
-            }
-            catch (Exception ex)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine();
-                Console.WriteLine("Error Message: {0}", ex.Message);
-                Console.WriteLine("Stack: {0}", ex.StackTrace);
-                Console.ResetColor();
-                Console.ReadKey();
-                return;
-            }
+            base.Start();
             var lBest = fGA.Population.BestChromosome.GetGenes();
             Console.WriteLine();
             Console.WriteLine("Evolved: " + lBest[0].Value + ", " + lBest[1].Value + ", " + lBest[2].Value + ", " + lBest[3].Value);

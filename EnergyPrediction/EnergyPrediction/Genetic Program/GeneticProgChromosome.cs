@@ -35,11 +35,10 @@ using Gtk;
 
 namespace EnergyPrediction
 {
-    public class GeneticProgChromosome : ChromosomeBase
+    public class GeneticProgChromosome : ChromosomeBase, ChromosomeExt
     {
+        public int Depth { get; private set; }
 
-        //int gNumberOfGenes;
-        public int gRangePeek { get; internal set; }
         TreeNode<MathObject> root;
 
         /// <summary>
@@ -49,12 +48,11 @@ namespace EnergyPrediction
         /// KC: chromosone is initialized as a tree from file TreeNode
         /// must use "root" object to access tree
         /// last level (i.e. level == depth) is ensured to be a numerical value, everything else is a MathObject 
-        public GeneticProgChromosome(int aResultPeek) : base(2)
+        public GeneticProgChromosome(int aResultPeek, int aDepth) : base(2)
         {
             MathObject.RangePeek = aResultPeek;
+            Depth = aDepth; //wanted depth in initial tree
             Queue<TreeNode<MathObject>> parentList = new Queue<TreeNode<MathObject>>();
-            int depth = 3; //wanted depth in initial tree
-            int valueRange = gRangePeek;
 
             root = new TreeNode<MathObject>(new MathSymbol(), 1); //  data is randomly chosen at initiallization 
             TreeNode<MathObject> currentNode;
@@ -65,9 +63,9 @@ namespace EnergyPrediction
             while (parentList.Count > 0)
             {
                 currentNode = parentList.Dequeue();
-                if (currentNode.GetType().Equals(typeof(MathSymbol)))
+                if (currentNode.Data.GetType().Equals(typeof(MathSymbol)))
                 {
-                    if (currentNode.Depth + 1 < depth)
+                    if (currentNode.Depth + 1 < Depth)
                     {
                         currentNode.setChildLeft(new TreeNode<MathObject>(MathObject.randomMathObject(), currentNode.Depth + 1));
                         currentNode.setChildRight(new TreeNode<MathObject>(MathObject.randomMathObject(), currentNode.Depth + 1));
@@ -94,12 +92,12 @@ namespace EnergyPrediction
         /// <returns>The new.</returns>
         public override IChromosome CreateNew()
         {
-            return new GeneticProgChromosome(gRangePeek);
+            return new GeneticProgChromosome((int)MathObject.RangePeek, Length);
         }
 
         public override Gene GenerateGene(int geneIndex)
         {
-            throw new NotImplementedException(); // not needed here - alternatively one may have to break the tree down into an array-ish structure
+            throw new NotImplementedException();
         }
     }
 }

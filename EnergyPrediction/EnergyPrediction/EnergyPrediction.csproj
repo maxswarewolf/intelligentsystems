@@ -101,6 +101,10 @@
     <Compile Include="FileIO\AppType.cs" />
     <Compile Include="FileIO\StateType.cs" />
     <Compile Include="Genetic Shared\ControllerBase.cs" />
+    <Compile Include="Genetic Program\ProgPopulation.cs" />
+    <Compile Include="Genetic Shared\ChromosomeExt.cs" />
+    <Compile Include="Genetic Program\BranchCrossover.cs" />
+    <Compile Include="Genetic Program\UniformTreeMutation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
