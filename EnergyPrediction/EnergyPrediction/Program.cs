@@ -25,14 +25,19 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 using System;
 using GeneticSharp.Domain.Crossovers;
 using GeneticSharp.Domain.Mutations;
 using GeneticSharp.Domain.Selections;
 using GeneticSharp.Domain.Terminations;
 using GeneticSharp.Domain.Reinsertions;
-using Eto.Forms;
-using Eto.GtkSharp;
+
+#if WIN64
+    using Eto.Forms;
+#else
+    using Eto.GtkSharp;
+#endif
 
 namespace EnergyPrediction
 {
@@ -68,7 +73,7 @@ namespace EnergyPrediction
             //ProgTest.addEventFunction(ProgTest.DefaultDraw);
             //ProgTest.Start();
 
-            new Application().Run(new MainWindow());
+            new Application().Run(new MainForm());
         }
     }
 }
