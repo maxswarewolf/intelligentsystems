@@ -41,20 +41,25 @@ namespace EnergyPrediction
 {
     public abstract class ControllerBase
     {
-        public IChromosome Chromosome { get; set; }
-        public ICrossover Crossover { get; set; }
-        public IFitness Fitness { get; set; }
-        public IMutation Mutation { get; set; }
-        public ISelection Selection { get; set; }
-        public ITermination Termination { get; set; }
-        public IReinsertion Reinsertion { get; set; }
-        public int PopulationCount { get; set; }
+        public IChromosome Chromosome { get; protected set; }
+        public ICrossover Crossover { get; protected set; }
+        public IFitness Fitness { get; protected set; }
+        public IMutation Mutation { get; protected set; }
+        public ISelection Selection { get; protected set; }
+        public ITermination Termination { get; protected set; }
+        public IReinsertion Reinsertion { get; protected set; }
+        public int FitnessThreshold { get; protected set; }
+        public int GenerationCap { get; protected set; }
+        public int MaxElapsedMin { get; protected set; }
+        public int PopulationCount { get; protected set; }
         public float CrossoverProbability { get; set; } = 0.8f;
         public float MutationProbability { get; set; } = 0.4f;
         protected GeneticAlgorithm fGA { get; set; }
         protected List<Func<IChromosome, bool>> fGenerationRanEventFunctions = new List<Func<IChromosome, bool>>();
 
-        public ControllerBase(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, ITermination aTer, IReinsertion aRein, int aPop)
+        public ControllerBase(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, IReinsertion aRein, int aFitnessThres, int aGenCap, int MaxElapMin, int aPop) { }
+
+        public ControllerBase(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, IReinsertion aRein, ITermination aTer, int aPop)
         {
             Chromosome = aChromo;
             Crossover = aCross;
@@ -65,6 +70,7 @@ namespace EnergyPrediction
             Reinsertion = aRein;
             PopulationCount = aPop;
         }
+
 
         public virtual void addEventFunction(Func<IChromosome, bool> aFunction)
         {

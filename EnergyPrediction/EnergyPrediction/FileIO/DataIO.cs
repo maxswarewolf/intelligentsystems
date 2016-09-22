@@ -34,8 +34,16 @@ namespace EnergyPrediction
 {
     public static class DataIO
     {
-        static bool Testing = false;
+        static bool Testing = true;
 
+        static IDictionary<string, List<string>> GeneratorLinks = new Dictionary<string, List<string>>() {
+                { "ACT", new List<string>() { "ROYALLA1" }},
+                { "VIC", new List<string>() { "RUBICON", "CLOVER", "YAMBUKWF", "MLWF1", "CHALLHWF", "PORTWF", "WAUBRAWF"} },
+                { "TAS", new List<string>() { "BBDISEL1", "BUTLERSG", "CATAGUN1", "CLUNY", "GEORGTN1", "GEORGTN2", "MEADOWB2", "PALOONA", "PORTLAT1", "QUERIVE1", "REPULSE", "ROWALLAN", "WOOLNTH1"} },
+                { "SA" , new List<string>() { "CNUNDAWF", "ANGAS1", "ANGAS2", "WPWF", "CATHROCK", "LKBONNY1", "MTMILLAR", "STARHLWF"} },
+                { "QLD", new List<string>() { "PIONEER", "CALL_A_4", "GERMCRK", "MBAHNTH", "RPCG", "INVICTA"} },
+                { "NSW", new List<string>() { "GB01", "CAPTL_WF", "CULLRGWF", "ERGT01"} }
+            };
         public static DateTime MinDate { get; private set; } = DateTime.Parse("21/2/2015");
         public static DateTime MaxDate { get; private set; } = DateTime.Parse("7/9/2016");
 
@@ -64,8 +72,6 @@ namespace EnergyPrediction
                 return fData[x];
             return double.PositiveInfinity;
         }
-
-
 
         public static void LoadMin(StateType aState)
         {
@@ -97,7 +103,7 @@ namespace EnergyPrediction
             if (Testing)
                 return;
             fData.Clear();
-            List<string> lGenerators = new Config().GeneratorLinks[aState.ToString()];
+            List<string> lGenerators = GeneratorLinks[aState.ToString()];
             string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/5min";
             string[] lFilePaths = Directory.GetFiles(Root, "*.csv", SearchOption.TopDirectoryOnly);
             List<string> lFiles = new List<string>();

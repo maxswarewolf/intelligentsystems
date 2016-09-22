@@ -40,7 +40,7 @@ namespace EnergyPrediction
     public class GeneticAlgoController : ControllerBase
     {
         public GeneticAlgoController(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, ITermination aTer, IReinsertion aRein, int aPop)
-            : base(aChromo, aCross, aFit, aMut, aSel, aTer, aRein, aPop)
+            : base(aChromo, aCross, aFit, aMut, aSel, aRein, aTer, aPop)
         { }
 
         public override bool DefaultDraw(IChromosome aChromosome)
@@ -50,8 +50,9 @@ namespace EnergyPrediction
             Console.Clear();
 
             Console.WriteLine();
-            Console.WriteLine("Generations: {0}", fGA.Population.GenerationsNumber);
-            Console.WriteLine("Fitness: {0}", aChromosome.Fitness);
+            Console.WriteLine("Generations: {0}, Population Size: {1}", fGA.Population.GenerationsNumber, fGA.Population.CurrentGeneration.Chromosomes.Count);
+            Console.WriteLine("Fitness: {0:###,###,###.####}", aChromosome.Fitness);
+            Console.WriteLine("Reliability: {0}", lChromosome.Reliability);
             Console.WriteLine("+- Range Value: {0}", lChromosome.RangePeek);
             Console.WriteLine("Genes: {0:00.####}, {1:00.####}, {2:00.####}, {3:00.####}", lBest[0].Value, lBest[1].Value, lBest[2].Value, lBest[3].Value);
             Console.WriteLine("Time: {0}", fGA.TimeEvolving);
@@ -60,7 +61,7 @@ namespace EnergyPrediction
 
         public override void Start()
         {
-            IPopulation lPop = new Population(PopulationCount, PopulationCount * 2, Chromosome);
+            IPopulation lPop = new Population(PopulationCount, PopulationCount * 5, Chromosome);
             lPop.GenerationStrategy = new PerformanceGenerationStrategy(100);
             //todo: Dicusss the Need or want for a generation strategy 
             fGA = new GeneticAlgorithm(lPop, Fitness, Selection, Crossover, Mutation);

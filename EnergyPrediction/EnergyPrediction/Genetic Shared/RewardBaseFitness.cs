@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// GeneticProgController.cs
+// RewardBaseFitness.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -26,40 +26,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using GeneticSharp.Domain;
 using GeneticSharp.Domain.Chromosomes;
-using GeneticSharp.Domain.Crossovers;
 using GeneticSharp.Domain.Fitnesses;
-using GeneticSharp.Domain.Mutations;
-using GeneticSharp.Domain.Selections;
-using GeneticSharp.Domain.Terminations;
-using GeneticSharp.Domain.Populations;
-using GeneticSharp.Domain.Reinsertions;
 
 namespace EnergyPrediction
 {
-    public class GeneticProgController : ControllerBase
+    public class RewardBaseFitness : IFitness
     {
-        public GeneticProgController(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, ITermination aTer, IReinsertion aRein, int aPop)
-            : base(aChromo, aCross, aFit, aMut, aSel, aRein, aTer, aPop)
-        { }
-
-        public override bool DefaultDraw(IChromosome aChromosome)
+        double fThreshold;
+        double fMaxReward;
+        double fGraident;
+        public RewardBaseFitness(double aThreshold, double aMaxReward)
         {
-            Console.Clear();
-
-            Console.WriteLine();
-            Console.WriteLine("Generations: {0}", fGA.Population.GenerationsNumber);
-            Console.WriteLine("Fitness: {0}", aChromosome.Fitness);
-            Console.WriteLine("Time: {0}", fGA.TimeEvolving);
-            return true;
+            fThreshold = aThreshold;
+            fMaxReward = aMaxReward;
+            fGraident = (-2 * aMaxReward) / aThreshold;
         }
 
-        public override void Start()
+        public double Evaluate(IChromosome aChromosome)
         {
-            base.Start();
-            //todo: add in final display of best chromosome or other display data
+            //Error of the Difference Squared
+            var lChromosome = aChromosome as ChromosomeExt;
+
+            double lReward = 0.0;
+            for (int x = 0; x < DataIO.getLength(); x++)
+            {
+                double value = FitnessBase.EvaluateErrorSquared(lChromosome.getCalculatedY(x), DataIO.getActualY(x));
+                //Console.WriteLine(value);
+                if (value > fThreshold)
+                {
+                    lReward += -fMaxReward;
+                }
+                else {
+                    lReward += fGraident * value + fMaxReward;
+                }
+                //lReward += FitnessBase.EvaluateErrorSquared(lChromosome.getCalculatedY(x), DataIO.getActualY(x));
+            }
+
+            return (lReward);
         }
     }
 }
-

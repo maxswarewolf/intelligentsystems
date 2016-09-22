@@ -32,6 +32,7 @@ namespace EnergyPrediction
     public class GeneticAlgoChromosome : ChromosomeBase, ChromosomeExt
     {
         public double RangePeek { get; private set; }
+        public double Reliability { get; set; } = 1;
         /// <summary>
         /// Initializes a new instance of the <see cref="T:EnergyPrediction.GeneticAlgoChromosome"/> class.
         /// </summary>
@@ -58,7 +59,7 @@ namespace EnergyPrediction
         /// <param name="geneIndex">Gene index.</param>
         public override Gene GenerateGene(int geneIndex)
         {
-            return new Gene(Randomizer.NextDouble(RangePeek * -1, RangePeek + 1));
+            return new Gene(Randomizer.NextDouble(RangePeek * -1, RangePeek));
         }
 
         /// <summary>

@@ -104,6 +104,8 @@
     <Compile Include="Genetic Shared\ChromosomeExt.cs" />
     <Compile Include="Genetic Program\BranchCrossover.cs" />
     <Compile Include="Genetic Program\UniformTreeMutation.cs" />
+    <Compile Include="Genetic Algorithim\AlgoOnePointCrossover.cs" />
+    <Compile Include="Genetic Shared\RewardBaseFitness.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
