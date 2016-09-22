@@ -109,7 +109,6 @@
     <Compile Include="Genetic Shared\ChromosomeExt.cs" />
     <Compile Include="Genetic Program\BranchCrossover.cs" />
     <Compile Include="Genetic Program\UniformTreeMutation.cs" />
-    <Compile Include="UI\StartSolutionButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

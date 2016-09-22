@@ -35,8 +35,8 @@ using EnergyPrediction.UI;
 
 public class MainForm : Form
 {
-    int MainFormWidth = 600;
-    int MainFormHeight = 400;
+    int MainFormWidth = 1000;
+    int MainFormHeight = 510;
     public MainForm()
     {
         Title = "Intelligent Systems Assignment - Energy Prediction";
@@ -53,7 +53,7 @@ public class MainForm : Form
                 // of the options for starting a new genetic algo/prog)
                 Panel2 = new GeneticOptions(),
                 // The initial position for the split
-                Position = (int)(MainFormWidth * 0.66)
+                Position = (int)(MainFormWidth - 210)
             };
     }
 }
