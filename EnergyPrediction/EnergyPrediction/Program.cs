@@ -25,13 +25,19 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 using System;
 using GeneticSharp.Domain.Crossovers;
 using GeneticSharp.Domain.Mutations;
 using GeneticSharp.Domain.Selections;
 using GeneticSharp.Domain.Terminations;
 using GeneticSharp.Domain.Reinsertions;
-using Eto.Forms;
+
+#if WIN64
+    using Eto.Forms;
+#else
+    using Eto.GtkSharp;
+#endif
 
 namespace EnergyPrediction
 {
@@ -39,19 +45,21 @@ namespace EnergyPrediction
     {
         public static void Main(string[] args)
         {
-            //DataIO.LoadMin(StateType.VIC, DateTime.Parse("1/9/16"), DateTime.Parse("1/9/16"));
-            ////new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromSeconds(90)))
-            //var AlgoTest = new GeneticAlgoController(new GeneticAlgoChromosome(5, 4),
-            //                                         new OnePointCrossover(),
-            //                                         new ErrorSquaredFitness(),
-            //                                         new UniformMutation(),
-            //                                         new TournamentSelection(100),
-            //                                         new TimeEvolvingTermination(TimeSpan.FromSeconds(240)),
-            //                                         new UniformReinsertion(), 2000);
-            //AlgoTest.CrossoverProbability = 0.7f;
-            //AlgoTest.MutationProbability = 0.2f;
-            //AlgoTest.addEventFunction(AlgoTest.DefaultDraw);
-            //AlgoTest.Start();
+            /*
+            DataIO.LoadMin(StateType.VIC, DateTime.Parse("1/9/16"), DateTime.Parse("1/9/16"));
+
+            var AlgoTest = new GeneticAlgoController(new GeneticAlgoChromosome(1000, 4),
+                                                     new OnePointCrossover(2),
+                                                     new ErrorSquaredFitness(),
+                                                     new TworsMutation(),
+                                                     new EliteSelection(),
+                                                     new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromSeconds(90))),
+                                                     new ElitistReinsertion(), 200);
+            AlgoTest.CrossoverProbability = 0.6f;
+            AlgoTest.MutationProbability = 0.6f;
+            AlgoTest.addEventFunction(AlgoTest.DefaultDraw);
+            AlgoTest.Start();
+            */
 
             //var ProgTest = new GeneticProgController(new GeneticProgChromosome(10, 3),
             //                                         new BranchCrossover(),
@@ -65,7 +73,7 @@ namespace EnergyPrediction
             //ProgTest.addEventFunction(ProgTest.DefaultDraw);
             //ProgTest.Start();
 
-            new Application().Run(new MainWindow());
+            new Application().Run(new MainForm());
         }
     }
 }

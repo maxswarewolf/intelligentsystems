@@ -14,7 +14,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG;WIN64</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>true</ConsolePause>
@@ -30,10 +30,21 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Eto, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Eto.Forms.2.2.0\lib\net45\Eto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Eto.WinForms, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Eto.Platform.Windows.2.2.0\lib\net45\Eto.WinForms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="Mono.Posix" />
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartThreadPool">
+      <HintPath>..\packages\SmartThreadPool.dll.2.2.3\lib\SmartThreadPool.dll</HintPath>
     </Reference>
     <Reference Include="GeneticSharp.Domain">
       <HintPath>..\packages\GeneticSharp.1.0.100\lib\net35\GeneticSharp.Domain.dll</HintPath>
@@ -63,20 +74,14 @@
     <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="System.Numerics" />
-    <Reference Include="SmartThreadPool">
-      <HintPath>..\packages\SmartThreadPool.dll.2.2.4\lib\net45\SmartThreadPool.dll</HintPath>
-    </Reference>
-    <Reference Include="Eto">
-      <HintPath>..\packages\Eto.Forms.2.2.0\lib\net45\Eto.dll</HintPath>
-    </Reference>
-    <Reference Include="Eto.Gtk2">
-      <HintPath>..\packages\Eto.Platform.Gtk.2.2.0\lib\net45\Eto.Gtk2.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MainWindow.cs" />
+    <Compile Include="UI\GeneticOptions.cs" />
+    <Compile Include="UI\GraphImage.cs" />
+    <Compile Include="UI\MainForm.cs" />
     <Compile Include="Genetic Algorithim\GeneticAlgoChromosome.cs" />
     <Compile Include="Genetic Algorithim\GeneticAlgoController.cs" />
     <Compile Include="Genetic Shared\InverseEliteSelection.cs" />

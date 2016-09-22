@@ -25,15 +25,35 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+#if WIN64
 using Eto.Forms;
+#else
+    using Eto.GtkSharp;
+#endif
 using Eto.Drawing;
+using EnergyPrediction.UI;
 
-public class MainWindow : Form
+public class MainForm : Form
 {
-    public MainWindow()
+    int MainFormWidth = 1000;
+    int MainFormHeight = 510;
+    public MainForm()
     {
         Title = "Intelligent Systems Assignment - Energy Prediction";
-        ClientSize = new Size(600, 400);
-        Content = new Label { Text = "Hello World!" };
+        ClientSize = new Size(MainFormWidth, MainFormHeight);
+        Content =
+            // Will hold two controls, one to the left, one to the right
+            new Splitter
+            {
+                // Contained elements will be held horizontally adjacent
+                Orientation = Orientation.Horizontal,
+                // The left control (A custom panel, will contain the graph output)
+                Panel1 = new GraphImage(),
+                // The right control (A custom a stack layout, will contain all 
+                // of the options for starting a new genetic algo/prog)
+                Panel2 = new GeneticOptions(),
+                // The initial position for the split
+                Position = (int)(MainFormWidth - 210)
+            };
     }
 }

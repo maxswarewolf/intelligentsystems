@@ -1,10 +1,9 @@
 E:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\obj\x86\Debug\EnergyPrediction.exe
-H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\obj\x86\Debug\EnergyPrediction.exe
-H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\obj\x86\Debug\EnergyPrediction.pdb
 H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\EnergyPrediction.exe
 H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\EnergyPrediction.pdb
 H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\atk-sharp.dll
 H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\Eto.dll
+H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\Eto.WinForms.dll
 H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\gdk-sharp.dll
 H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\GeneticSharp.Domain.dll
 H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\GeneticSharp.Extensions.dll
@@ -18,10 +17,7 @@ H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPredicti
 H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\NCalc.dll
 H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\nunit.framework.dll
 H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\pango-sharp.dll
-H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\SmartThreadPool.dll
-H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\Eto.xml
 H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\nunit.framework.xml
-H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\SmartThreadPool.pdb
 H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\GeneticSharp.Domain.pdb
 H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\GeneticSharp.Domain.xml
 H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\GeneticSharp.Extensions.pdb
@@ -34,4 +30,6 @@ H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPredicti
 H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\pango-sharp.pdb
 H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\atk-sharp.pdb
 H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\bin\Debug\glade-sharp.pdb
+H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\obj\x86\Debug\EnergyPrediction.exe
+H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\obj\x86\Debug\EnergyPrediction.pdb
 H:\Intelligent_Systems\Assignment\AssignmentRepo\EnergyPrediction\EnergyPrediction\obj\x86\Debug\EnergyPrediction.csprojResolveAssemblyReference.cache
