@@ -84,14 +84,12 @@
     <Compile Include="UI\MainForm.cs" />
     <Compile Include="Genetic Algorithim\GeneticAlgoChromosome.cs" />
     <Compile Include="Genetic Algorithim\GeneticAlgoController.cs" />
-    <Compile Include="Genetic Shared\InverseEliteSelection.cs" />
     <Compile Include="Genetic Shared\StochasticSelection.cs" />
     <Compile Include="FileIO\CsvFileCommon.cs" />
     <Compile Include="FileIO\CsvFileReader.cs" />
     <Compile Include="FileIO\CsvFileWriter.cs" />
     <Compile Include="FileIO\EmptyLineBehavior.cs" />
-    <Compile Include="config\Config.cs" />
-    <Compile Include="Genetic Shared\FitnessBase.cs" />
+    <Compile Include="Genetic Shared\FitnessFunctions.cs" />
     <Compile Include="Genetic Program\GeneticProgChromosome.cs" />
     <Compile Include="Genetic Program\GeneticProgController.cs" />
     <Compile Include="Genetic Program\TreeNode.cs" />
@@ -100,8 +98,7 @@
     <Compile Include="Genetic Program\Tree Math\MathNumber.cs" />
     <Compile Include="Genetic Program\Tree Math\MathSymbol.cs" />
     <Compile Include="Genetic Program\Tree Math\SymbolTypes.cs" />
-    <Compile Include="Genetic Shared\ErrorSquaredFitness.cs" />
-    <Compile Include="config\Randomizer.cs" />
+    <Compile Include="Utility\Randomizer.cs" />
     <Compile Include="FileIO\AppType.cs" />
     <Compile Include="FileIO\StateType.cs" />
     <Compile Include="Genetic Shared\ControllerBase.cs" />
@@ -110,7 +107,6 @@
     <Compile Include="Genetic Program\BranchCrossover.cs" />
     <Compile Include="Genetic Program\UniformTreeMutation.cs" />
     <Compile Include="Genetic Algorithim\AlgoOnePointCrossover.cs" />
-    <Compile Include="Genetic Shared\RewardBaseFitness.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

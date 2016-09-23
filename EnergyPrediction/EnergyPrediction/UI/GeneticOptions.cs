@@ -228,7 +228,7 @@ namespace EnergyPrediction.UI
 
             var AlgoTest = new GeneticAlgoController(new GeneticAlgoChromosome(1000, 4),
                                                      new OnePointCrossover(2),
-                                                     new ErrorSquaredFitness(),
+                                                     new FitnessFunctions(),
                                                      new TworsMutation(),
                                                      new EliteSelection(),
                                                      new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(System.TimeSpan.FromSeconds(90))),

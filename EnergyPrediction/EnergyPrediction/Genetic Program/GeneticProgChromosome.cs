@@ -78,6 +78,7 @@ namespace EnergyPrediction
                     }
                 }
             }
+            //todo: make sure tree contains at least one x (and is a valid tree!!!) 
         }
 
         public double getCalculatedY(int x)

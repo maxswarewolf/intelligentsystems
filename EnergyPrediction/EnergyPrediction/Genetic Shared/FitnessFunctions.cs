@@ -26,13 +26,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using GeneticSharp.Domain.Chromosomes;
+using GeneticSharp.Domain.Fitnesses;
 namespace EnergyPrediction
 {
-    public static class FitnessBase
+    public class FitnessFunctions : IFitness
     {
-        public static double EvaluateErrorSquared(double aCalY, double aActY)
+        public double EvaluateErrorSquared(double aCalY, double aActY)
         {
             return Math.Pow(aActY - aCalY, 2);
+        }
+
+        public double Evaluate(IChromosome aChromosome)
+        {
+            //Error of the Difference Squared
+            var lChromosome = aChromosome as ChromosomeExt;
+
+            double lErrorSum = 0.0;
+            for (int x = 0; x < DataIO.getLength(); x++)
+            {
+                lErrorSum += EvaluateErrorSquared(lChromosome.getCalculatedY(x), DataIO.getActualY(x));
+            }
+            return (-1 * lErrorSum);
         }
 
         //ADD MORE FITNESS FUNCTIONS AS NEEDED

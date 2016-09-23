@@ -34,7 +34,7 @@ using GeneticSharp.Domain.Terminations;
 using GeneticSharp.Domain.Reinsertions;
 
 #if WIN64
-    using Eto.Forms;
+using Eto.Forms;
 #else
     using Eto.GtkSharp;
 #endif
@@ -45,21 +45,21 @@ namespace EnergyPrediction
     {
         public static void Main(string[] args)
         {
-            /*
+
             DataIO.LoadMin(StateType.VIC, DateTime.Parse("1/9/16"), DateTime.Parse("1/9/16"));
 
             var AlgoTest = new GeneticAlgoController(new GeneticAlgoChromosome(1000, 4),
-                                                     new OnePointCrossover(2),
-                                                     new ErrorSquaredFitness(),
+                                                     new OnePointCrossover(),
+                                                     new FitnessFunctions(),
                                                      new TworsMutation(),
-                                                     new EliteSelection(),
+                                                     new TournamentSelection(),
                                                      new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromSeconds(90))),
-                                                     new ElitistReinsertion(), 200);
+                                                     new ElitistReinsertion(), 2000);
             AlgoTest.CrossoverProbability = 0.6f;
-            AlgoTest.MutationProbability = 0.6f;
+            AlgoTest.MutationProbability = 0.1f; // according to guest lecture 1%< prob < 10%
             AlgoTest.addEventFunction(AlgoTest.DefaultDraw);
             AlgoTest.Start();
-            */
+
 
             //var ProgTest = new GeneticProgController(new GeneticProgChromosome(10, 3),
             //                                         new BranchCrossover(),

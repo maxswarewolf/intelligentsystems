@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// RewardBaseFitness.cs
+// Randomizer.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -26,44 +26,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using GeneticSharp.Domain.Chromosomes;
-using GeneticSharp.Domain.Fitnesses;
-
 namespace EnergyPrediction
 {
-    public class RewardBaseFitness : IFitness
+    public static class Randomizer
     {
-        double fThreshold;
-        double fMaxReward;
-        double fGraident;
-        public RewardBaseFitness(double aThreshold, double aMaxReward)
+        //to have a new seed without having to call new every time
+        private static Random fRand = new Random();
+        public static double NextDouble(double aMin, double aMax)
         {
-            fThreshold = aThreshold;
-            fMaxReward = aMaxReward;
-            fGraident = (-2 * aMaxReward) / aThreshold;
+            return fRand.NextDouble() * (aMax - aMin) + aMin;
         }
 
-        public double Evaluate(IChromosome aChromosome)
+        public static int NextInt(int aMin, int aMax)
         {
-            //Error of the Difference Squared
-            var lChromosome = aChromosome as ChromosomeExt;
-
-            double lReward = 0.0;
-            for (int x = 0; x < DataIO.getLength(); x++)
-            {
-                double value = FitnessBase.EvaluateErrorSquared(lChromosome.getCalculatedY(x), DataIO.getActualY(x));
-                //Console.WriteLine(value);
-                if (value > fThreshold)
-                {
-                    lReward += -fMaxReward;
-                }
-                else {
-                    lReward += fGraident * value + fMaxReward;
-                }
-                //lReward += FitnessBase.EvaluateErrorSquared(lChromosome.getCalculatedY(x), DataIO.getActualY(x));
-            }
-
-            return (lReward);
+            return fRand.Next(aMin, aMax);
         }
     }
 }
+

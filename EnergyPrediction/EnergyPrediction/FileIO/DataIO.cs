@@ -34,7 +34,10 @@ namespace EnergyPrediction
 {
     public static class DataIO
     {
-        static bool Testing = true;
+        //todo: NEED TO COMMENT EVERYTHING
+        //todo: NEED TO FIX UP OTHER LOOPS BASED ON THE 5MIN GEN
+        //todo: ADD Ageration based on the increments
+        static bool Testing = false;
 
         static IDictionary<string, List<string>> GeneratorLinks = new Dictionary<string, List<string>>() {
                 { "ACT", new List<string>() { "ROYALLA1" }},
@@ -44,6 +47,7 @@ namespace EnergyPrediction
                 { "QLD", new List<string>() { "PIONEER", "CALL_A_4", "GERMCRK", "MBAHNTH", "RPCG", "INVICTA"} },
                 { "NSW", new List<string>() { "GB01", "CAPTL_WF", "CULLRGWF", "ERGT01"} }
             };
+
         public static DateTime MinDate { get; private set; } = DateTime.Parse("21/2/2015");
         public static DateTime MaxDate { get; private set; } = DateTime.Parse("7/9/2016");
 
@@ -91,12 +95,6 @@ namespace EnergyPrediction
                 return;
             LoadMin(aApp, StartDate, EndDate);
         }
-        public static void LoadHalfHour(StateType aState)
-        {
-            if (Testing)
-                return;
-            LoadHalfHour(aState, StartDate, EndDate);
-        }
 
         public static void LoadMin(StateType aState, DateTime aStartDate, DateTime aEndDate)
         {
@@ -104,15 +102,21 @@ namespace EnergyPrediction
                 return;
             fData.Clear();
             List<string> lGenerators = GeneratorLinks[aState.ToString()];
+
             string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/5min";
+
             string[] lFilePaths = Directory.GetFiles(Root, "*.csv", SearchOption.TopDirectoryOnly);
+
             List<string> lFiles = new List<string>();
+
             foreach (string s in lFilePaths)
             {
                 lFiles.Add(Path.GetFileNameWithoutExtension(s));
             }
-            DateTime currentTime = DateTime.Now;
-            double value = 0;
+
+            DateTime timeStamp = DateTime.MinValue; //init value - not used
+
+            double wattage = 0;
             foreach (string s in lFiles)
             {
                 DateTime temp = DateTime.Parse(s);
@@ -130,20 +134,23 @@ namespace EnergyPrediction
                         {
                             if (lGenerators.Contains(lColumns[1]))
                             {
-                                if (currentTime == DateTime.Parse(lColumns[0]))
+                                if (timeStamp == DateTime.Parse(lColumns[0]))
                                 {
-                                    value += Double.Parse(lColumns[2]);
+                                    wattage += Double.Parse(lColumns[2]);
                                 }
-                                else {
-                                    fData.Add(value);
-                                    currentTime = DateTime.Parse(lColumns[0]);
-                                    value = Double.Parse(lColumns[2]);
+                                else
+                                {
+                                    if (timeStamp != DateTime.MinValue)
+                                    {
+                                        fData.Add(wattage);
+                                    }
+                                    timeStamp = DateTime.Parse(lColumns[0]);
+                                    wattage = Double.Parse(lColumns[2]);
                                 }
                             }
                         }
+                        fData.Add(wattage);
                     }
-                    if (fData.Count > 1)
-                        fData.RemoveAt(0);
                 }
             }
         }
@@ -182,46 +189,6 @@ namespace EnergyPrediction
                             }
                         }
                     }
-                    //if (fStateData.Count > 1)
-                    //    fStateData.RemoveAt(0);
-                }
-            }
-        }
-
-        public static void LoadHalfHour(StateType aState, DateTime aStartDate, DateTime aEndDate)
-        {
-            if (Testing)
-                return;
-            fData.Clear();
-            string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/30min";
-            string[] lFilePaths = Directory.GetFiles(Root, "*.csv", SearchOption.TopDirectoryOnly);
-            List<string> lFiles = new List<string>();
-            foreach (string s in lFilePaths)
-            {
-                lFiles.Add(Path.GetFileNameWithoutExtension(s));
-            }
-
-            foreach (string s in lFiles)
-            {
-                DateTime temp = DateTime.Parse(s);
-                if (temp >= aStartDate)
-                {
-                    if (temp > aEndDate)
-                    {
-                        break;
-                    }
-                    string path = Root + "/" + s + ".csv";
-                    List<string> lColumns = new List<string>();
-                    using (var reader = new CsvFileReader(path))
-                    {
-                        while (reader.ReadRow(lColumns))
-                        {
-                            if (lColumns[1].Equals(aState + "1"))
-                            {
-                                fData.Add(Double.Parse(lColumns[2]));
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -251,7 +218,6 @@ namespace EnergyPrediction
                     List<string> lColumns = new List<string>();
                     using (var reader = new CsvFileReader(path))
                     {
-                        //Console.WriteLine("{0}, index {1}", aApp, (int)aApp);
                         while (reader.ReadRow(lColumns))
                         {
                             fData.Add(Double.Parse(lColumns[(int)aApp]));
