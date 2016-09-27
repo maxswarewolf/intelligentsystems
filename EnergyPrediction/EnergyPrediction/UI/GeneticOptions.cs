@@ -1,16 +1,15 @@
-﻿#if WIN64
-using Eto.Forms;
-#else
-using Eto.GtkSharp;
-#endif
+﻿using Eto.Forms;
 
+using System.Threading;
 using System.Collections.Generic;
 
 using GeneticSharp.Domain.Crossovers;
+using GeneticSharp.Domain.Fitnesses;
 using GeneticSharp.Domain.Mutations;
 using GeneticSharp.Domain.Selections;
 using GeneticSharp.Domain.Terminations;
 using GeneticSharp.Domain.Reinsertions;
+using System.Security.Permissions;
 
 namespace EnergyPrediction.UI
 {
@@ -37,7 +36,7 @@ namespace EnergyPrediction.UI
         ComboBox fCrossoversProgComboBox;
 
         List<string> fFitness = new List<string>() { "Error Sum" };
-        ComboBox fFitnessgComboBox;
+        ComboBox fFitnessComboBox;
 
         List<string> fMutationAlgo = new List<string>() { "Uniform", "Twors", "Reverse Sequence" };
         ComboBox fMutationAlgoComboBox;
@@ -60,6 +59,9 @@ namespace EnergyPrediction.UI
         // This button will use an event to trigger the the start of a solution
         Button fStartSolutionButton;
 
+        // This thread class will run the solutions once they have been configured. This allows solutions to be cancelled, and does not freeze the UI
+        Thread solutionRunner = new Thread(StartSolution);
+
         public GeneticOptions()
         {
             // Initialise all of the combo boxes
@@ -67,8 +69,6 @@ namespace EnergyPrediction.UI
             {
                 DataStore = fSolutionOptions
             };
-            // Make sure that when the desired solution type is changed, the UI can trigger an update
-            fSolutionComboBox.SelectedValueChanged += new System.EventHandler<System.EventArgs>(SolutionValueChanged);
 
             fCrossoversAlgoComboBox = new ComboBox
             {
@@ -80,7 +80,7 @@ namespace EnergyPrediction.UI
                 DataStore = fCrossoversProg,
                 SelectedIndex = 0
             };
-            fFitnessgComboBox = new ComboBox
+            fFitnessComboBox = new ComboBox
             {
                 DataStore = fFitness,
                 SelectedIndex = 0
@@ -118,8 +118,14 @@ namespace EnergyPrediction.UI
 
             // Initialise the button
             fStartSolutionButton = new Button();
-            fStartSolutionButton.MouseDown += new System.EventHandler<Eto.Forms.MouseEventArgs>(StartSolution);
+            fStartSolutionButton.MouseDown += new System.EventHandler<Eto.Forms.MouseEventArgs>(CreateSolution);
             fStartSolutionButton.Text = "Start Solution";
+
+            // Make sure that when the desired solution type is changed, the UI can trigger an update
+            fSolutionComboBox.SelectedValueChanged += new System.EventHandler<System.EventArgs>(SolutionValueChanged);
+
+            // AFTER the combo boxes load, select an option to present the UI correctly
+            this.LoadComplete += new System.EventHandler<System.EventArgs>(SelectOnLoadComplete);
 
             // The direction the list shall face (Top to bottom)
             Orientation = Orientation.Vertical;
@@ -150,7 +156,7 @@ namespace EnergyPrediction.UI
             {
                 Text = "Fitness"
             });
-            Items.Add(fFitnessgComboBox);
+            Items.Add(fFitnessComboBox);
 
             Items.Add(new Label
             {
@@ -189,8 +195,11 @@ namespace EnergyPrediction.UI
             });
             Items.Add(fStatesComboBox);
             Items.Add(fStartSolutionButton);
+            
+        }
 
-            // Select something manually in the fSolutionComboBox first, to trigger the hide/show method SolutionValueChanged
+        private void SelectOnLoadComplete(object sender, System.EventArgs e)
+        {
             fSolutionComboBox.SelectedIndex = 0;
         }
 
@@ -201,14 +210,12 @@ namespace EnergyPrediction.UI
             switch (fSolutionComboBox.SelectedValue.ToString())
             {
                 case "Genetic Algorithm":
-                    System.Console.WriteLine("GeneticAlgorithm");
                     fCrossoversAlgoComboBox.Visible = true;
                     fMutationAlgoComboBox.Visible = true;
                     fCrossoversProgComboBox.Visible = false;
                     fMutationProgComboBox.Visible = false;
                     break;
                 case "Genetic Programming":
-                    System.Console.WriteLine("GeneticProgramming");
                     fCrossoversAlgoComboBox.Visible = false;
                     fMutationAlgoComboBox.Visible = false;
                     fCrossoversProgComboBox.Visible = true;
@@ -220,23 +227,186 @@ namespace EnergyPrediction.UI
         }
 
         // Triggered once the StartSolutionBUtton is clicked
-        private void StartSolution(object sender, System.EventArgs e)
+        private void CreateSolution(object sender, System.EventArgs e)
         {
-            System.Console.WriteLine("Solution Started");
 
             //DataIO.LoadMin(StateType.VIC, DateTime.Parse("1/9/16"), DateTime.Parse("1/9/16"));
+            if (solutionRunner.IsAlive)
+            {
+                StopSolution();
+            }
+            switch (fSolutionComboBox.SelectedValue.ToString())
+            {
+                case "Genetic Algorithm":
+                    var GeneticAlgorithm = new GeneticAlgoController(new GeneticAlgoChromosome(1000, 4),
+                                                     GetSelectedCrossoverMethod(),
+                                                     GetSelectedFitnessFuntion(),
+                                                     GetSelectedMutationMethod(),
+                                                     GetSelectedSelectionMethod(),
+                                                     GetSelectedTerminationMethod(),
+                                                     GetSelectedReinsertionMethod(), 
+                                                     200);
+                    GeneticAlgorithm.CrossoverProbability = 0.6f;
+                    GeneticAlgorithm.MutationProbability = 0.6f;
+                    GeneticAlgorithm.addEventFunction(GeneticAlgorithm.DefaultDraw);
+                    GeneticAlgorithm.Start();
+                    solutionRunner = new Thread(StartSolution);
+                    solutionRunner.Start(GeneticAlgorithm);
+                    break;
+                case "Genetic Programming":
+                    // The genetic programming equivalent of the previous block will go here
+                    break;
+                default:
+                    break;
+            }
+        }
 
-            var AlgoTest = new GeneticAlgoController(new GeneticAlgoChromosome(1000, 4),
-                                                     new OnePointCrossover(2),
-                                                     new FitnessFunctions(),
-                                                     new TworsMutation(),
-                                                     new EliteSelection(),
-                                                     new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(System.TimeSpan.FromSeconds(90))),
-                                                     new ElitistReinsertion(), 200);
-            AlgoTest.CrossoverProbability = 0.6f;
-            AlgoTest.MutationProbability = 0.6f;
-            AlgoTest.addEventFunction(AlgoTest.DefaultDraw);
-            AlgoTest.Start();
+        // The following methods concern threading, and starting a solution in a new thread. If I don't do this, the UI freezes
+        // if you try to interact with it, and the solution is still running. As of writing this, the threading I have implemented doesn't
+        // stop the freezing either. There will need to be changes made to the base controller class, so that it accepts a bool, which will
+        // indicate whether it should stop or not (Say, upon each generation, if the thread has been signalled to stop, clean up and stop)
+
+        // The method that shall be passed to a new thread. Accepts a genetic controller as a parameter, and runs that controller
+        private static void StartSolution(object aControllerToRun)
+        {
+            // Try to cast to an algo controller
+            var lAlgoController = aControllerToRun as GeneticAlgoController;
+
+            if (lAlgoController != null)
+            {
+                lAlgoController.Start();
+            }
+
+            // If that failed, it must be a prog controller
+            var lProgController = aControllerToRun as GeneticProgController;
+
+            if (lProgController != null)
+            {
+                lProgController.Start();
+            }
+            // If THAT failed, something has gone horribly wrong
+            else throw new System.InvalidCastException("New controller could not be cast to either algo or prog - GeneticOptions, StartSolution");
+        }
+
+        private void StopSolution()
+        {
+            // In here will exist a reference to a class scoped boolean that will tell a thread to stop executing
+        }
+
+        // Depending on the selected solution, return the selected crossover
+        private CrossoverBase GetSelectedCrossoverMethod()
+        {
+            switch (fSolutionComboBox.SelectedValue.ToString())
+            {
+                case "Genetic Algorithm":
+                    switch (fCrossoversAlgoComboBox.SelectedValue.ToString())
+                    {
+                        case "Uniform":
+                            return new UniformCrossover();
+                        case "One Point":
+                            return new OnePointCrossover();
+                        case "Two Point":
+                            return new TwoPointCrossover();
+                        case "Three Point":
+                            return new ThreeParentCrossover();
+                        default:
+                            return null;
+                    }
+                case "Genetic Programming":
+                    switch (fCrossoversProgComboBox.SelectedValue.ToString())
+                    { // There are no programming crossovers
+                        default:
+                            return null;
+                    }
+                default:
+                    return null;
+            }
+        }
+
+        // Depending on the selected solution, return the selected crossover
+        private IFitness GetSelectedFitnessFuntion()
+        {
+            switch (fFitnessComboBox.SelectedValue.ToString())
+            {
+                case "Error Sum":
+                    return new FitnessFunctions();
+                default:
+                    return null;
+            }
+        }
+
+        // Depending on the selected solution, return the selected crossover
+        private MutationBase GetSelectedMutationMethod()
+        {
+            switch (fSolutionComboBox.SelectedValue.ToString())
+            {
+                case "Genetic Algorithm":
+                    switch (fMutationAlgoComboBox.SelectedValue.ToString())
+                    {
+                        case "Uniform":
+                            return new UniformMutation();
+                        case "Twors":
+                            return new TworsMutation();
+                        case "Reverse Sequence":
+                            return new ReverseSequenceMutation();
+                        default:
+                            return null;
+                    }
+                case "Genetic Programming":
+                    switch (fMutationProgComboBox.SelectedValue.ToString())
+                    { // These cases are commented as there are no programming specific mutations as of yet
+                        case "Uniform":
+                            //return new UniformMutation();
+                        case "Branch":
+                            //return new TworsMutation();
+                        case "Reverse Sequence":
+                            //return new ReverseSequenceMutation();
+                        default:
+                            return null;
+                    }
+                default:
+                    return null;
+            }
+        }
+
+        // Depending on the selected solution, return the selected crossover
+        private SelectionBase GetSelectedSelectionMethod()
+        {
+            switch (fSelectionComboBox.SelectedValue.ToString())
+            {
+                case "Elite":
+                    return new EliteSelection();
+                case "Stochastic":
+                    return new StochasticSelection();
+                case "Inverse Elite": // Doesn't exist?
+                    //return new Inverse();
+                default:
+                    return null;
+            }
+        }
+
+        // Depending on the selected solution, return the selected crossover
+        private OrTermination GetSelectedTerminationMethod()
+        {
+            switch (fSolutionComboBox.SelectedValue.ToString())
+            {
+                case "Genetic Algorithm":
+                    return new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(System.TimeSpan.FromSeconds(90)));
+                case "Genetic Programming":
+                    return new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(System.TimeSpan.FromSeconds(90)));
+                default:
+                    return null;
+            }
+        }
+
+        // Depending on the selected solution, return the selected crossover
+        private ReinsertionBase GetSelectedReinsertionMethod()
+        {
+            switch (fReinsertionComboBox.SelectedValue.ToString())
+            {
+                default:
+                    return new ElitistReinsertion();
+            }
         }
     }
 }

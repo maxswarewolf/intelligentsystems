@@ -37,7 +37,7 @@ namespace EnergyPrediction
         //todo: NEED TO COMMENT EVERYTHING
         //todo: NEED TO FIX UP OTHER LOOPS BASED ON THE 5MIN GEN
         //todo: ADD Ageration based on the increments
-        static bool Testing = false;
+        static bool Testing = true;
 
         static IDictionary<string, List<string>> GeneratorLinks = new Dictionary<string, List<string>>() {
                 { "ACT", new List<string>() { "ROYALLA1" }},
