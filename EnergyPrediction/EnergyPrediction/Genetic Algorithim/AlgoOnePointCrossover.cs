@@ -60,10 +60,10 @@ namespace EnergyPrediction
 
                 double childFitness = ((S1 * firstParent.Reliability * (double)firstParent.Fitness) + (S2 * secondParent.Reliability * (double)secondParent.Fitness)) / ((S1 * firstParent.Reliability) + (S2 * secondParent.Reliability));
                 double childReliability = (Math.Pow(S1 * firstParent.Reliability, 2) + Math.Pow(S2 * secondParent.Reliability, 2)) / ((S1 * firstParent.Reliability) + (S2 * secondParent.Reliability));
+                childReliability = (childReliability < 0) ? 0 : (childReliability > 1) ? 1 : childReliability;
 
                 if (childReliability > 0.55)
                 {
-                    Console.WriteLine("{0}, {1}", childFitness, childReliability);
                     children[i].Reliability = (childReliability > 1) ? 1 : childReliability;
                     children[i].Fitness = childFitness;
                 }

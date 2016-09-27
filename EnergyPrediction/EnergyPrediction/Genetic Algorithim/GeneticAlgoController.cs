@@ -61,7 +61,7 @@ namespace EnergyPrediction
 
         public override void Start()
         {
-            IPopulation lPop = new Population(PopulationCount, PopulationCount * 5, Chromosome);
+            IPopulation lPop = new Population(PopulationCount, PopulationCount * 2, Chromosome);
             lPop.GenerationStrategy = new PerformanceGenerationStrategy(100);
             //todo: Dicusss the Need or want for a generation strategy 
             fGA = new GeneticAlgorithm(lPop, Fitness, Selection, Crossover, Mutation);

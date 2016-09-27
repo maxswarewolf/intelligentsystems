@@ -104,7 +104,7 @@ namespace EnergyPrediction
         {
             if (Testing)
             {
-                return 1.5 * Math.Sin(2 * Math.Pow(x, 2)) + 3.3;
+                return -1.5 * Math.Sin(2.01 * Math.Pow(x, 1.5)) + 3.3;
             }
             if (x >= 0 && x < fData.Count)
                 return fData[x];

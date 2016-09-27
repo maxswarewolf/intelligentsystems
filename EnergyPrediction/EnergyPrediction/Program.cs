@@ -42,15 +42,15 @@ namespace EnergyPrediction
         {
 
             //DataIO.LoadMin(StateType.VIC, DateTime.Parse("1/9/16"), DateTime.Parse("1/9/16"));
-
-            //var AlgoTest = new GeneticAlgoController(new GeneticAlgoChromosome(1000, 4),
-            //                                         new OnePointCrossover(), m 
+            //new OrTermination(new FitnessThresholdTermination(-1000), new TimeEvolvingTermination(TimeSpan.FromSeconds(90))),
+            //var AlgoTest = new GeneticAlgoController(new GeneticAlgoChromosome(250, 4),
+            //                                         new AlgoOnePointCrossover(),
             //                                         new FitnessFunctions(),
             //                                         new TworsMutation(),
             //                                         new TournamentSelection(),
-            //                                         new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromSeconds(90))),
-            //                                         new ElitistReinsertion(), 2000);
-            //AlgoTest.CrossoverProbability = 0.6f;
+            //                                         new FitnessThresholdTermination(-1000),
+            //                                         new CombinedReinsertion(), 2000);
+            //AlgoTest.CrossoverProbability = 0.65f; //smaller = more parents less children - larger = less parents more children
             //AlgoTest.MutationProbability = 0.1f; // according to guest lecture 1%< prob < 10%
             //AlgoTest.addEventFunction(AlgoTest.DefaultDraw);
             //AlgoTest.Start();
