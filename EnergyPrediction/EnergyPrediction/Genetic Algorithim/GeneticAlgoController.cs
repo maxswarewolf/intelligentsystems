@@ -43,6 +43,10 @@ namespace EnergyPrediction
             : base(aChromo, aCross, aFit, aMut, aSel, aRein, aTer, aPop)
         { }
 
+        public GeneticAlgoController(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, int aFitnessThres, int aGenCap, int MaxElapMin, IReinsertion aRein, int aPop)
+            : base(aChromo, aCross, aFit, aMut, aSel, aRein, aFitnessThres, aGenCap, MaxElapMin, aPop)
+        { }
+
         public override bool DefaultDraw(IChromosome aChromosome)
         {
             var lBest = aChromosome.GetGenes();
@@ -51,10 +55,10 @@ namespace EnergyPrediction
 
             Console.WriteLine();
             Console.WriteLine("Generations: {0}, Population Size: {1}", fGA.Population.GenerationsNumber, fGA.Population.CurrentGeneration.Chromosomes.Count);
-            Console.WriteLine("Fitness: {0:###,###,###.####}", aChromosome.Fitness);
+            Console.WriteLine("Fitness: {0:###,###,###.##########}", aChromosome.Fitness);
             Console.WriteLine("Reliability: {0}", lChromosome.Reliability);
             Console.WriteLine("+- Range Value: {0}", lChromosome.RangePeek);
-            Console.WriteLine("Genes: {0:00.####}, {1:00.####}, {2:00.####}, {3:00.####}", lBest[0].Value, lBest[1].Value, lBest[2].Value, lBest[3].Value);
+            Console.WriteLine("Genes: {0:0.####}, {1:0.####}, {2:0.####}, {3:0.####}", lBest[0].Value, lBest[1].Value, lBest[2].Value, lBest[3].Value);
             Console.WriteLine("Time: {0}", fGA.TimeEvolving);
             return true;
         }

@@ -87,7 +87,6 @@
     <Compile Include="UI\MainForm.cs" />
     <Compile Include="Genetic Algorithim\GeneticAlgoChromosome.cs" />
     <Compile Include="Genetic Algorithim\GeneticAlgoController.cs" />
-    <Compile Include="Genetic Shared\StochasticSelection.cs" />
     <Compile Include="FileIO\CsvFileCommon.cs" />
     <Compile Include="FileIO\CsvFileReader.cs" />
     <Compile Include="FileIO\CsvFileWriter.cs" />
@@ -111,6 +110,8 @@
     <Compile Include="Genetic Program\UniformTreeMutation.cs" />
     <Compile Include="Genetic Algorithim\AlgoOnePointCrossover.cs" />
     <Compile Include="Genetic Shared\CombinedReinsertion.cs" />
+    <Compile Include="Genetic Shared\StochasticSelection.cs" />
+    <Compile Include="Genetic Algorithim\AlgoReliabilityFitness.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

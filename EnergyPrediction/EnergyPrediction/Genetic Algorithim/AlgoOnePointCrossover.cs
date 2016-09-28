@@ -49,27 +49,30 @@ namespace EnergyPrediction
             var secondParent = parents[1] as GeneticAlgoChromosome;
 
             IList<IChromosome> temp = CreateChildren(firstParent, secondParent);
-            IList<GeneticAlgoChromosome> children = new List<GeneticAlgoChromosome>() { (GeneticAlgoChromosome)temp[0], (GeneticAlgoChromosome)temp[1] };
+            List<GeneticAlgoChromosome> Children = new List<GeneticAlgoChromosome>() { (GeneticAlgoChromosome)temp[0], (GeneticAlgoChromosome)temp[1] };
+            List<GeneticAlgoChromosome> lParents = new List<GeneticAlgoChromosome>() { firstParent, secondParent };
 
-            for (int i = 0; i < children.Count; i++)
-            {
-                double S1 = 1 - Difference(children[i], firstParent);
-                S1 = (S1 < 0) ? 0 : (S1 > 1) ? 1 : S1;
-                double S2 = 1 - Difference(children[i], secondParent);
-                S2 = (S2 < 0) ? 0 : (S2 > 1) ? 1 : S2;
+            return AlgoReliabilityFitness.CalculateDifference(lParents, Children);
 
-                double childFitness = ((S1 * firstParent.Reliability * (double)firstParent.Fitness) + (S2 * secondParent.Reliability * (double)secondParent.Fitness)) / ((S1 * firstParent.Reliability) + (S2 * secondParent.Reliability));
-                double childReliability = (Math.Pow(S1 * firstParent.Reliability, 2) + Math.Pow(S2 * secondParent.Reliability, 2)) / ((S1 * firstParent.Reliability) + (S2 * secondParent.Reliability));
-                childReliability = (childReliability < 0) ? 0 : (childReliability > 1) ? 1 : childReliability;
+            //for (int i = 0; i < children.Count; i++)
+            //{
+            //    double S1 = 1 - Difference(children[i], firstParent);
+            //    S1 = (S1 < 0) ? 0 : (S1 > 1) ? 1 : S1;
+            //    double S2 = 1 - Difference(children[i], secondParent);
+            //    S2 = (S2 < 0) ? 0 : (S2 > 1) ? 1 : S2;
 
-                if (childReliability > 0.55)
-                {
-                    children[i].Reliability = (childReliability > 1) ? 1 : childReliability;
-                    children[i].Fitness = childFitness;
-                }
-            }
+            //    double childFitness = ((S1 * firstParent.Reliability * (double)firstParent.Fitness) + (S2 * secondParent.Reliability * (double)secondParent.Fitness)) / ((S1 * firstParent.Reliability) + (S2 * secondParent.Reliability));
+            //    double childReliability = (Math.Pow(S1 * firstParent.Reliability, 2) + Math.Pow(S2 * secondParent.Reliability, 2)) / ((S1 * firstParent.Reliability) + (S2 * secondParent.Reliability));
+            //    childReliability = (childReliability < 0) ? 0 : (childReliability > 1) ? 1 : childReliability;
 
-            return new List<IChromosome>() { children[0], children[1] };
+            //    if (childReliability > 0.70)
+            //    {
+            //        children[i].Reliability = childReliability;
+            //        children[i].Fitness = childFitness;
+            //    }
+            //}
+
+            //return new List<IChromosome>() { children[0], children[1] };
         }
 
         protected double Difference(IChromosome child, IChromosome parent)

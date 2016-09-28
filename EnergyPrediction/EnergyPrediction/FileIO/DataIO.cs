@@ -34,8 +34,6 @@ namespace EnergyPrediction
 {
     public static class DataIO
     {
-        //todo: NEED TO FIX UP OTHER LOOPS BASED ON THE 5MIN GEN
-        //todo: ADD Ageration based on the increments
 
         /// <summary>
         /// The toggle for testing or use real data.
@@ -104,7 +102,8 @@ namespace EnergyPrediction
         {
             if (Testing)
             {
-                return -1.5 * Math.Sin(2.01 * Math.Pow(x, 1.5)) + 3.3;
+                //return (1 / Math.Sqrt(2 * Math.PI)) * (Math.Pow(Math.E, -Math.Pow(x - 0, 2) / (2 * 0.5)));
+                return -1 * Math.Sin(2 * Math.Pow(x, 1)) + 0;
             }
             if (x >= 0 && x < fData.Count)
                 return fData[x];
@@ -115,33 +114,30 @@ namespace EnergyPrediction
         /// Loads the 5 Minute data based on state, for full data range
         /// </summary>
         /// <param name="aState">A state.</param>
-        public static void LoadMin(StateType aState)
+        public static void LoadData(StateType aState)
         {
-            if (Testing)
-                return;
-            LoadMin(aState, StartDate, EndDate);
+            if (!Testing)
+                LoadData(aState, StartDate, EndDate);
         }
 
         /// <summary>
         /// Loads the 5 Minute data based on Generator Code, for full data range
         /// </summary>
         /// <param name="aGenCode">A gen code.</param>
-        public static void LoadMin(string aGenCode)
+        public static void LoadData(string aGenCode)
         {
-            if (Testing)
-                return;
-            LoadMin(aGenCode, StartDate, EndDate);
+            if (!Testing)
+                LoadData(aGenCode, StartDate, EndDate);
         }
 
         /// <summary>
         /// Loads the 5 Minute data based on Appliance, for full data range
         /// </summary>
         /// <param name="aApp">A app.</param>
-        public static void LoadMin(AppType aApp)
+        public static void LoadData(AppType aApp)
         {
-            if (Testing)
-                return;
-            LoadMin(aApp, StartDate, EndDate);
+            if (!Testing)
+                LoadData(aApp, StartDate, EndDate);
         }
 
         /// <summary>
@@ -150,11 +146,11 @@ namespace EnergyPrediction
         /// <param name="aState">A state.</param>
         /// <param name="aStartDate">A start date.</param>
         /// <param name="aEndDate">A end date.</param>
-        public static void LoadMin(StateType aState, DateTime aStartDate, DateTime aEndDate)
+        public static void LoadData(StateType aState, DateTime aStartDate, DateTime aEndDate)
         {
             if (Testing)
                 return;
-            fData.Clear();
+            fData = new List<double>();
             List<string> lGenerators = GeneratorLinks[aState.ToString()];
 
             string lRoot = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/5min";
@@ -205,6 +201,7 @@ namespace EnergyPrediction
                         }
                         fData.Add(lWattage);
                     }
+
                 }
             }
         }
@@ -215,11 +212,11 @@ namespace EnergyPrediction
         /// <param name="aGenCode">A gen code.</param>
         /// <param name="aStartDate">A start date.</param>
         /// <param name="aEndDate">A end date.</param>
-        public static void LoadMin(string aGenCode, DateTime aStartDate, DateTime aEndDate)
+        public static void LoadData(string aGenCode, DateTime aStartDate, DateTime aEndDate)
         {
             if (Testing)
                 return;
-            fData.Clear();
+            fData = new List<double>();
             string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/5min";
             string[] lFilePaths = Directory.GetFiles(Root, "*.csv", SearchOption.TopDirectoryOnly);
             List<string> lFiles = new List<string>();
@@ -259,11 +256,11 @@ namespace EnergyPrediction
         /// <param name="aApp">A app.</param>
         /// <param name="aStartData">A start data.</param>
         /// <param name="aEndDate">A end date.</param>
-        public static void LoadMin(AppType aApp, DateTime aStartData, DateTime aEndDate)
+        public static void LoadData(AppType aApp, DateTime aStartData, DateTime aEndDate)
         {
             if (Testing)
                 return;
-            fData.Clear();
+            fData = new List<double>();
             string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/App";
             string[] lFilePaths = Directory.GetFiles(Root, "*.csv", SearchOption.TopDirectoryOnly);
             List<string> lFiles = new List<string>();
@@ -291,6 +288,84 @@ namespace EnergyPrediction
                     }
                 }
             }
+        }
+
+        public static void AggregateData(StateType aState, int aTimeInterval)
+        {
+            AggregateData(aState, StartDate, EndDate, aTimeInterval);
+        }
+
+        public static void AggregateData(string aGenCode, int aTimeInterval)
+        {
+            AggregateData(aGenCode, StartDate, EndDate, aTimeInterval);
+        }
+
+        public static void AggregateData(AppType aApp, int aTimeInterval)
+        {
+            AggregateData(aApp, StartDate, EndDate, aTimeInterval);
+        }
+
+        public static void AggregateData(StateType aState, DateTime aStartDate, DateTime aEndDate, int aTimeInterval)
+        {
+            if (!Testing)
+            {
+                LoadData(aState, aStartDate, aEndDate);
+                AggregateDataSet(aTimeInterval);
+            }
+        }
+
+        public static void AggregateData(string aGenCode, DateTime aStartDate, DateTime aEndDate, int aTimeInterval)
+        {
+            if (!Testing)
+            {
+                LoadData(aGenCode, aStartDate, aEndDate);
+                AggregateDataSet(aTimeInterval);
+            }
+        }
+
+        public static void AggregateData(AppType aApp, DateTime aStartDate, DateTime aEndDate, int aNumTimeIntervals)
+        {
+            if (!Testing)
+            {
+                LoadData(aApp, aStartDate, aEndDate);
+                AggregateDataSet(aNumTimeIntervals);
+            }
+        }
+
+        private static void AggregateDataSet(int aTimeInterval)
+        {
+            List<double> lTemp = new List<double>();
+            double lWattage = 0;
+            for (int i = 0; i < fData.Count; i++)
+            {
+                if ((i + 1) % aTimeInterval == 0)
+                {
+                    lTemp.Add(lWattage);
+                    lWattage = 0;
+                }
+                lWattage += fData[i];
+            }
+            if (fData.Count % aTimeInterval != 0)
+            {
+                lTemp.Add(lWattage);
+            }
+            fData = new List<double>();
+            fData.AddRange(lTemp);
+        }
+
+        public static void test(int a)
+        {
+            bool testingTemp = Testing;
+            Testing = false;
+            Console.WriteLine("\nLoad Data Test");
+            LoadData(AppType.Heater, DateTime.Parse("1/12/15"), DateTime.Parse("1/12/15"));
+            Console.WriteLine(fData.Count);
+
+            Console.WriteLine("\nAggregate Data Test");
+            AggregateData(AppType.Heater, DateTime.Parse("1/12/15"), DateTime.Parse("1/12/15"), a);
+            Console.WriteLine(fData.Count);
+
+            Testing = testingTemp;
         }
     }
 }

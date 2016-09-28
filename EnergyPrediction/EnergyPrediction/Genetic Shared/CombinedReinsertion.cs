@@ -45,7 +45,8 @@ namespace EnergyPrediction
         public bool CanExpand { get; } = false;
 
         /// <summary>
-        /// Combines the parents with the children, and then returns a list the meets the population demands
+        /// Elists Reinsertion, adding the best chromosome to the next population, 
+        /// and then adjusting the population to fit within the population.MinSize and population.MaxSize
         /// </summary>
         /// <returns>The chromosomes.</returns>
         /// <param name="population">Population.</param>
@@ -54,34 +55,19 @@ namespace EnergyPrediction
         public IList<IChromosome> SelectChromosomes(IPopulation population, IList<IChromosome> offspring, IList<IChromosome> parents)
         {
             List<IChromosome> lCombined = new List<IChromosome>();
-            /// <summary>
-            /// combine when size is greater than the max population.
-            /// </summary>
-            if (offspring.Count + parents.Count > population.MaxSize)
-            {
-                lCombined.AddRange(offspring);
-                lCombined.AddRange(parents.OrderBy(c => c.Fitness).Take(population.MaxSize - lCombined.Count).ToList());
-            }
-            /// <summary>
-            /// combine when population is less than min population.
-            /// </summary>
-            else if (offspring.Count + parents.Count < population.MinSize)
-            {
-                var diff = population.MaxSize - (offspring.Count + parents.Count);
-                lCombined.AddRange(offspring);
-                lCombined.AddRange(parents);
-                lCombined.AddRange(parents.OrderByDescending(c => c.Fitness).Take(diff).ToList());
-            }
-            /// <summary>
-            /// combine when inbetween the max in min population.
-            /// </summary>
-            else {
-                lCombined.AddRange(offspring);
-                lCombined.AddRange(parents);
-            }
+            lCombined.AddRange(offspring);
+            lCombined.Add(population.CurrentGeneration.BestChromosome);
 
-            if (lCombined.Count > population.MaxSize)
-                return lCombined.Take(population.MaxSize).OrderBy(c => c.Fitness).ToList();
+            if (lCombined.Count < population.MinSize)
+            {
+                parents = parents.OrderBy(c => c.Fitness).ToList();
+                var diff = population.MaxSize - lCombined.Count;
+                lCombined.AddRange(parents.Take(diff).ToList());
+            }
+            else if (lCombined.Count > population.MaxSize)
+            {
+                lCombined = lCombined.Take(population.MaxSize).ToList();
+            }
 
             return lCombined.OrderBy(c => c.Fitness).ToList();
         }

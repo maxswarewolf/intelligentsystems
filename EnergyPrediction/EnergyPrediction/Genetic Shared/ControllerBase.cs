@@ -57,7 +57,17 @@ namespace EnergyPrediction
         protected GeneticAlgorithm fGA { get; set; }
         protected List<Func<IChromosome, bool>> fGenerationRanEventFunctions = new List<Func<IChromosome, bool>>();
 
-        public ControllerBase(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, IReinsertion aRein, int aFitnessThres, int aGenCap, int MaxElapMin, int aPop) { }
+        public ControllerBase(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, IReinsertion aRein, int aFitnessThres, int aGenCap, int MaxElapMin, int aPop)
+        {
+            Chromosome = aChromo;
+            Crossover = aCross;
+            Fitness = aFit;
+            Mutation = aMut;
+            Selection = aSel;
+            Termination = new OrTermination(new FitnessThresholdTermination(aFitnessThres), new GenerationNumberTermination(aGenCap), new TimeEvolvingTermination(System.TimeSpan.FromMinutes(MaxElapMin)));
+            Reinsertion = aRein;
+            PopulationCount = aPop;
+        }
 
         public ControllerBase(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, IReinsertion aRein, ITermination aTer, int aPop)
         {
@@ -107,6 +117,14 @@ namespace EnergyPrediction
                 Console.ReadKey();
                 return;
             }
+        }
+        public virtual void Stop()
+        {
+            fGA.Stop();
+        }
+        public virtual void Resume()
+        {
+            fGA.Resume();
         }
     }
 }
