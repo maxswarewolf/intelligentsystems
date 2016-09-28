@@ -353,7 +353,7 @@ namespace EnergyPrediction
             fData.AddRange(lTemp);
         }
 
-        public static void test(int a)
+        public static void TestingFunction(int a)
         {
             bool testingTemp = Testing;
             Testing = false;

@@ -40,18 +40,18 @@ namespace EnergyPrediction
     {
         public static void Main(string[] args)
         {
-            //var AlgoTest = new GeneticAlgoController(new GeneticAlgoChromosome(2, 4),
-            //                                         new AlgoOnePointCrossover(),
-            //                                         new FitnessFunctions(),
-            //                                         new UniformMutation(),
-            //                                         new TournamentSelection(3),
-            //                                          0, 1000, 10,
-            //                                         new CombinedReinsertion(),
-            //                                         4000);
-            //AlgoTest.CrossoverProbability = 0.65f; //smaller = more parents less children - larger = less parents more children
-            //AlgoTest.MutationProbability = 0.05f; // according to guest lecture 1%< prob < 10%
-            //AlgoTest.addEventFunction(AlgoTest.DefaultDraw);
-            //AlgoTest.Start();
+            var AlgoTest = new GeneticAlgoController(new GeneticAlgoChromosome(2, 4),
+                                                     new AlgoOnePointCrossover(),
+                                                     new FitnessFunctions(),
+                                                     new UniformMutation(),
+                                                     new TournamentSelection(2),
+                                                      0, 1000, 10,
+                                                     new CombinedReinsertion(),
+                                                     4000);
+            AlgoTest.CrossoverProbability = 0.65f; //smaller = more parents less children - larger = less parents more children
+            AlgoTest.MutationProbability = 0.05f; // according to guest lecture 1%< prob < 10%
+            AlgoTest.addEventFunction(AlgoTest.DefaultDraw);
+            AlgoTest.Start();
 
 
             //var ProgTest = new GeneticProgController(new GeneticProgChromosome(10, 3),
