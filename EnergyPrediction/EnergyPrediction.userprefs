@@ -1,14 +1,14 @@
-﻿<Properties StartupConfiguration="{5DB6A5CF-9686-4359-B884-37B0FB21524D}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="EnergyPrediction/FileIO/DataIO.cs">
+﻿<Properties StartupItem="EnergyPrediction/EnergyPrediction.csproj" StartupConfiguration="{5DB6A5CF-9686-4359-B884-37B0FB21524D}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EnergyPrediction/Genetic Program/UniformTreeMutation.cs">
     <Files>
-      <File FileName="EnergyPrediction/FileIO/DataIO.cs" Line="50" Column="77" />
-      <File FileName="EnergyPrediction/Program.cs" Line="40" Column="19" />
+      <File FileName="EnergyPrediction/Genetic Program/UniformTreeMutation.cs" Line="78" Column="72" />
+      <File FileName="EnergyPrediction/Genetic Program/GeneticProgChromosome.cs" Line="70" Column="128" />
+      <File FileName="EnergyPrediction/Genetic Program/Tree Math/MathObject.cs" Line="48" Column="38" />
+      <File FileName="EnergyPrediction/Genetic Program/TreeNode.cs" Line="112" Column="61" />
+      <File FileName="EnergyPrediction/Genetic Program/Tree Math/MathNumber.cs" Line="36" Column="10" />
+      <File FileName="EnergyPrediction/Genetic Program/Tree Math/MathSymbol.cs" Line="34" Column="26" />
+      <File FileName="EnergyPrediction/Genetic Program/BranchCrossover.cs" Line="74" Column="56" />
     </Files>
-    <Pads>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -48,6 +48,7 @@ namespace EnergyPrediction
             this.ChildRight = null;
         }
 
+     
         public void setChildRight(TreeNode<T> aChild)
         {
             this.ChildRight = aChild;
@@ -58,6 +59,57 @@ namespace EnergyPrediction
         {
             this.ChildLeft = aChild;
             this.ChildLeft.Parent = this;
+        }
+
+        internal int getMaxDepth()
+        {
+            //recursive search of bottom most child
+            if (ChildLeft == null && ChildRight == null)
+            {
+                return Depth;
+            }
+            else if (ChildLeft == null)
+            {
+                return ChildRight.getMaxDepth();
+            }
+            else if (ChildRight == null)
+            {
+                return ChildLeft.getMaxDepth(); 
+            }
+
+            return Math.Max(ChildLeft.getMaxDepth(), ChildRight.getMaxDepth()); 
+        }
+
+        internal Boolean isValidSubTree()
+        {
+            //validation task 1: Check if it contains x!
+            Boolean thisIsX = false;
+            // todo: help?!?! how do I compare Data to math object type - X
+            // todo: after implementation remove exception!!!
+
+            if (thisIsX)
+            {
+                return true;
+            }
+            else if (ChildLeft == null && ChildRight == null)
+            {
+                return false;
+            }
+            else if (ChildLeft == null)
+            {
+                return ChildRight.isValidSubTree();
+            }
+            else if (ChildRight == null)
+            {
+                return ChildLeft.isValidSubTree(); 
+            }
+
+            return (ChildLeft.isValidSubTree() || ChildRight.isValidSubTree()); 
+
+            throw new NotImplementedException();
+
+            //todo: are there any additional validation steps required
+            // todo: double-check if depth is still correct!
         }
 
         public double doCalculation(int x)

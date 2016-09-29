@@ -58,5 +58,4 @@ namespace EnergyPrediction
             throw new System.NotImplementedException();
         }
     }
-    // todo: every new math object implementation must be included in the switch statement in the chromosone creation
 }
