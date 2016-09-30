@@ -68,9 +68,25 @@ namespace EnergyPrediction
             // todo: double-check if depth is still correct!
 
         */
-        public static bool visit<T>(ref TreeNode<T> treeNode)
+        public static bool visit(TreeNode<MathObject> root)
         {
-            throw new NotImplementedException();
+            if (root.GetType().Equals(typeof(MathSymbol)))
+            {
+                if (visit(root.ChildLeft))
+                {
+                    return true;
+                }
+                else if (visit(root.ChildRight))
+                {
+                    return true;
+                }
+                return false;
+            }
+            else if (root.Data.isX)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

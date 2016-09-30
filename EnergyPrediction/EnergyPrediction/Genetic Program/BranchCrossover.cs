@@ -39,7 +39,7 @@ namespace EnergyPrediction
 
         protected override IList<IChromosome> PerformCross(IList<IChromosome> parents)
         {
-            List<GeneticProgChromosome> children =  new List<GeneticProgChromosome>(); 
+            List<GeneticProgChromosome> children = new List<GeneticProgChromosome>();
 
             GeneticProgChromosome lParentOne = parents[0] as GeneticProgChromosome;
             GeneticProgChromosome lParentTwo = parents[1] as GeneticProgChromosome;
@@ -47,7 +47,7 @@ namespace EnergyPrediction
             /* ????
             TreeNode<MathObject> lNode1 = lParentOne.GetGene(0).Value as TreeNode<MathObject>;
             return parents;
-            */ 
+            */
 
             // 1) grab the root of both chromosones that act as parent tree for new chromosones
             //todo: do we need a clone/deep copy method? 
@@ -65,8 +65,9 @@ namespace EnergyPrediction
             swap(lNode2, lNode1);
 
             //4) validate both new trees
-            Boolean valid1 = lRoot1.isValidSubTree();
-            Boolean valid2 = lRoot2.isValidSubTree();
+
+            Boolean valid1 = VisitorPattern.visit(lRoot1);
+            Boolean valid2 = VisitorPattern.visit(lRoot2);
 
             //TODO: fix trees if necessary 
 
@@ -74,7 +75,7 @@ namespace EnergyPrediction
             //5) add to children list
             // Todo how do I cast children or the two trees to the correct type?  
             //lRoot1+2
-            GeneticProgController child1 = new GeneticProgChromosome(lRoot1); 
+            GeneticProgController child1 = new GeneticProgChromosome(lRoot1);
 
             throw new NotImplementedException();
         }
@@ -94,5 +95,5 @@ namespace EnergyPrediction
             }
 
         }
-   }
+    }
 }

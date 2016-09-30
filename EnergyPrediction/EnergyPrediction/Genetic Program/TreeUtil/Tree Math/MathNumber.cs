@@ -31,10 +31,9 @@ namespace EnergyPrediction
     public class MathNumber : MathObject
     {
         public double Value { get; private set; }
-        public bool isX { get; private set; }
         public MathNumber()
         {
-            this.ChangeValue(); 
+            this.ChangeValue();
         }
         /// <summary>
         /// Will return the value of the number, but this should not be used.
@@ -46,17 +45,10 @@ namespace EnergyPrediction
             return isX ? x : Value;
         }
 
-
         public override void ChangeValue()
         {
             Value = Randomizer.NextDouble(MathObject.RangePeek * -1, MathObject.RangePeek + 1);
-            isX = Equals(Value, 0);
-
-        }
-
-        public override bool isThisX()
-        {
-            return isX; 
+            base.isX = Equals(Value, 0);
         }
     }
 }

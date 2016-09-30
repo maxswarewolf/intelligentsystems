@@ -33,7 +33,7 @@ namespace EnergyPrediction
         public SymbolTypes Symbol { get; private set; }
         public MathSymbol()
         {
-            this.ChangeValue(); 
+            this.ChangeValue();
         }
         //todo: add in other operands
         public override double doCalculation(double aLeftValue, double aRightValue)
@@ -71,11 +71,6 @@ namespace EnergyPrediction
         {
             var r = Rand.Next(0, Enum.GetNames(typeof(SymbolTypes)).Length);
             Symbol = (SymbolTypes)(Enum.GetValues(typeof(SymbolTypes)).GetValue(r));
-        }
-
-        public override bool isThisX()
-        {
-            return false;
         }
     }
 }

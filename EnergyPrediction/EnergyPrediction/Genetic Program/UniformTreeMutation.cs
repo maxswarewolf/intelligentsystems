@@ -44,7 +44,7 @@ namespace EnergyPrediction
                 //a) pick a random node
                 TreeNode<MathObject> lRoot = chromosome.GetGene(0).Value as TreeNode<MathObject>;
                 GeneticProgChromosome lChrom = chromosome as GeneticProgChromosome;
-                TreeNode <MathObject> randNode =  lChrom.selectRandNode();
+                TreeNode<MathObject> randNode = lChrom.selectRandNode();
 
 
                 //b) swap out value (and type??) s
@@ -54,19 +54,19 @@ namespace EnergyPrediction
                 {
                     case 0:
                         //change value, not type
-                        randNode.Data.ChangeValue(); 
-                        break; 
+                        randNode.Data.ChangeValue();
+                        break;
 
                     case 1:
                         //change type 
-                        newNode = changeObject(randNode); 
+                        newNode = changeObject(randNode);
                         replaceNode(randNode, newNode);
-                        break; 
-                    //todo: create case 2 where node is transformed into an x-node?
+                        break;
+                        //todo: create case 2 where node is transformed into an x-node?
                         //currently not possible - x creation is random
 
                 }
-                lRoot.isValidSubTree(); 
+                VisitorPattern.visit(lRoot);
                 //todo: do we need to fix it? 
             }
         }
@@ -88,7 +88,7 @@ namespace EnergyPrediction
                 return newNode;
             }
             else
-                throw new NotSupportedException(); 
+                throw new NotSupportedException();
         }
 
 
@@ -131,7 +131,7 @@ namespace EnergyPrediction
                     newNode.setChildRight(rightChild);
                 }
 
-              
+
             }
         }
 

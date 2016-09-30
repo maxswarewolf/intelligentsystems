@@ -36,6 +36,7 @@ namespace EnergyPrediction
     {
         public static Random Rand = new Random();
         public static double RangePeek { get; set; }
+        public bool isX { get; protected set; }
 
         public static MathObject randomMathObject()
         {
@@ -60,12 +61,7 @@ namespace EnergyPrediction
 
         public virtual void ChangeValue()
         {
-            throw new NotImplementedException(); 
-        }
-
-        public virtual bool isThisX()
-        {
-            throw new NotImplementedException(); 
+            throw new NotImplementedException();
         }
     }
 

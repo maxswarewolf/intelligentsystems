@@ -79,15 +79,33 @@ namespace EnergyPrediction
                     }
                 }
             }
+            //Is setting a MathNumber to X
+            if (!VisitorPattern.visit(root))
+            {
+
+                parentList.Enqueue(root);
+                while (parentList.Count > 0)
+                {
+                    currentNode = parentList.Dequeue();
+                    if (currentNode.Data.GetType().Equals(typeof(MathSymbol)))
+                    {
+                        parentList.Enqueue(currentNode.ChildLeft);
+                        parentList.Enqueue(currentNode.ChildRight);
+                    }
+                    else {
+
+                    }
+                }
+            }
             //todo: make sure tree contains at least one x (and is a valid tree!!!) 
-            root.isValidSubTree(); 
+            VisitorPattern.visit(root);
             //todo: fix if not!
         }
 
         public GeneticProgChromosome(TreeNode<MathObject> lRoot1) : base(2)
         {
             root = lRoot1;
-            Depth = lRoot1.getMaxDepth(); 
+            Depth = lRoot1.getMaxDepth();
         }
 
         public double getCalculatedY(int x)

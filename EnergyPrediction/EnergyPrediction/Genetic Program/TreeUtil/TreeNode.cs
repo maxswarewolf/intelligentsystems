@@ -50,9 +50,21 @@ namespace EnergyPrediction
 
         public TreeNode(TreeNode<T> root)
         {
-            throw new NotImplementedException(); 
+            this.Data = root.Data;
+            this.Depth = root.Depth;
+            this.Parent = root.Parent;
+            if (!root.ChildLeft.Equals(null))
+            {
+                this.ChildLeft = new TreeNode<T>(root.ChildLeft);
+                this.ChildRight = new TreeNode<T>(root.ChildRight);
+            }
+            else {
+                this.ChildLeft = null;
+                this.ChildRight = null;
+            }
+
         }
-     
+
         public void setChildRight(TreeNode<T> aChild)
         {
             this.ChildRight = aChild;
@@ -65,13 +77,10 @@ namespace EnergyPrediction
             this.ChildLeft.Parent = this;
         }
 
-
-        public TreeNode<T> cloneTree( ) 
+        public TreeNode<T> cloneTree()
         {
-            //todo implement this and the new constructor - see above!
-            throw new NotImplementedException(); 
+            return new TreeNode<T>(this);
         }
-
 
         public int getMaxDepth()
         {
@@ -86,20 +95,11 @@ namespace EnergyPrediction
             }
             else if (ChildRight == null)
             {
-                return ChildLeft.getMaxDepth(); 
+                return ChildLeft.getMaxDepth();
             }
 
-            return Math.Max(ChildLeft.getMaxDepth(), ChildRight.getMaxDepth()); 
+            return Math.Max(ChildLeft.getMaxDepth(), ChildRight.getMaxDepth());
         }
-
-
-        // todo: change to visitor pattenr 
-        public Boolean isValidSubTree()
-        {
-            return VisitorPattern.visit(this); 
-        }
-
-        // --------------------------
 
         public double doCalculation(int x)
         {
