@@ -41,6 +41,7 @@ namespace EnergyPrediction
 
         TreeNode<MathObject> root;
 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="T:EnergyPrediction.GeneticAlgoChromosome"/> class.
         /// </summary>
@@ -79,6 +80,14 @@ namespace EnergyPrediction
                 }
             }
             //todo: make sure tree contains at least one x (and is a valid tree!!!) 
+            root.isValidSubTree(); 
+            //todo: fix if not!
+        }
+
+        public GeneticProgChromosome(TreeNode<MathObject> lRoot1) : base(2)
+        {
+            root = lRoot1;
+            Depth = lRoot1.getMaxDepth(); 
         }
 
         public double getCalculatedY(int x)
@@ -101,6 +110,28 @@ namespace EnergyPrediction
             return new Gene(root);
         }
 
+        //returns a random node of the tree (not the root)
+        public TreeNode<MathObject> selectRandNode()
+        {
+            TreeNode<MathObject> node = root;
+            // min value is 2 as 1 is the root, which is not desired
+            int rand = Randomizer.NextInt(2, root.getMaxDepth());
+
+            for (int i = 1; i < rand; i++)
+            {
+                int direction = Randomizer.NextInt(1, 2);
+                // 1 = goLeft, 2=goRight
+                if (direction == 1 && node.ChildLeft != null)
+                {
+                    node = node.ChildLeft;
+                }
+                else if (direction == 2 && node.ChildRight != null)
+                {
+                    node = node.ChildRight;
+                }
+            }
+            return node;
+        }
 
 
     }

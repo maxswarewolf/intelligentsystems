@@ -57,5 +57,17 @@ namespace EnergyPrediction
         {
             throw new System.NotImplementedException();
         }
+
+        public virtual void ChangeValue()
+        {
+            throw new NotImplementedException(); 
+        }
+
+        public virtual bool isThisX()
+        {
+            throw new NotImplementedException(); 
+        }
     }
+
+
 }

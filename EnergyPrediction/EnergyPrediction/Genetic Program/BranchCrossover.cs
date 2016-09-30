@@ -41,8 +41,8 @@ namespace EnergyPrediction
         {
             List<GeneticProgChromosome> children =  new List<GeneticProgChromosome>(); 
 
-            IChromosome lParentOne = parents[0];
-            IChromosome lParentTwo = parents[1];
+            GeneticProgChromosome lParentOne = parents[0] as GeneticProgChromosome;
+            GeneticProgChromosome lParentTwo = parents[1] as GeneticProgChromosome;
 
             /* ????
             TreeNode<MathObject> lNode1 = lParentOne.GetGene(0).Value as TreeNode<MathObject>;
@@ -50,13 +50,14 @@ namespace EnergyPrediction
             */ 
 
             // 1) grab the root of both chromosones that act as parent tree for new chromosones
+            //todo: do we need a clone/deep copy method? 
             TreeNode<MathObject> lRoot1 = lParentOne.GetGene(0).Value as TreeNode<MathObject>;
             TreeNode<MathObject> lRoot2 = lParentTwo.GetGene(0).Value as TreeNode<MathObject>;
 
             //2) randomly select 1 node of each tree random 
 
-            TreeNode<MathObject> lNode1 = selectRandNode(lRoot1);
-            TreeNode<MathObject> lNode2 = selectRandNode(lRoot2);
+            TreeNode<MathObject> lNode1 = lParentOne.selectRandNode();
+            TreeNode<MathObject> lNode2 = lParentTwo.selectRandNode();
 
             //3) swap all references 
 
@@ -71,35 +72,14 @@ namespace EnergyPrediction
 
 
             //5) add to children list
-             // Todo how do I cast children or the two trees to the correct type?  
+            // Todo how do I cast children or the two trees to the correct type?  
+            //lRoot1+2
+            GeneticProgController child1 = new GeneticProgChromosome(lRoot1); 
 
             throw new NotImplementedException();
         }
 
-        //returns a random node of the tree (not the root)
-        // todo: move to some tree util class/folder? 
-        public TreeNode<MathObject> selectRandNode(TreeNode<MathObject> lRoot)
-        {
-            TreeNode<MathObject> node = lRoot; 
-            // min value is 2 as 1 is the root, which is not desired
-            int rand = Randomizer.NextInt(2, lRoot.getMaxDepth());
 
-            //Todo: is this ok or too biased? Consider very unbalanced trees... 
-            for (int i = 1; i < rand; i++)
-            {
-                int direction = Randomizer.NextInt(1, 2);
-                // 1 = goLeft, 2=goRight
-                if (direction == 1 && node.ChildLeft != null)
-                {
-                    node = node.ChildLeft;
-                }
-                else if (direction ==2 && node.ChildRight!= null) 
-                {
-                    node = node.ChildRight;
-                }
-            }
-            return node; 
-        }
 
         void swap(TreeNode<MathObject> lNode1, TreeNode<MathObject> lNode2)
         {

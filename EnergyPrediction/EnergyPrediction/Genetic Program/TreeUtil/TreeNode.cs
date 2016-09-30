@@ -48,6 +48,10 @@ namespace EnergyPrediction
             this.ChildRight = null;
         }
 
+        public TreeNode(TreeNode<T> root)
+        {
+            throw new NotImplementedException(); 
+        }
      
         public void setChildRight(TreeNode<T> aChild)
         {
@@ -61,7 +65,15 @@ namespace EnergyPrediction
             this.ChildLeft.Parent = this;
         }
 
-        internal int getMaxDepth()
+
+        public TreeNode<T> cloneTree( ) 
+        {
+            //todo implement this and the new constructor - see above!
+            throw new NotImplementedException(); 
+        }
+
+
+        public int getMaxDepth()
         {
             //recursive search of bottom most child
             if (ChildLeft == null && ChildRight == null)
@@ -80,37 +92,14 @@ namespace EnergyPrediction
             return Math.Max(ChildLeft.getMaxDepth(), ChildRight.getMaxDepth()); 
         }
 
-        internal Boolean isValidSubTree()
+
+        // todo: change to visitor pattenr 
+        public Boolean isValidSubTree()
         {
-            //validation task 1: Check if it contains x!
-            Boolean thisIsX = false;
-            // todo: help?!?! how do I compare Data to math object type - X
-            // todo: after implementation remove exception!!!
-
-            if (thisIsX)
-            {
-                return true;
-            }
-            else if (ChildLeft == null && ChildRight == null)
-            {
-                return false;
-            }
-            else if (ChildLeft == null)
-            {
-                return ChildRight.isValidSubTree();
-            }
-            else if (ChildRight == null)
-            {
-                return ChildLeft.isValidSubTree(); 
-            }
-
-            return (ChildLeft.isValidSubTree() || ChildRight.isValidSubTree()); 
-
-            throw new NotImplementedException();
-
-            //todo: are there any additional validation steps required
-            // todo: double-check if depth is still correct!
+            return VisitorPattern.visit(this); 
         }
+
+        // --------------------------
 
         public double doCalculation(int x)
         {

@@ -1,7 +1,7 @@
 ﻿//
 // MIT LICENSE
 //
-// GeneticProgController.cs
+// EmptyClass.cs
 //
 // Author:
 //       Katie Clark, Sean Grinter, Adrian Pellegrino <Energy Prediction>
@@ -26,45 +26,53 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using GeneticSharp.Domain;
-using GeneticSharp.Domain.Chromosomes;
-using GeneticSharp.Domain.Crossovers;
-using GeneticSharp.Domain.Fitnesses;
-using GeneticSharp.Domain.Mutations;
-using GeneticSharp.Domain.Selections;
-using GeneticSharp.Domain.Terminations;
-using GeneticSharp.Domain.Populations;
-using GeneticSharp.Domain.Reinsertions;
-
 namespace EnergyPrediction
 {
-    public class GeneticProgController : ControllerBase
+    public static class VisitorPattern
     {
-        public GeneticProgController(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, ITermination aTer, IReinsertion aRein, int aPop)
-            : base(aChromo, aCross, aFit, aMut, aSel, aRein, aTer, aPop)
-        { }
 
-        public override bool DefaultDraw(IChromosome aChromosome)
+        // TODO: Adrian, have fun :-) 
+
+        //Todo: if this visitor pattern also fixes the tree, please rename to "makeValidSubTree"!
+
+
+
+        /*
+         * THis is what it's supposed to do
+         * 
+         *  internal Boolean isValidSubTree()
         {
-            Console.Clear();
+            //validation task 1: Check if it contains x!
 
-            Console.WriteLine();
-            Console.WriteLine("Generations: {0}", fGA.Population.GenerationsNumber);
-            Console.WriteLine("Fitness: {0}", aChromosome.Fitness);
-            Console.WriteLine("Time: {0}", fGA.TimeEvolving);
-            return true;
-        }
+            if (this.Data.isThisX())
+            {
+                return true;
+            }
+            else if (ChildLeft == null && ChildRight == null)
+            {
+                return false;
+            }
+            else if (ChildLeft == null)
+            {
+                return ChildRight.isValidSubTree();
+            }
+            else if (ChildRight == null)
+            {
+                return ChildLeft.isValidSubTree(); 
+            }
 
-        public override void Start()
-        {
-            base.Start();
-            //todo: add in final display of best chromosome or other display data
-        }
+            return (ChildLeft.isValidSubTree() || ChildRight.isValidSubTree());
 
-        public static implicit operator GeneticProgController(GeneticProgChromosome v)
+
+            //todo: are there any additional validation steps required
+            // todo: double-check if depth is still correct!
+
+        */
+        public static bool visit<T>(ref TreeNode<T> treeNode)
         {
             throw new NotImplementedException();
         }
     }
 }
+
 

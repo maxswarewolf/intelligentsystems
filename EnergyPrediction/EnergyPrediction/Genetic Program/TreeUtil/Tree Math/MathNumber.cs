@@ -34,8 +34,7 @@ namespace EnergyPrediction
         public bool isX { get; private set; }
         public MathNumber()
         {
-            Value = Randomizer.NextDouble(MathObject.RangePeek * -1, MathObject.RangePeek + 1);
-            isX = Equals(Value, 0);
+            this.ChangeValue(); 
         }
         /// <summary>
         /// Will return the value of the number, but this should not be used.
@@ -47,6 +46,18 @@ namespace EnergyPrediction
             return isX ? x : Value;
         }
 
+
+        public override void ChangeValue()
+        {
+            Value = Randomizer.NextDouble(MathObject.RangePeek * -1, MathObject.RangePeek + 1);
+            isX = Equals(Value, 0);
+
+        }
+
+        public override bool isThisX()
+        {
+            return isX; 
+        }
     }
 }
 
