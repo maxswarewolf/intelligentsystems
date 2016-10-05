@@ -39,7 +39,7 @@ namespace EnergyPrediction
     {
         public int Depth { get; private set; }
 
-        TreeNode<MathObject> root;
+        public TreeNode<MathObject> Root { get; private set; }
 
 
         /// <summary>
@@ -55,10 +55,10 @@ namespace EnergyPrediction
             Depth = aDepth; //wanted depth in initial tree
             Queue<TreeNode<MathObject>> parentList = new Queue<TreeNode<MathObject>>();
 
-            root = new TreeNode<MathObject>(new MathSymbol(), 1); //  data is randomly chosen at initiallization 
+            Root = new TreeNode<MathObject>(new MathSymbol(), 1); //  data is randomly chosen at initiallization 
             TreeNode<MathObject> currentNode;
 
-            parentList.Enqueue(root);
+            parentList.Enqueue(Root);
 
             //initial construction of tree
             while (parentList.Count > 0)
@@ -80,38 +80,25 @@ namespace EnergyPrediction
                 }
             }
             //Is setting a MathNumber to X
-            if (!VisitorPattern.visit(root))
+            if (!VisitorPattern.hasX(Root))
             {
-
-                parentList.Enqueue(root);
-                while (parentList.Count > 0)
-                {
-                    currentNode = parentList.Dequeue();
-                    if (currentNode.Data.GetType().Equals(typeof(MathSymbol)))
-                    {
-                        parentList.Enqueue(currentNode.ChildLeft);
-                        parentList.Enqueue(currentNode.ChildRight);
-                    }
-                    else {
-
-                    }
-                }
+                addX(0);
             }
             //todo: make sure tree contains at least one x (and is a valid tree!!!) 
-            VisitorPattern.visit(root);
+            VisitorPattern.hasX(Root);
             //todo: fix if not!
         }
 
         public GeneticProgChromosome(TreeNode<MathObject> lRoot1) : base(2)
         {
-            root = lRoot1;
+            Root = lRoot1;
             Depth = lRoot1.getMaxDepth();
         }
 
         public double getCalculatedY(int x)
         {
             // TODO test!
-            return root.doCalculation(x);
+            return Root.doCalculation(x);
         }
 
         /// <summary>
@@ -125,15 +112,15 @@ namespace EnergyPrediction
 
         public override Gene GenerateGene(int geneIndex)
         {
-            return new Gene(root);
+            return new Gene(Root);
         }
 
         //returns a random node of the tree (not the root)
         public TreeNode<MathObject> selectRandNode()
         {
-            TreeNode<MathObject> node = root;
+            TreeNode<MathObject> node = Root;
             // min value is 2 as 1 is the root, which is not desired
-            int rand = Randomizer.NextInt(2, root.getMaxDepth());
+            int rand = Randomizer.NextInt(2, Root.getMaxDepth());
 
             for (int i = 1; i < rand; i++)
             {
@@ -151,6 +138,91 @@ namespace EnergyPrediction
             return node;
         }
 
+        public bool swap(ref TreeNode<MathObject> aNode1, ref TreeNode<MathObject> aNode2)
+        {
+            TreeNode<MathObject> lP1 = aNode1.Parent;
+            TreeNode<MathObject> lP2 = aNode2.Parent;
 
+            bool aNode2isLeft = false;
+            if (lP2.ChildLeft == aNode2)
+            {
+                aNode2isLeft = true;
+            }
+
+            if (lP1.ChildLeft == aNode1)
+            {
+                lP1.setChildLeft(aNode2);
+            }
+            else {
+                lP1.setChildRight(aNode2);
+            }
+
+            if (aNode2isLeft)
+            {
+                lP2.setChildLeft(aNode1);
+            }
+            else {
+                lP2.setChildRight(aNode2);
+            }
+
+            return true;
+        }
+
+        public void replaceNode(ref TreeNode<MathObject> aTargetNode)
+        {
+            if (aTargetNode.GetType().Equals(typeof(MathSymbol)))
+            {
+                aTargetNode.Data = new MathNumber();
+                aTargetNode.setChildLeft(null);
+                aTargetNode.setChildRight(null);
+            }
+            else if (aTargetNode.GetType().Equals(typeof(MathNumber)))
+            {
+                aTargetNode.Data = new MathSymbol();
+                aTargetNode.setChildLeft(new TreeNode<MathObject>(new MathNumber(), aTargetNode.Depth + 1));
+                aTargetNode.setChildRight(new TreeNode<MathObject>(new MathNumber(), aTargetNode.Depth + 1));
+            }
+            else
+                throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Adds the x.
+        /// </summary>
+        /// <param name="aDir">A dir.</param>
+        public void addX(int aDir)
+        {
+            Queue<TreeNode<MathObject>> parentList = new Queue<TreeNode<MathObject>>();
+            parentList.Enqueue(Root);
+            bool lMidToggle = true;
+            TreeNode<MathObject> currentNode;
+            while (parentList.Count > 0)
+            {
+                currentNode = parentList.Dequeue();
+                if (currentNode.Data.GetType().Equals(typeof(MathNumber)))
+                {
+                    currentNode.Data = new MathNumber(0); //sets the node to X
+                    break;
+                }
+                else
+                {
+                    switch (aDir)
+                    {
+                        case -1: //Left
+                            parentList.Enqueue(currentNode.ChildLeft);
+                            break;
+                        case 0: //Mid
+                            parentList.Enqueue((lMidToggle) ? currentNode.ChildLeft : currentNode.ChildRight);
+                            lMidToggle = !lMidToggle;
+                            break;
+                        case 1: //Right
+                            parentList.Enqueue(currentNode.ChildRight);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
     }
 }

@@ -44,26 +44,37 @@ namespace EnergyPrediction
             : base(aChromo, aCross, aFit, aMut, aSel, aRein, aTer, aPop)
         { }
 
+        public GeneticProgController(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, int aFitnessThres, int aGenCap, int MaxElapMin, IReinsertion aRein, int aPop)
+            : base(aChromo, aCross, aFit, aMut, aSel, aRein, aFitnessThres, aGenCap, MaxElapMin, aPop)
+        { }
+
         public override bool DefaultDraw(IChromosome aChromosome)
         {
-            Console.Clear();
+            //Console.Clear();
 
-            Console.WriteLine();
-            Console.WriteLine("Generations: {0}", fGA.Population.GenerationsNumber);
-            Console.WriteLine("Fitness: {0}", aChromosome.Fitness);
-            Console.WriteLine("Time: {0}", fGA.TimeEvolving);
+            //Console.WriteLine();
+            //Console.WriteLine("Generations: {0}", fGA.Population.GenerationsNumber);
+            //Console.WriteLine("Fitness: {0}", aChromosome.Fitness);
+            //Console.WriteLine("Time: {0}", fGA.TimeEvolving);
             return true;
         }
 
         public override void Start()
         {
-            base.Start();
-            //todo: add in final display of best chromosome or other display data
-        }
+            IPopulation lPop = new ProgPopulation(PopulationCount, PopulationCount * 2, Chromosome);
+            lPop.GenerationStrategy = new PerformanceGenerationStrategy(100);
 
-        public static implicit operator GeneticProgController(GeneticProgChromosome v)
-        {
-            throw new NotImplementedException();
+            fGA = new GeneticAlgorithm(lPop, Fitness, Selection, Crossover, Mutation);
+            fGA.Termination = Termination;
+            fGA.CrossoverProbability = CrossoverProbability;
+            fGA.MutationProbability = MutationProbability;
+            fGA.Reinsertion = Reinsertion;
+
+            base.Start();
+
+            var lBest = (GeneticProgChromosome)fGA.Population.BestChromosome;
+            Console.WriteLine(lBest.Root);
+            //todo: add in final display of best chromosome or other display data
         }
     }
 }

@@ -72,6 +72,37 @@ namespace EnergyPrediction
             var r = Rand.Next(0, Enum.GetNames(typeof(SymbolTypes)).Length);
             Symbol = (SymbolTypes)(Enum.GetValues(typeof(SymbolTypes)).GetValue(r));
         }
+
+        public override string ToString()
+        {
+            switch (Symbol)
+            {
+                case SymbolTypes.Add:
+                    return " + ";
+                case SymbolTypes.Multiply:
+                    return " * ";
+                case SymbolTypes.Devide:
+                    return " / ";
+                case SymbolTypes.Sin:
+                    return " * Sin( ";
+                case SymbolTypes.Cos:
+                    return " * Cos( ";
+                case SymbolTypes.Log:
+                    return " * Log( ";
+                case SymbolTypes.Exp:
+                    return " * Exp( ";
+                case SymbolTypes.Pow:
+                    return "^";
+                case SymbolTypes.Sqrt:
+                    return " * Sqrt( ";
+                case SymbolTypes.Sinh:
+                    return " * Sinh( ";
+                case SymbolTypes.Cosh:
+                    return " * Cosh( ";
+                default:
+                    return "";
+            }
+        }
     }
 }
 

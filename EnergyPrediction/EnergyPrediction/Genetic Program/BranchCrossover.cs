@@ -39,50 +39,35 @@ namespace EnergyPrediction
 
         protected override IList<IChromosome> PerformCross(IList<IChromosome> parents)
         {
-            List<GeneticProgChromosome> children = new List<GeneticProgChromosome>();
-
             GeneticProgChromosome lParentOne = parents[0] as GeneticProgChromosome;
             GeneticProgChromosome lParentTwo = parents[1] as GeneticProgChromosome;
 
-            /* ????
-            TreeNode<MathObject> lNode1 = lParentOne.GetGene(0).Value as TreeNode<MathObject>;
-            return parents;
-            */
-
-            // 1) grab the root of both chromosones that act as parent tree for new chromosones
-            //todo: do we need a clone/deep copy method? 
-            TreeNode<MathObject> lRoot1 = lParentOne.GetGene(0).Value as TreeNode<MathObject>;
-            TreeNode<MathObject> lRoot2 = lParentTwo.GetGene(0).Value as TreeNode<MathObject>;
-
-            //2) randomly select 1 node of each tree random 
+            //1) randomly select 1 node of each tree random 
 
             TreeNode<MathObject> lNode1 = lParentOne.selectRandNode();
             TreeNode<MathObject> lNode2 = lParentTwo.selectRandNode();
 
-            //3) swap all references 
+            //2) swap all references 
 
-            swap(lNode1, lNode2);
-            swap(lNode2, lNode1);
+            lParentOne.swap(ref lNode1, ref lNode2);
 
-            //4) validate both new trees
+            //3) validate both new trees
+            if (!VisitorPattern.hasX(lParentOne.Root))
+            {
+                lParentOne.addX(0);
+            }
 
-            Boolean valid1 = VisitorPattern.visit(lRoot1);
-            Boolean valid2 = VisitorPattern.visit(lRoot2);
+            if (!VisitorPattern.hasX(lParentTwo.Root))
+            {
+                lParentTwo.addX(0);
+            }
 
-            //TODO: fix trees if necessary 
-
-
-            //5) add to children list
-            // Todo how do I cast children or the two trees to the correct type?  
-            //lRoot1+2
-            GeneticProgController child1 = new GeneticProgChromosome(lRoot1);
-
-            throw new NotImplementedException();
+            return new List<IChromosome>() { lParentOne, lParentTwo };
         }
 
 
 
-        void swap(TreeNode<MathObject> lNode1, TreeNode<MathObject> lNode2)
+        void swap(ref TreeNode<MathObject> lNode1, ref TreeNode<MathObject> lNode2)
         {
             TreeNode<MathObject> parent1 = lNode1.Parent;
             if (parent1.ChildLeft == lNode1)

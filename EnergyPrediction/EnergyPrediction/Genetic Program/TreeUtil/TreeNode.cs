@@ -115,7 +115,16 @@ namespace EnergyPrediction
             }
         }
 
-        // other features ...
+        public override string ToString()
+        {
+            if (ChildLeft == null || ChildRight == null)
+            {
+                return Data.ToString();
+            }
+            else {
+                return ChildLeft.ToString() + Data.ToString() + ChildRight.ToString() + " )";
+            }
+        }
     }
 
 }

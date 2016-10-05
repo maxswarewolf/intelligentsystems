@@ -54,6 +54,7 @@ namespace EnergyPrediction
         {
             throw new System.NotImplementedException();
         }
+
         public virtual double doCalculation(int x)
         {
             throw new System.NotImplementedException();

@@ -38,6 +38,7 @@ namespace EnergyPrediction
 {
     class MainClass
     {
+        //todo: add batch testing functionality
         public static void Main(string[] args)
         {
             var AlgoTest = new GeneticAlgoController(new GeneticAlgoChromosome(2, 4),
@@ -47,26 +48,26 @@ namespace EnergyPrediction
                                                      new TournamentSelection(2),
                                                       0, 1000, 10,
                                                      new CombinedReinsertion(),
-                                                     4000);
+                                                     40);
             AlgoTest.CrossoverProbability = 0.65f; //smaller = more parents less children - larger = less parents more children
             AlgoTest.MutationProbability = 0.05f; // according to guest lecture 1%< prob < 10%
             AlgoTest.addEventFunction(AlgoTest.DefaultDraw);
             AlgoTest.Start();
 
 
-            //var ProgTest = new GeneticProgController(new GeneticProgChromosome(10, 3),
-            //                                         new BranchCrossover(),
-            //                                         new ErrorSquaredFitness(),
-            //                                         new UniformTreeMutation(),
-            //                                         new EliteSelection(),
-            //                                         new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromMinutes(1))),
-            //                                         new ElitistReinsertion(), 200);
-            //ProgTest.CrossoverProbability = 0.6f;
-            //ProgTest.MutationProbability = 0.6f;
-            //ProgTest.addEventFunction(ProgTest.DefaultDraw);
-            //ProgTest.Start();
+            var ProgTest = new GeneticProgController(new GeneticProgChromosome(10, 5),
+                                                     new BranchCrossover(),
+                                                     new FitnessFunctions(),
+                                                     new UniformTreeMutation(),
+                                                     new TournamentSelection(2),
+                                                     0, 1000, 10,
+                                                     new CombinedReinsertion(), 20);
+            ProgTest.CrossoverProbability = 0.65f;
+            ProgTest.MutationProbability = 0.1f;
+            ProgTest.addEventFunction(ProgTest.DefaultDraw);
+            ProgTest.Start();
 
-            new Application().Run(new MainForm());
+            //new Application().Run(new MainForm());
         }
     }
 }

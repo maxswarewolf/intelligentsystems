@@ -30,53 +30,15 @@ namespace EnergyPrediction
 {
     public static class VisitorPattern
     {
-
-        // TODO: Adrian, have fun :-) 
-
-        //Todo: if this visitor pattern also fixes the tree, please rename to "makeValidSubTree"!
-
-
-
-        /*
-         * THis is what it's supposed to do
-         * 
-         *  internal Boolean isValidSubTree()
-        {
-            //validation task 1: Check if it contains x!
-
-            if (this.Data.isThisX())
-            {
-                return true;
-            }
-            else if (ChildLeft == null && ChildRight == null)
-            {
-                return false;
-            }
-            else if (ChildLeft == null)
-            {
-                return ChildRight.isValidSubTree();
-            }
-            else if (ChildRight == null)
-            {
-                return ChildLeft.isValidSubTree(); 
-            }
-
-            return (ChildLeft.isValidSubTree() || ChildRight.isValidSubTree());
-
-
-            //todo: are there any additional validation steps required
-            // todo: double-check if depth is still correct!
-
-        */
-        public static bool visit(TreeNode<MathObject> root)
+        public static bool hasX(TreeNode<MathObject> root)
         {
             if (root.GetType().Equals(typeof(MathSymbol)))
             {
-                if (visit(root.ChildLeft))
+                if (hasX(root.ChildLeft))
                 {
                     return true;
                 }
-                else if (visit(root.ChildRight))
+                else if (hasX(root.ChildRight))
                 {
                     return true;
                 }

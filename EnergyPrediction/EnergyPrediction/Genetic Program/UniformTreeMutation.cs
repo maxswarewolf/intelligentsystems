@@ -26,51 +26,84 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Collections.Generic;
 using GeneticSharp.Domain.Chromosomes;
 using GeneticSharp.Domain.Mutations;
 namespace EnergyPrediction
 {
     public class UniformTreeMutation : MutationBase
     {
-
         protected override void PerformMutate(IChromosome chromosome, float probability)
         {
             // 1st) decide whether mutation is performed
+            GeneticProgChromosome lChrom = chromosome as GeneticProgChromosome;
 
-            if (Randomizer.NextDouble(0, 1) <= probability)
+            Queue<TreeNode<MathObject>> parentList = new Queue<TreeNode<MathObject>>();
+            parentList.Enqueue(lChrom.Root.ChildLeft);
+            parentList.Enqueue(lChrom.Root.ChildRight);
+
+            TreeNode<MathObject> currentNode;
+
+            while (parentList.Count > 0)
             {
-                // 2nd) mutate
-
-                //a) pick a random node
-                TreeNode<MathObject> lRoot = chromosome.GetGene(0).Value as TreeNode<MathObject>;
-                GeneticProgChromosome lChrom = chromosome as GeneticProgChromosome;
-                TreeNode<MathObject> randNode = lChrom.selectRandNode();
-
-
-                //b) swap out value (and type??) s
-                int r = Randomizer.NextInt(0, 1);
-                TreeNode<MathObject> newNode = randNode;
-                switch (r)
+                currentNode = parentList.Dequeue();
+                if (Randomizer.NextDouble(0, 1) <= probability)
                 {
-                    case 0:
-                        //change value, not type
-                        randNode.Data.ChangeValue();
-                        break;
-
-                    case 1:
-                        //change type 
-                        newNode = changeObject(randNode);
-                        replaceNode(randNode, newNode);
-                        break;
-                        //todo: create case 2 where node is transformed into an x-node?
-                        //currently not possible - x creation is random
-
+                    switch (Randomizer.NextInt(0, 1))
+                    {
+                        case 0:
+                            currentNode.Data.ChangeValue();
+                            break;
+                        case 1:
+                            lChrom.replaceNode(ref currentNode);
+                            break;
+                        default:
+                            throw new NotSupportedException();
+                    }
                 }
-                VisitorPattern.visit(lRoot);
-                //todo: do we need to fix it? 
             }
-        }
 
+            if (!VisitorPattern.hasX(lChrom.Root))
+            {
+                lChrom.addX(0);
+            }
+
+            /*
+            //if (Randomizer.NextDouble(0, 1) <= probability)
+            //{
+            //    // 2nd) mutate
+
+            //    //a) pick a random node
+            //    TreeNode<MathObject> lRoot = chromosome.GetGene(0).Value as TreeNode<MathObject>;
+            //    GeneticProgChromosome lChrom = chromosome as GeneticProgChromosome;
+            //    TreeNode<MathObject> randNode = lChrom.selectRandNode();
+
+
+            //    //b) swap out value (and type??) s
+            //    int r = Randomizer.NextInt(0, 1);
+            //    TreeNode<MathObject> newNode = randNode;
+            //    switch (r)
+            //    {
+            //        case 0:
+            //            //change value, not type
+            //            randNode.Data.ChangeValue();
+            //            break;
+
+            //        case 1:
+            //            //change type 
+            //            newNode = changeObject(randNode);
+            //            replaceNode(randNode, newNode);
+            //            break;
+            //            //todo: create case 2 where node is transformed into an x-node?
+            //            //currently not possible - x creation is random
+
+            //    }
+            //    VisitorPattern.hasX(lRoot);
+            //    //todo: do we need to fix it? 
+            //}
+            */
+        }
+        /*
         TreeNode<MathObject> changeObject(TreeNode<MathObject> randNode)
         {
             Boolean isSymbol = randNode.Data.GetType().Equals(typeof(MathSymbol));
@@ -134,8 +167,6 @@ namespace EnergyPrediction
 
             }
         }
-
-
-
+        */
     }
 }
