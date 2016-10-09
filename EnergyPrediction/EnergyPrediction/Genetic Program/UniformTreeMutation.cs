@@ -49,124 +49,20 @@ namespace EnergyPrediction
                 currentNode = parentList.Dequeue();
                 if (Randomizer.NextDouble(0, 1) <= probability)
                 {
-                    switch (Randomizer.NextInt(0, 1))
+                    if (Randomizer.NextDouble(0, 1) <= 0.8)
                     {
-                        case 0:
-                            currentNode.Data.ChangeValue();
-                            break;
-                        case 1:
-                            lChrom.replaceNode(ref currentNode);
-                            break;
-                        default:
-                            throw new NotSupportedException();
+                        currentNode.Data.ChangeValue();
+                    }
+                    else {
+                        lChrom.replaceNode(ref currentNode);
                     }
                 }
             }
 
             if (!VisitorPattern.hasX(lChrom.Root))
             {
-                lChrom.addX(0);
-            }
-
-            /*
-            //if (Randomizer.NextDouble(0, 1) <= probability)
-            //{
-            //    // 2nd) mutate
-
-            //    //a) pick a random node
-            //    TreeNode<MathObject> lRoot = chromosome.GetGene(0).Value as TreeNode<MathObject>;
-            //    GeneticProgChromosome lChrom = chromosome as GeneticProgChromosome;
-            //    TreeNode<MathObject> randNode = lChrom.selectRandNode();
-
-
-            //    //b) swap out value (and type??) s
-            //    int r = Randomizer.NextInt(0, 1);
-            //    TreeNode<MathObject> newNode = randNode;
-            //    switch (r)
-            //    {
-            //        case 0:
-            //            //change value, not type
-            //            randNode.Data.ChangeValue();
-            //            break;
-
-            //        case 1:
-            //            //change type 
-            //            newNode = changeObject(randNode);
-            //            replaceNode(randNode, newNode);
-            //            break;
-            //            //todo: create case 2 where node is transformed into an x-node?
-            //            //currently not possible - x creation is random
-
-            //    }
-            //    VisitorPattern.hasX(lRoot);
-            //    //todo: do we need to fix it? 
-            //}
-            */
-        }
-        /*
-        TreeNode<MathObject> changeObject(TreeNode<MathObject> randNode)
-        {
-            Boolean isSymbol = randNode.Data.GetType().Equals(typeof(MathSymbol));
-            Boolean isNumber = randNode.Data.GetType().Equals(typeof(MathNumber));
-            if (isSymbol)
-            {
-                MathNumber newNr = new MathNumber();
-                TreeNode<MathObject> newNode = new TreeNode<MathObject>(newNr, randNode.Depth);
-                return newNode;
-            }
-            else if (isNumber)
-            {
-                MathSymbol newSymb = new MathSymbol();
-                TreeNode<MathObject> newNode = new TreeNode<MathObject>(newSymb, randNode.Depth);
-                return newNode;
-            }
-            else
-                throw new NotSupportedException();
-        }
-
-
-
-        /// /////////////////////////////////////move eventually!//////////////////////////////////////
-        //todo: move to util tree folder .... 
-        void replaceNode(TreeNode<MathObject> oldNode, TreeNode<MathObject> newNode)
-        {
-            if (!newNode.Equals(oldNode))
-            {
-                // save old relationships
-                TreeNode<MathObject> parent = oldNode.Parent;
-                TreeNode<MathObject> leftChild = oldNode.ChildLeft;
-                TreeNode<MathObject> rightChild = oldNode.ChildRight;
-
-                //change references of others
-                //a) parent
-                if (parent.ChildLeft == oldNode)
-                {
-                    parent.setChildLeft(newNode);
-                }
-                else
-                {
-                    parent.setChildRight(newNode);
-                }
-                //b) children's parent is set automatically
-
-                // change (and create) children if necessary 
-                if (newNode.Data.GetType().Equals(typeof(MathSymbol)))
-                {
-                    if (leftChild == null)
-                    {
-                        leftChild = new TreeNode<MathObject>(new MathNumber(), newNode.Depth + 1);
-                    }
-                    if (rightChild == null)
-                    {
-                        rightChild = new TreeNode<MathObject>(new MathNumber(), newNode.Depth + 1);
-                    }
-                    newNode.setChildLeft(leftChild);
-                    newNode.setChildRight(rightChild);
-                }
-
-
+                lChrom.addX(2);
             }
         }
-        */
     }
 }

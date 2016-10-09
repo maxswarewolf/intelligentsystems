@@ -41,6 +41,8 @@ namespace EnergyPrediction
         //todo: add batch testing functionality
         public static void Main(string[] args)
         {
+
+            DataIO.AggregateData(AppType.TV, DateTime.Parse("31/7/15"), DateTime.Parse("2/8/15"), 2);
             var AlgoTest = new GeneticAlgoController(new GeneticAlgoChromosome(2, 4),
                                                      new AlgoOnePointCrossover(),
                                                      new FitnessFunctions(),
@@ -55,15 +57,15 @@ namespace EnergyPrediction
             AlgoTest.Start();
 
 
-            var ProgTest = new GeneticProgController(new GeneticProgChromosome(10, 5),
+            var ProgTest = new GeneticProgController(new GeneticProgChromosome(10, 3),
                                                      new BranchCrossover(),
                                                      new FitnessFunctions(),
                                                      new UniformTreeMutation(),
                                                      new TournamentSelection(2),
                                                      0, 1000, 10,
-                                                     new CombinedReinsertion(), 20);
+                                                     new CombinedReinsertion(), 40);
             ProgTest.CrossoverProbability = 0.65f;
-            ProgTest.MutationProbability = 0.1f;
+            ProgTest.MutationProbability = 0.05f;
             ProgTest.addEventFunction(ProgTest.DefaultDraw);
             ProgTest.Start();
 

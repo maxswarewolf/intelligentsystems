@@ -38,7 +38,7 @@ namespace EnergyPrediction
         /// <summary>
         /// The toggle for testing or use real data.
         /// </summary>
-        static bool Testing = true;
+        static bool Testing = false;
 
         /// <summary>
         /// The generator links.

@@ -50,8 +50,11 @@ namespace EnergyPrediction
 
         public override bool DefaultDraw(IChromosome aChromosome)
         {
-            //Console.Clear();
+            Console.WriteLine();
+            GeneticProgChromosome lChromo = aChromosome as GeneticProgChromosome;
+            Console.WriteLine("Equation: {0}", lChromo.Root);
 
+            //Console.Clear();
             //Console.WriteLine();
             //Console.WriteLine("Generations: {0}", fGA.Population.GenerationsNumber);
             //Console.WriteLine("Fitness: {0}", aChromosome.Fitness);
@@ -73,7 +76,7 @@ namespace EnergyPrediction
             base.Start();
 
             var lBest = (GeneticProgChromosome)fGA.Population.BestChromosome;
-            Console.WriteLine(lBest.Root);
+            //Console.WriteLine(lBest.Root);
             //todo: add in final display of best chromosome or other display data
         }
     }

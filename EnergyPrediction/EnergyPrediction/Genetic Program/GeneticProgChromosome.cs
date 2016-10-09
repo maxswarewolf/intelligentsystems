@@ -39,16 +39,10 @@ namespace EnergyPrediction
     {
         public int Depth { get; private set; }
 
+        bool addXLeftSide = true;
+
         public TreeNode<MathObject> Root { get; private set; }
 
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:EnergyPrediction.GeneticAlgoChromosome"/> class.
-        /// </summary>
-        /// <param name="aResultRange">A result range. eg -20 to 20</param>
-        /// KC: chromosone is initialized as a tree from file TreeNode
-        /// must use "root" object to access tree
-        /// last level (i.e. level == depth) is ensured to be a numerical value, everything else is a MathObject 
         public GeneticProgChromosome(int aResultPeek, int aDepth) : base(2)
         {
             MathObject.RangePeek = aResultPeek;
@@ -80,13 +74,13 @@ namespace EnergyPrediction
                 }
             }
             //Is setting a MathNumber to X
+            Console.WriteLine(Root);
             if (!VisitorPattern.hasX(Root))
             {
-                addX(0);
+                addX(2);
             }
-            //todo: make sure tree contains at least one x (and is a valid tree!!!) 
-            VisitorPattern.hasX(Root);
-            //todo: fix if not!
+
+            Console.WriteLine(Root);
         }
 
         public GeneticProgChromosome(TreeNode<MathObject> lRoot1) : base(2)
@@ -97,7 +91,6 @@ namespace EnergyPrediction
 
         public double getCalculatedY(int x)
         {
-            // TODO test!
             return Root.doCalculation(x);
         }
 
@@ -170,13 +163,13 @@ namespace EnergyPrediction
 
         public void replaceNode(ref TreeNode<MathObject> aTargetNode)
         {
-            if (aTargetNode.GetType().Equals(typeof(MathSymbol)))
+            if (aTargetNode.Data.GetType().Equals(typeof(MathSymbol)))
             {
                 aTargetNode.Data = new MathNumber();
-                aTargetNode.setChildLeft(null);
-                aTargetNode.setChildRight(null);
+                aTargetNode.setChildLeft();
+                aTargetNode.setChildRight();
             }
-            else if (aTargetNode.GetType().Equals(typeof(MathNumber)))
+            else if (aTargetNode.Data.GetType().Equals(typeof(MathNumber)))
             {
                 aTargetNode.Data = new MathSymbol();
                 aTargetNode.setChildLeft(new TreeNode<MathObject>(new MathNumber(), aTargetNode.Depth + 1));
@@ -186,41 +179,17 @@ namespace EnergyPrediction
                 throw new NotSupportedException();
         }
 
-        /// <summary>
-        /// Adds the x.
-        /// </summary>
-        /// <param name="aDir">A dir.</param>
-        public void addX(int aDir)
+        public void addX(int aNumX)
         {
-            Queue<TreeNode<MathObject>> parentList = new Queue<TreeNode<MathObject>>();
-            parentList.Enqueue(Root);
-            bool lMidToggle = true;
-            TreeNode<MathObject> currentNode;
-            while (parentList.Count > 0)
+            int counter = VisitorPattern.NumX(Root);
+            bool lTreverseLeft = true;
+
+            while (counter < aNumX)
             {
-                currentNode = parentList.Dequeue();
-                if (currentNode.Data.GetType().Equals(typeof(MathNumber)))
+                TreeNode<MathObject> randNode = selectRandNode();
+                if (randNode.Data.GetType().Equals(typeof(MathNumber)) && !randNode.Data.isX)
                 {
-                    currentNode.Data = new MathNumber(0); //sets the node to X
-                    break;
-                }
-                else
-                {
-                    switch (aDir)
-                    {
-                        case -1: //Left
-                            parentList.Enqueue(currentNode.ChildLeft);
-                            break;
-                        case 0: //Mid
-                            parentList.Enqueue((lMidToggle) ? currentNode.ChildLeft : currentNode.ChildRight);
-                            lMidToggle = !lMidToggle;
-                            break;
-                        case 1: //Right
-                            parentList.Enqueue(currentNode.ChildRight);
-                            break;
-                        default:
-                            break;
-                    }
+                    randNode.Data = new MathNumber(0);
                 }
             }
         }

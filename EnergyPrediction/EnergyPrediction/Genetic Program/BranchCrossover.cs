@@ -54,18 +54,16 @@ namespace EnergyPrediction
             //3) validate both new trees
             if (!VisitorPattern.hasX(lParentOne.Root))
             {
-                lParentOne.addX(0);
+                lParentOne.addX(2);
             }
 
             if (!VisitorPattern.hasX(lParentTwo.Root))
             {
-                lParentTwo.addX(0);
+                lParentTwo.addX(2);
             }
 
             return new List<IChromosome>() { lParentOne, lParentTwo };
         }
-
-
 
         void swap(ref TreeNode<MathObject> lNode1, ref TreeNode<MathObject> lNode2)
         {
@@ -78,7 +76,6 @@ namespace EnergyPrediction
             {
                 parent1.setChildRight(lNode2);
             }
-
         }
     }
 }

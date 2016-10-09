@@ -50,6 +50,25 @@ namespace EnergyPrediction
             }
             return false;
         }
+
+        public static int NumX(TreeNode<MathObject> root)
+        {
+            int counter = 0;
+            if (root.GetType().Equals(typeof(MathSymbol)))
+            {
+                counter = NumX(root.ChildLeft) + NumX(root.ChildRight);
+            }
+            else {
+                if (root.Data.isX)
+                {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+            return counter;
+        }
     }
 }
 

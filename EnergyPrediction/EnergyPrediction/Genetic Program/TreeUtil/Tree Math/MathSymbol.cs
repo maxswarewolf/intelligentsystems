@@ -47,21 +47,21 @@ namespace EnergyPrediction
                 case SymbolTypes.Devide:
                     return aLeftValue / aRightValue;
                 case SymbolTypes.Sin:
-                    return aLeftValue * Math.Sin(aRightValue);
+                    return Math.Sin(aLeftValue * aRightValue);
                 case SymbolTypes.Cos:
-                    return aLeftValue * Math.Cos(aRightValue);
+                    return Math.Cos(aLeftValue * aRightValue);
                 case SymbolTypes.Log:
-                    return aLeftValue * Math.Log10(aRightValue);
+                    return Math.Log10(aLeftValue * aRightValue);
                 case SymbolTypes.Exp:
-                    return aLeftValue * Math.Exp(aRightValue);
+                    return Math.Exp(aLeftValue * aRightValue);
                 case SymbolTypes.Pow:
                     return Math.Pow(aLeftValue, aRightValue);
                 case SymbolTypes.Sqrt:
-                    return aLeftValue * Math.Sqrt(aRightValue);
+                    return Math.Sqrt(aLeftValue * aRightValue);
                 case SymbolTypes.Sinh:
-                    return aLeftValue * Math.Sinh(aRightValue);
+                    return Math.Sinh(aLeftValue * aRightValue);
                 case SymbolTypes.Cosh:
-                    return aLeftValue * Math.Cosh(aRightValue);
+                    return Math.Cosh(aLeftValue * aRightValue);
                 default:
                     return 0;
             }
@@ -84,21 +84,21 @@ namespace EnergyPrediction
                 case SymbolTypes.Devide:
                     return " / ";
                 case SymbolTypes.Sin:
-                    return " * Sin( ";
+                    return "Sin(";
                 case SymbolTypes.Cos:
-                    return " * Cos( ";
+                    return "Cos(";
                 case SymbolTypes.Log:
-                    return " * Log( ";
+                    return "Log(";
                 case SymbolTypes.Exp:
-                    return " * Exp( ";
+                    return "Exp(";
                 case SymbolTypes.Pow:
                     return "^";
                 case SymbolTypes.Sqrt:
-                    return " * Sqrt( ";
+                    return "Sqrt(";
                 case SymbolTypes.Sinh:
-                    return " * Sinh( ";
+                    return "Sinh(";
                 case SymbolTypes.Cosh:
-                    return " * Cosh( ";
+                    return "Cosh(";
                 default:
                     return "";
             }

@@ -53,13 +53,14 @@ namespace EnergyPrediction
         public override void ChangeValue()
         {
             Value = Randomizer.NextDouble(MathObject.RangePeek * -1, MathObject.RangePeek + 1);
-            Console.WriteLine(Value);
+            Value = Math.Round(Value, 4);
+            //Console.WriteLine(Value);
             base.isX = Equals(Value, 0.0);
         }
 
         public override string ToString()
         {
-            return (isX) ? " x " : "" + Value;
+            return (isX) ? "x" : "" + Value;
         }
     }
 }

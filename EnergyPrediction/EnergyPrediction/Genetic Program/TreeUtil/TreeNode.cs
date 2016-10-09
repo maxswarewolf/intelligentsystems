@@ -64,6 +64,14 @@ namespace EnergyPrediction
             }
 
         }
+        public void setChildRight()
+        {
+            this.ChildRight = null;
+        }
+        public void setChildLeft()
+        {
+            this.ChildLeft = null;
+        }
 
         public void setChildRight(TreeNode<T> aChild)
         {
@@ -122,7 +130,7 @@ namespace EnergyPrediction
                 return Data.ToString();
             }
             else {
-                return ChildLeft.ToString() + Data.ToString() + ChildRight.ToString() + " )";
+                return "(" + Data.ToString() + ChildLeft.ToString() + ChildRight.ToString() + ")";
             }
         }
     }
