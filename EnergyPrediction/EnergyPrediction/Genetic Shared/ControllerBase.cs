@@ -55,7 +55,8 @@ namespace EnergyPrediction
         public float CrossoverProbability { get; set; } = 0.8f;
         public float MutationProbability { get; set; } = 0.4f;
         protected GeneticAlgorithm fGA { get; set; }
-        protected List<Func<IChromosome, bool>> fGenerationRanEventFunctions = new List<Func<IChromosome, bool>>();
+        protected List<Func<IChromosome, bool>> fGenerationRanEventChromosome = new List<Func<IChromosome, bool>>();
+        protected List<Func<Generation, bool>> fGenerationRanEventGeneration = new List<Func<Generation, bool>>();
 
         public ControllerBase(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, IReinsertion aRein, int aFitnessThres, int aGenCap, int MaxElapMin, int aPop)
         {
@@ -84,18 +85,36 @@ namespace EnergyPrediction
 
         public virtual void addEventFunction(Func<IChromosome, bool> aFunction)
         {
-            fGenerationRanEventFunctions.Add(aFunction);
+            fGenerationRanEventChromosome.Add(aFunction);
         }
 
         public virtual void removeEventFunction(Func<IChromosome, bool> aFunction)
         {
-            fGenerationRanEventFunctions.Remove(aFunction);
+            fGenerationRanEventChromosome.Remove(aFunction);
+        }
+
+        public virtual void addEventFunction(Func<Generation, bool> aFunction)
+        {
+            fGenerationRanEventGeneration.Add(aFunction);
+        }
+
+        public virtual void removeEventFunction(Func<Generation, bool> aFunction)
+        {
+            fGenerationRanEventGeneration.Remove(aFunction);
         }
 
         public abstract bool DefaultDraw(IChromosome aChromosome);
+        public abstract bool DefaultDrawGeneration(Generation aGeneration);
         public virtual void Start()
         {
-            foreach (Func<IChromosome, bool> action in fGenerationRanEventFunctions)
+            foreach (Func<Generation, bool> action in fGenerationRanEventGeneration)
+            {
+                fGA.GenerationRan += delegate
+                {
+                    action(fGA.Population.CurrentGeneration);
+                };
+            }
+            foreach (Func<IChromosome, bool> action in fGenerationRanEventChromosome)
             {
                 fGA.GenerationRan += delegate
                 {
@@ -117,6 +136,7 @@ namespace EnergyPrediction
                 Console.ReadKey();
                 return;
             }
+            Console.WriteLine("DONE");
         }
         public virtual void Stop()
         {

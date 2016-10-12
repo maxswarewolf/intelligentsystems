@@ -54,7 +54,6 @@ namespace EnergyPrediction
         {
             Value = Randomizer.NextDouble(MathObject.RangePeek * -1, MathObject.RangePeek + 1);
             Value = Math.Round(Value, 4);
-            //Console.WriteLine(Value);
             base.isX = Equals(Value, 0.0);
         }
 

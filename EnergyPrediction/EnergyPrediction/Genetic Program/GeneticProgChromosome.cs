@@ -38,9 +38,7 @@ namespace EnergyPrediction
     public class GeneticProgChromosome : ChromosomeBase, ChromosomeExt
     {
         public int Depth { get; private set; }
-
-        bool addXLeftSide = true;
-
+        public int numXThreshold { get; private set; } = 1;
         public TreeNode<MathObject> Root { get; private set; }
 
         public GeneticProgChromosome(int aResultPeek, int aDepth) : base(2)
@@ -74,13 +72,10 @@ namespace EnergyPrediction
                 }
             }
             //Is setting a MathNumber to X
-            Console.WriteLine(Root);
-            if (!VisitorPattern.hasX(Root))
+            if (VisitorPattern.NumX(Root) < numXThreshold)
             {
-                addX(2);
+                confirmNumX(numXThreshold);
             }
-
-            Console.WriteLine(Root);
         }
 
         public GeneticProgChromosome(TreeNode<MathObject> lRoot1) : base(2)
@@ -131,7 +126,7 @@ namespace EnergyPrediction
             return node;
         }
 
-        public bool swap(ref TreeNode<MathObject> aNode1, ref TreeNode<MathObject> aNode2)
+        public bool swap(TreeNode<MathObject> aNode1, TreeNode<MathObject> aNode2)
         {
             TreeNode<MathObject> lP1 = aNode1.Parent;
             TreeNode<MathObject> lP2 = aNode2.Parent;
@@ -179,19 +174,15 @@ namespace EnergyPrediction
                 throw new NotSupportedException();
         }
 
-        public void addX(int aNumX)
+        public bool confirmNumX(int aNumX)
         {
             int counter = VisitorPattern.NumX(Root);
-            bool lTreverseLeft = true;
 
             while (counter < aNumX)
             {
-                TreeNode<MathObject> randNode = selectRandNode();
-                if (randNode.Data.GetType().Equals(typeof(MathNumber)) && !randNode.Data.isX)
-                {
-                    randNode.Data = new MathNumber(0);
-                }
+                counter = aNumX - VisitorPattern.confirmNumXInOrder(Root, numXThreshold, true);
             }
+            return true;
         }
     }
 }

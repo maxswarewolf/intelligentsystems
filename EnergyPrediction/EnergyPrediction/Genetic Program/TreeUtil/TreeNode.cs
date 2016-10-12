@@ -129,9 +129,12 @@ namespace EnergyPrediction
             {
                 return Data.ToString();
             }
-            else {
-                return "(" + Data.ToString() + ChildLeft.ToString() + ChildRight.ToString() + ")";
+            else if (Data.GetType().Equals(typeof(MathSymbol)))
+            {
+                MathSymbol temp = Data as MathSymbol;
+                return temp.ToString(ChildLeft.ToString(), ChildRight.ToString());
             }
+            return "";
         }
     }
 

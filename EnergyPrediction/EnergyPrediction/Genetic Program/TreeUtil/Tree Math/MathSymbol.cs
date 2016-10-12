@@ -73,32 +73,32 @@ namespace EnergyPrediction
             Symbol = (SymbolTypes)(Enum.GetValues(typeof(SymbolTypes)).GetValue(r));
         }
 
-        public override string ToString()
+        public string ToString(string aLeftValue, string aRightValue)
         {
             switch (Symbol)
             {
                 case SymbolTypes.Add:
-                    return " + ";
+                    return "(" + aLeftValue + " + " + aRightValue + ")";
                 case SymbolTypes.Multiply:
-                    return " * ";
+                    return "(" + aLeftValue + " * " + aRightValue + ")";
                 case SymbolTypes.Devide:
-                    return " / ";
+                    return "(" + aLeftValue + " / " + aRightValue + ")";
                 case SymbolTypes.Sin:
-                    return "Sin(";
+                    return "Sin(" + aLeftValue + " * " + aRightValue + ")";
                 case SymbolTypes.Cos:
-                    return "Cos(";
+                    return "Cos(" + aLeftValue + " * " + aRightValue + ")";
                 case SymbolTypes.Log:
-                    return "Log(";
+                    return "Log(" + aLeftValue + " * " + aRightValue + ")";
                 case SymbolTypes.Exp:
-                    return "Exp(";
+                    return "Exp(" + aLeftValue + " * " + aRightValue + ")";
                 case SymbolTypes.Pow:
-                    return "^";
+                    return "(" + aLeftValue + "^" + aRightValue + ")";
                 case SymbolTypes.Sqrt:
-                    return "Sqrt(";
+                    return "Sqrt(" + aLeftValue + " * " + aRightValue + ")";
                 case SymbolTypes.Sinh:
-                    return "Sinh(";
+                    return "Sinh(" + aLeftValue + " * " + aRightValue + ")";
                 case SymbolTypes.Cosh:
-                    return "Cosh(";
+                    return "Cosh(" + aLeftValue + " * " + aRightValue + ")";
                 default:
                     return "";
             }

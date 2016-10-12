@@ -63,6 +63,15 @@ namespace EnergyPrediction
             return true;
         }
 
+        public override bool DefaultDrawGeneration(Generation aGeneration)
+        {
+            //foreach (GeneticAlgoChromosome gAC in aGeneration.Chromosomes){
+
+            //}
+            Console.WriteLine();
+            return true;
+        }
+
         public override void Start()
         {
             IPopulation lPop = new Population(PopulationCount, PopulationCount * 2, Chromosome);

@@ -59,10 +59,7 @@ namespace EnergyPrediction
                 }
             }
 
-            if (!VisitorPattern.hasX(lChrom.Root))
-            {
-                lChrom.addX(2);
-            }
+            lChrom.confirmNumX(lChrom.numXThreshold);
         }
     }
 }

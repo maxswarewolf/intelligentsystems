@@ -41,35 +41,61 @@ namespace EnergyPrediction
         //todo: add batch testing functionality
         public static void Main(string[] args)
         {
+            if (args.Length >= 8)
+            {
+                int fitnessThresh = Int32.Parse(args[1]);
+                int GenThresh = Int32.Parse(args[2]);
+                int MinTimeOut = Int32.Parse(args[3]);
+                int Pop = Int32.Parse(args[4]);
+                int ResPeek = Int32.Parse(args[5]);
+                int Length = Int32.Parse(args[6]);
+                int interations = Int32.Parse(args[7]);
 
-            DataIO.AggregateData(AppType.TV, DateTime.Parse("31/7/15"), DateTime.Parse("2/8/15"), 2);
-            var AlgoTest = new GeneticAlgoController(new GeneticAlgoChromosome(2, 4),
-                                                     new AlgoOnePointCrossover(),
-                                                     new FitnessFunctions(),
-                                                     new UniformMutation(),
-                                                     new TournamentSelection(2),
-                                                      0, 1000, 10,
-                                                     new CombinedReinsertion(),
-                                                     40);
-            AlgoTest.CrossoverProbability = 0.65f; //smaller = more parents less children - larger = less parents more children
-            AlgoTest.MutationProbability = 0.05f; // according to guest lecture 1%< prob < 10%
-            AlgoTest.addEventFunction(AlgoTest.DefaultDraw);
-            AlgoTest.Start();
+                ControllerBase Test = null;
+                DataIO.AggregateData(AppType.Fridge, DateTime.Parse("31/7/15"), DateTime.Parse("2/8/15"), 1);
+                for (int i = 0; i < interations; i++)
+                {
+                    switch (args[0])
+                    {
+                        case "Algo":
+                            Console.WriteLine("Starting Genetic Algorithim Batch Run");
+                            Test = new GeneticAlgoController(new GeneticAlgoChromosome(3, 4),
+                                                         new AlgoOnePointCrossover(),
+                                                         new FitnessFunctions(),
+                                                         new UniformMutation(),
+                                                         new TournamentSelection(2),
+                                                             fitnessThresh, GenThresh, MinTimeOut,
+                                                         new CombinedReinsertion(),
+                                                         Pop);
+                            break;
+                        case "Prog":
+                            Console.WriteLine("Starting Genetic Programming Batch Run");
+                            Test = new GeneticProgController(new GeneticProgChromosome(3, 6),
+                                                         new BranchCrossover(),
+                                                         new FitnessFunctions(),
+                                                         new UniformTreeMutation(),
+                                                         new TournamentSelection(2),
+                                                         fitnessThresh, GenThresh, MinTimeOut,
+                                                         new CombinedReinsertion(), Pop);
+                            break;
+                    }
 
-
-            var ProgTest = new GeneticProgController(new GeneticProgChromosome(10, 3),
-                                                     new BranchCrossover(),
-                                                     new FitnessFunctions(),
-                                                     new UniformTreeMutation(),
-                                                     new TournamentSelection(2),
-                                                     0, 1000, 10,
-                                                     new CombinedReinsertion(), 40);
-            ProgTest.CrossoverProbability = 0.65f;
-            ProgTest.MutationProbability = 0.05f;
-            ProgTest.addEventFunction(ProgTest.DefaultDraw);
-            ProgTest.Start();
-
-            //new Application().Run(new MainForm());
+                    if (!Test.Equals(null))
+                    {
+                        Test.CrossoverProbability = 0.65f;
+                        Test.MutationProbability = 0.1f;
+                        Test.addEventFunction(Test.DefaultDraw);
+                        Test.Start();
+                        Console.WriteLine("FINSIHED\n");
+                    }
+                    else {
+                        Console.WriteLine("Something Went Wrong");
+                    }
+                }
+            }
+            else {
+                new Application().Run(new MainForm());
+            }
         }
     }
 }

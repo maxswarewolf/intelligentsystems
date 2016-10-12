@@ -53,10 +53,9 @@ namespace EnergyPrediction
 
         public static int NumX(TreeNode<MathObject> root)
         {
-            int counter = 0;
             if (root.GetType().Equals(typeof(MathSymbol)))
             {
-                counter = NumX(root.ChildLeft) + NumX(root.ChildRight);
+                return NumX(root.ChildLeft) + NumX(root.ChildRight);
             }
             else {
                 if (root.Data.isX)
@@ -67,7 +66,35 @@ namespace EnergyPrediction
                     return 0;
                 }
             }
-            return counter;
+        }
+
+        public static int confirmNumXInOrder(TreeNode<MathObject> root, int aXThreshold, bool aLeftFirst)
+        {
+            if (aXThreshold >= 1)
+            {
+                int currentXThresh = aXThreshold;
+                if (root.Data.GetType().Equals(typeof(MathNumber)))
+                {
+                    if (!root.Data.isX)
+                    {
+                        root.Data = new MathNumber(0);
+                    }
+                    return aXThreshold - 1;
+                }
+                else {
+                    if (aLeftFirst)
+                    {
+                        currentXThresh = confirmNumXInOrder(root.ChildLeft, currentXThresh, false);
+                        currentXThresh = confirmNumXInOrder(root.ChildRight, currentXThresh, false);
+                    }
+                    else {
+                        currentXThresh = confirmNumXInOrder(root.ChildRight, currentXThresh, true);
+                        currentXThresh = confirmNumXInOrder(root.ChildLeft, currentXThresh, true);
+                    }
+                }
+                return currentXThresh;
+            }
+            return aXThreshold;
         }
     }
 }

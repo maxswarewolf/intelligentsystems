@@ -49,33 +49,27 @@ namespace EnergyPrediction
 
             //2) swap all references 
 
-            lParentOne.swap(ref lNode1, ref lNode2);
+            lParentOne.swap(lNode1, lNode2);
 
-            //3) validate both new trees
-            if (!VisitorPattern.hasX(lParentOne.Root))
-            {
-                lParentOne.addX(2);
-            }
+            //3) Validate has Enough X references 
+            lParentOne.confirmNumX(lParentOne.numXThreshold);
+            lParentTwo.confirmNumX(lParentTwo.numXThreshold);
 
-            if (!VisitorPattern.hasX(lParentTwo.Root))
-            {
-                lParentTwo.addX(2);
-            }
 
             return new List<IChromosome>() { lParentOne, lParentTwo };
         }
 
-        void swap(ref TreeNode<MathObject> lNode1, ref TreeNode<MathObject> lNode2)
-        {
-            TreeNode<MathObject> parent1 = lNode1.Parent;
-            if (parent1.ChildLeft == lNode1)
-            {
-                parent1.setChildLeft(lNode2);
-            }
-            else
-            {
-                parent1.setChildRight(lNode2);
-            }
-        }
+        //void swap(TreeNode<MathObject> lNode1, TreeNode<MathObject> lNode2)
+        //{
+        //    TreeNode<MathObject> parent1 = lNode1.Parent;
+        //    if (parent1.ChildLeft == lNode1)
+        //    {
+        //        parent1.setChildLeft(lNode2);
+        //    }
+        //    else
+        //    {
+        //        parent1.setChildRight(lNode2);
+        //    }
+        //}
     }
 }

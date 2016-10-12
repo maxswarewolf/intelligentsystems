@@ -52,13 +52,25 @@ namespace EnergyPrediction
         {
             Console.WriteLine();
             GeneticProgChromosome lChromo = aChromosome as GeneticProgChromosome;
+            Console.WriteLine("Generation: {0}", fGA.Population.CurrentGeneration.Number);
             Console.WriteLine("Equation: {0}", lChromo.Root);
+            Console.WriteLine("Fitness: {0}", lChromo.Fitness);
 
             //Console.Clear();
             //Console.WriteLine();
             //Console.WriteLine("Generations: {0}", fGA.Population.GenerationsNumber);
             //Console.WriteLine("Fitness: {0}", aChromosome.Fitness);
             //Console.WriteLine("Time: {0}", fGA.TimeEvolving);
+            return true;
+        }
+
+        public override bool DefaultDrawGeneration(Generation aGeneration)
+        {
+            foreach (GeneticProgChromosome gPC in aGeneration.Chromosomes)
+            {
+                Console.WriteLine(gPC.Root);
+                Console.WriteLine();
+            }
             return true;
         }
 
