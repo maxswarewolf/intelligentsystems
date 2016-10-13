@@ -62,8 +62,8 @@ namespace EnergyPrediction
                 {
                     aChildren[i].Reliability = childReliability;
                     aChildren[i].Fitness = childFitness;
-                    result.Add(aChildren[i]);
                 }
+                result.Add(aChildren[i]);
             }
 
             return result;

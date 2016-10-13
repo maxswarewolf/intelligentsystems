@@ -38,7 +38,6 @@ namespace EnergyPrediction
 {
     class MainClass
     {
-        //todo: add batch testing functionality
         public static void Main(string[] args)
         {
             if (args.Length >= 8)
@@ -52,14 +51,14 @@ namespace EnergyPrediction
                 int interations = Int32.Parse(args[7]);
 
                 ControllerBase Test = null;
-                DataIO.AggregateData(AppType.Fridge, DateTime.Parse("31/7/15"), DateTime.Parse("2/8/15"), 1);
+                DataIO.AggregateData(StateType.VIC, DateTime.Parse("20/8/16"), DataIO.EndDate, 60);
                 for (int i = 0; i < interations; i++)
                 {
                     switch (args[0])
                     {
                         case "Algo":
                             Console.WriteLine("Starting Genetic Algorithim Batch Run");
-                            Test = new GeneticAlgoController(new GeneticAlgoChromosome(3, 4),
+                            Test = new GeneticAlgoController(new GeneticAlgoChromosome(ResPeek, Length),
                                                          new AlgoOnePointCrossover(),
                                                          new FitnessFunctions(),
                                                          new UniformMutation(),
@@ -70,7 +69,7 @@ namespace EnergyPrediction
                             break;
                         case "Prog":
                             Console.WriteLine("Starting Genetic Programming Batch Run");
-                            Test = new GeneticProgController(new GeneticProgChromosome(3, 6),
+                            Test = new GeneticProgController(new GeneticProgChromosome(ResPeek, Length),
                                                          new BranchCrossover(),
                                                          new FitnessFunctions(),
                                                          new UniformTreeMutation(),
@@ -83,7 +82,7 @@ namespace EnergyPrediction
                     if (!Test.Equals(null))
                     {
                         Test.CrossoverProbability = 0.65f;
-                        Test.MutationProbability = 0.1f;
+                        Test.MutationProbability = 0.05f;
                         Test.addEventFunction(Test.DefaultDraw);
                         Test.Start();
                         Console.WriteLine("FINSIHED\n");

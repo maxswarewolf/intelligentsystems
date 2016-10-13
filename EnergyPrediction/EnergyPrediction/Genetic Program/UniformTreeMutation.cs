@@ -54,7 +54,7 @@ namespace EnergyPrediction
                         currentNode.Data.ChangeValue();
                     }
                     else {
-                        lChrom.replaceNode(ref currentNode);
+                        lChrom.replaceNode(currentNode);
                     }
                 }
             }

@@ -156,7 +156,7 @@ namespace EnergyPrediction
             return true;
         }
 
-        public void replaceNode(ref TreeNode<MathObject> aTargetNode)
+        public void replaceNode(TreeNode<MathObject> aTargetNode)
         {
             if (aTargetNode.Data.GetType().Equals(typeof(MathSymbol)))
             {
@@ -180,7 +180,7 @@ namespace EnergyPrediction
 
             while (counter < aNumX)
             {
-                counter = aNumX - VisitorPattern.confirmNumXInOrder(Root, numXThreshold, true);
+                counter = aNumX - VisitorPattern.confirmNumXInOrder(Root, aNumX - counter, true);
             }
             return true;
         }

@@ -66,12 +66,18 @@ namespace EnergyPrediction
 
         public override bool DefaultDrawGeneration(Generation aGeneration)
         {
-            foreach (GeneticProgChromosome gPC in aGeneration.Chromosomes)
+
+            if (aGeneration.Number % 10 == 0)
             {
-                Console.WriteLine(gPC.Root);
-                Console.WriteLine();
+                return true;
             }
-            return true;
+            return false;
+            //foreach (GeneticProgChromosome gPC in aGeneration.Chromosomes)
+            //{
+            //    Console.WriteLine(gPC.Root);
+            //    Console.WriteLine();
+            //}
+            //return true;
         }
 
         public override void Start()
