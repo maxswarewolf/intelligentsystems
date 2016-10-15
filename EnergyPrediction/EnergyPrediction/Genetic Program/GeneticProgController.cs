@@ -44,20 +44,57 @@ namespace EnergyPrediction
             : base(aChromo, aCross, aFit, aMut, aSel, aRein, aTer, aPop)
         { }
 
+        public GeneticProgController(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, int aFitnessThres, int aGenCap, int MaxElapMin, IReinsertion aRein, int aPop)
+            : base(aChromo, aCross, aFit, aMut, aSel, aRein, aFitnessThres, aGenCap, MaxElapMin, aPop)
+        { }
+
         public override bool DefaultDraw(IChromosome aChromosome)
         {
-            Console.Clear();
-
             Console.WriteLine();
-            Console.WriteLine("Generations: {0}", fGA.Population.GenerationsNumber);
-            Console.WriteLine("Fitness: {0}", aChromosome.Fitness);
-            Console.WriteLine("Time: {0}", fGA.TimeEvolving);
+            GeneticProgChromosome lChromo = aChromosome as GeneticProgChromosome;
+            Console.WriteLine("Generation: {0}", fGA.Population.CurrentGeneration.Number);
+            Console.WriteLine("Equation: {0}", lChromo.Root);
+            Console.WriteLine("Fitness: {0}", lChromo.Fitness);
+
+            //Console.Clear();
+            //Console.WriteLine();
+            //Console.WriteLine("Generations: {0}", fGA.Population.GenerationsNumber);
+            //Console.WriteLine("Fitness: {0}", aChromosome.Fitness);
+            //Console.WriteLine("Time: {0}", fGA.TimeEvolving);
             return true;
+        }
+
+        public override bool DefaultDrawGeneration(Generation aGeneration)
+        {
+
+            if (aGeneration.Number % 10 == 0)
+            {
+                return true;
+            }
+            return false;
+            //foreach (GeneticProgChromosome gPC in aGeneration.Chromosomes)
+            //{
+            //    Console.WriteLine(gPC.Root);
+            //    Console.WriteLine();
+            //}
+            //return true;
         }
 
         public override void Start()
         {
+            IPopulation lPop = new ProgPopulation(PopulationCount, PopulationCount * 2, Chromosome);
+            lPop.GenerationStrategy = new PerformanceGenerationStrategy(100);
+
+            fGA = new GeneticAlgorithm(lPop, Fitness, Selection, Crossover, Mutation);
+            fGA.Termination = Termination;
+            fGA.CrossoverProbability = CrossoverProbability;
+            fGA.MutationProbability = MutationProbability;
+            fGA.Reinsertion = Reinsertion;
+
             base.Start();
+
+            var lBest = (GeneticProgChromosome)fGA.Population.BestChromosome;
+            //Console.WriteLine(lBest.Root);
             //todo: add in final display of best chromosome or other display data
         }
     }

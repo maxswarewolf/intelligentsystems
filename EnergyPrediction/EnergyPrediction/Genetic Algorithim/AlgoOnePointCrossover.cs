@@ -49,37 +49,10 @@ namespace EnergyPrediction
             var secondParent = parents[1] as GeneticAlgoChromosome;
 
             IList<IChromosome> temp = CreateChildren(firstParent, secondParent);
-            IList<GeneticAlgoChromosome> children = new List<GeneticAlgoChromosome>() { (GeneticAlgoChromosome)temp[0], (GeneticAlgoChromosome)temp[1] };
+            List<GeneticAlgoChromosome> Children = new List<GeneticAlgoChromosome>() { (GeneticAlgoChromosome)temp[0], (GeneticAlgoChromosome)temp[1] };
+            List<GeneticAlgoChromosome> lParents = new List<GeneticAlgoChromosome>() { firstParent, secondParent };
 
-            for (int i = 0; i < children.Count; i++)
-            {
-                double S1 = 1 - Difference(children[i], firstParent);
-                S1 = (S1 < 0) ? 0 : (S1 > 1) ? 1 : S1;
-                double S2 = 1 - Difference(children[i], secondParent);
-                S2 = (S2 < 0) ? 0 : (S2 > 1) ? 1 : S2;
-
-                double childFitness = ((S1 * firstParent.Reliability * (double)firstParent.Fitness) + (S2 * secondParent.Reliability * (double)secondParent.Fitness)) / ((S1 * firstParent.Reliability) + (S2 * secondParent.Reliability));
-                double childReliability = (Math.Pow(S1 * firstParent.Reliability, 2) + Math.Pow(S2 * secondParent.Reliability, 2)) / ((S1 * firstParent.Reliability) + (S2 * secondParent.Reliability));
-
-                if (childReliability > 0.55)
-                {
-                    Console.WriteLine("{0}, {1}", childFitness, childReliability);
-                    children[i].Reliability = (childReliability > 1) ? 1 : childReliability;
-                    children[i].Fitness = childFitness;
-                }
-            }
-
-            return new List<IChromosome>() { children[0], children[1] };
-        }
-
-        protected double Difference(IChromosome child, IChromosome parent)
-        {
-            double sum = 0;
-            for (int i = 0; i < parent.Length; i++)
-            {
-                sum += Math.Abs((double)child.GetGene(i).Value - (double)parent.GetGene(i).Value);
-            }
-            return sum / parent.Length;
+            return AlgoReliabilityFitness.CalculateDifference(lParents, Children);
         }
 
         protected IList<IChromosome> CreateChildren(IChromosome firstParent, IChromosome secondParent)

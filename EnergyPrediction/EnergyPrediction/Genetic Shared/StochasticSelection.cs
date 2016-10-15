@@ -35,6 +35,7 @@ using GeneticSharp.Domain.Selections;
 namespace EnergyPrediction
 {
     [DisplayName("Stochastic")]
+    //PLAN ON REMOVING
     public class StochasticSelection : SelectionBase
     {
         #region Construstors

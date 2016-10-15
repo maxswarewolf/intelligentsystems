@@ -38,26 +38,19 @@ namespace EnergyPrediction
     public class GeneticProgChromosome : ChromosomeBase, ChromosomeExt
     {
         public int Depth { get; private set; }
+        public int numXThreshold { get; private set; } = 1;
+        public TreeNode<MathObject> Root { get; private set; }
 
-        TreeNode<MathObject> root;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:EnergyPrediction.GeneticAlgoChromosome"/> class.
-        /// </summary>
-        /// <param name="aResultRange">A result range. eg -20 to 20</param>
-        /// KC: chromosone is initialized as a tree from file TreeNode
-        /// must use "root" object to access tree
-        /// last level (i.e. level == depth) is ensured to be a numerical value, everything else is a MathObject 
         public GeneticProgChromosome(int aResultPeek, int aDepth) : base(2)
         {
             MathObject.RangePeek = aResultPeek;
             Depth = aDepth; //wanted depth in initial tree
             Queue<TreeNode<MathObject>> parentList = new Queue<TreeNode<MathObject>>();
 
-            root = new TreeNode<MathObject>(new MathSymbol(), 1); //  data is randomly chosen at initiallization 
+            Root = new TreeNode<MathObject>(new MathSymbol(), 1); //  data is randomly chosen at initiallization 
             TreeNode<MathObject> currentNode;
 
-            parentList.Enqueue(root);
+            parentList.Enqueue(Root);
 
             //initial construction of tree
             while (parentList.Count > 0)
@@ -78,13 +71,22 @@ namespace EnergyPrediction
                     }
                 }
             }
-            //todo: make sure tree contains at least one x (and is a valid tree!!!) 
+            //Is setting a MathNumber to X
+            if (VisitorPattern.NumX(Root) < numXThreshold)
+            {
+                confirmNumX(numXThreshold);
+            }
+        }
+
+        public GeneticProgChromosome(TreeNode<MathObject> lRoot1) : base(2)
+        {
+            Root = lRoot1;
+            Depth = lRoot1.getMaxDepth();
         }
 
         public double getCalculatedY(int x)
         {
-            // TODO test!
-            return root.doCalculation(x);
+            return Root.doCalculation(x);
         }
 
         /// <summary>
@@ -98,7 +100,89 @@ namespace EnergyPrediction
 
         public override Gene GenerateGene(int geneIndex)
         {
-            return new Gene(root);
+            return new Gene(Root);
+        }
+
+        //returns a random node of the tree (not the root)
+        public TreeNode<MathObject> selectRandNode()
+        {
+            TreeNode<MathObject> node = Root;
+            // min value is 2 as 1 is the root, which is not desired
+            int rand = Randomizer.NextInt(2, Root.getMaxDepth());
+
+            for (int i = 1; i < rand; i++)
+            {
+                int direction = Randomizer.NextInt(1, 2);
+                // 1 = goLeft, 2=goRight
+                if (direction == 1 && node.ChildLeft != null)
+                {
+                    node = node.ChildLeft;
+                }
+                else if (direction == 2 && node.ChildRight != null)
+                {
+                    node = node.ChildRight;
+                }
+            }
+            return node;
+        }
+
+        public bool swap(TreeNode<MathObject> aNode1, TreeNode<MathObject> aNode2)
+        {
+            TreeNode<MathObject> lP1 = aNode1.Parent;
+            TreeNode<MathObject> lP2 = aNode2.Parent;
+
+            bool aNode2isLeft = false;
+            if (lP2.ChildLeft == aNode2)
+            {
+                aNode2isLeft = true;
+            }
+
+            if (lP1.ChildLeft == aNode1)
+            {
+                lP1.setChildLeft(aNode2);
+            }
+            else {
+                lP1.setChildRight(aNode2);
+            }
+
+            if (aNode2isLeft)
+            {
+                lP2.setChildLeft(aNode1);
+            }
+            else {
+                lP2.setChildRight(aNode2);
+            }
+
+            return true;
+        }
+
+        public void replaceNode(TreeNode<MathObject> aTargetNode)
+        {
+            if (aTargetNode.Data.GetType().Equals(typeof(MathSymbol)))
+            {
+                aTargetNode.Data = new MathNumber();
+                aTargetNode.setChildLeft();
+                aTargetNode.setChildRight();
+            }
+            else if (aTargetNode.Data.GetType().Equals(typeof(MathNumber)))
+            {
+                aTargetNode.Data = new MathSymbol();
+                aTargetNode.setChildLeft(new TreeNode<MathObject>(new MathNumber(), aTargetNode.Depth + 1));
+                aTargetNode.setChildRight(new TreeNode<MathObject>(new MathNumber(), aTargetNode.Depth + 1));
+            }
+            else
+                throw new NotSupportedException();
+        }
+
+        public bool confirmNumX(int aNumX)
+        {
+            int counter = VisitorPattern.NumX(Root);
+
+            while (counter < aNumX)
+            {
+                counter = aNumX - VisitorPattern.confirmNumXInOrder(Root, aNumX - counter, true);
+            }
+            return true;
         }
     }
 }

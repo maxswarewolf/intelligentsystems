@@ -39,11 +39,37 @@ namespace EnergyPrediction
 
         protected override IList<IChromosome> PerformCross(IList<IChromosome> parents)
         {
-            IChromosome lParentOne = parents[0];
-            IChromosome lParentTwo = parents[1];
+            GeneticProgChromosome lParentOne = parents[0] as GeneticProgChromosome;
+            GeneticProgChromosome lParentTwo = parents[1] as GeneticProgChromosome;
 
-            TreeNode<MathObject> lNode1 = lParentOne.GetGene(0).Value as TreeNode<MathObject>;
-            return parents;
+            //1) randomly select 1 node of each tree random 
+
+            TreeNode<MathObject> lNode1 = lParentOne.selectRandNode();
+            TreeNode<MathObject> lNode2 = lParentTwo.selectRandNode();
+
+            //2) swap all references 
+
+            lParentOne.swap(lNode1, lNode2);
+
+            //3) Validate has Enough X references 
+            lParentOne.confirmNumX(lParentOne.numXThreshold);
+            lParentTwo.confirmNumX(lParentTwo.numXThreshold);
+
+
+            return new List<IChromosome>() { lParentOne, lParentTwo };
         }
+
+        //void swap(TreeNode<MathObject> lNode1, TreeNode<MathObject> lNode2)
+        //{
+        //    TreeNode<MathObject> parent1 = lNode1.Parent;
+        //    if (parent1.ChildLeft == lNode1)
+        //    {
+        //        parent1.setChildLeft(lNode2);
+        //    }
+        //    else
+        //    {
+        //        parent1.setChildRight(lNode2);
+        //    }
+        //}
     }
 }

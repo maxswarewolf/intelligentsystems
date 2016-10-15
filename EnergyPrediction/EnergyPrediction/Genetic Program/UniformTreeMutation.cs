@@ -26,16 +26,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Collections.Generic;
 using GeneticSharp.Domain.Chromosomes;
 using GeneticSharp.Domain.Mutations;
 namespace EnergyPrediction
 {
     public class UniformTreeMutation : MutationBase
     {
-
         protected override void PerformMutate(IChromosome chromosome, float probability)
         {
-            throw new NotImplementedException();
+            // 1st) decide whether mutation is performed
+            GeneticProgChromosome lChrom = chromosome as GeneticProgChromosome;
+
+            Queue<TreeNode<MathObject>> parentList = new Queue<TreeNode<MathObject>>();
+            parentList.Enqueue(lChrom.Root.ChildLeft);
+            parentList.Enqueue(lChrom.Root.ChildRight);
+
+            TreeNode<MathObject> currentNode;
+
+            while (parentList.Count > 0)
+            {
+                currentNode = parentList.Dequeue();
+                if (Randomizer.NextDouble(0, 1) <= probability)
+                {
+                    if (Randomizer.NextDouble(0, 1) <= 0.8)
+                    {
+                        currentNode.Data.ChangeValue();
+                    }
+                    else {
+                        lChrom.replaceNode(currentNode);
+                    }
+                }
+            }
+
+            lChrom.confirmNumX(lChrom.numXThreshold);
         }
     }
 }

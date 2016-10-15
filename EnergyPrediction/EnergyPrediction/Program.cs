@@ -40,35 +40,61 @@ namespace EnergyPrediction
     {
         public static void Main(string[] args)
         {
+            if (args.Length >= 8)
+            {
+                int fitnessThresh = Int32.Parse(args[1]);
+                int GenThresh = Int32.Parse(args[2]);
+                int MinTimeOut = Int32.Parse(args[3]);
+                int Pop = Int32.Parse(args[4]);
+                int ResPeek = Int32.Parse(args[5]);
+                int Length = Int32.Parse(args[6]);
+                int interations = Int32.Parse(args[7]);
 
-            //DataIO.LoadMin(StateType.VIC, DateTime.Parse("1/9/16"), DateTime.Parse("1/9/16"));
+                ControllerBase Test = null;
+                DataIO.AggregateData(StateType.VIC, DateTime.Parse("20/8/16"), DataIO.EndDate, 60);
+                for (int i = 0; i < interations; i++)
+                {
+                    switch (args[0])
+                    {
+                        case "Algo":
+                            Console.WriteLine("Starting Genetic Algorithim Batch Run");
+                            Test = new GeneticAlgoController(new GeneticAlgoChromosome(ResPeek, Length),
+                                                         new AlgoOnePointCrossover(),
+                                                         new FitnessFunctions(),
+                                                         new UniformMutation(),
+                                                         new TournamentSelection(2),
+                                                             fitnessThresh, GenThresh, MinTimeOut,
+                                                         new CombinedReinsertion(),
+                                                         Pop);
+                            break;
+                        case "Prog":
+                            Console.WriteLine("Starting Genetic Programming Batch Run");
+                            Test = new GeneticProgController(new GeneticProgChromosome(ResPeek, Length),
+                                                         new BranchCrossover(),
+                                                         new FitnessFunctions(),
+                                                         new UniformTreeMutation(),
+                                                         new TournamentSelection(2),
+                                                         fitnessThresh, GenThresh, MinTimeOut,
+                                                         new CombinedReinsertion(), Pop);
+                            break;
+                    }
 
-            //var AlgoTest = new GeneticAlgoController(new GeneticAlgoChromosome(1000, 4),
-            //                                         new OnePointCrossover(), m 
-            //                                         new FitnessFunctions(),
-            //                                         new TworsMutation(),
-            //                                         new TournamentSelection(),
-            //                                         new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromSeconds(90))),
-            //                                         new ElitistReinsertion(), 2000);
-            //AlgoTest.CrossoverProbability = 0.6f;
-            //AlgoTest.MutationProbability = 0.1f; // according to guest lecture 1%< prob < 10%
-            //AlgoTest.addEventFunction(AlgoTest.DefaultDraw);
-            //AlgoTest.Start();
-
-
-            //var ProgTest = new GeneticProgController(new GeneticProgChromosome(10, 3),
-            //                                         new BranchCrossover(),
-            //                                         new ErrorSquaredFitness(),
-            //                                         new UniformTreeMutation(),
-            //                                         new EliteSelection(),
-            //                                         new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromMinutes(1))),
-            //                                         new ElitistReinsertion(), 200);
-            //ProgTest.CrossoverProbability = 0.6f;
-            //ProgTest.MutationProbability = 0.6f;
-            //ProgTest.addEventFunction(ProgTest.DefaultDraw);
-            //ProgTest.Start();
-
-            new Application().Run(new MainForm());
+                    if (!Test.Equals(null))
+                    {
+                        Test.CrossoverProbability = 0.65f;
+                        Test.MutationProbability = 0.05f;
+                        Test.addEventFunction(Test.DefaultDraw);
+                        Test.Start();
+                        Console.WriteLine("FINSIHED\n");
+                    }
+                    else {
+                        Console.WriteLine("Something Went Wrong");
+                    }
+                }
+            }
+            else {
+                new Application().Run(new MainForm());
+            }
         }
     }
 }

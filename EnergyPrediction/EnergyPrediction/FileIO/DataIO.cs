@@ -34,12 +34,16 @@ namespace EnergyPrediction
 {
     public static class DataIO
     {
-        //todo: NEED TO COMMENT EVERYTHING
-        //todo: NEED TO FIX UP OTHER LOOPS BASED ON THE 5MIN GEN
-        //todo: ADD Ageration based on the increments
-        static bool Testing = true;
 
-        static IDictionary<string, List<string>> GeneratorLinks = new Dictionary<string, List<string>>() {
+        /// <summary>
+        /// The toggle for testing or use real data.
+        /// </summary>
+        static bool Testing = false;
+
+        /// <summary>
+        /// The generator links.
+        /// </summary>
+        public readonly static IDictionary<string, List<string>> GeneratorLinks = new Dictionary<string, List<string>>() {
                 { "ACT", new List<string>() { "ROYALLA1" }},
                 { "VIC", new List<string>() { "RUBICON", "CLOVER", "YAMBUKWF", "MLWF1", "CHALLHWF", "PORTWF", "WAUBRAWF"} },
                 { "TAS", new List<string>() { "BBDISEL1", "BUTLERSG", "CATAGUN1", "CLUNY", "GEORGTN1", "GEORGTN2", "MEADOWB2", "PALOONA", "PORTLAT1", "QUERIVE1", "REPULSE", "ROWALLAN", "WOOLNTH1"} },
@@ -48,64 +52,110 @@ namespace EnergyPrediction
                 { "NSW", new List<string>() { "GB01", "CAPTL_WF", "CULLRGWF", "ERGT01"} }
             };
 
+        /// <summary>
+        /// Gets the minimum date.
+        /// </summary>
+        /// <value>The minimum date.</value>
         public static DateTime MinDate { get; private set; } = DateTime.Parse("21/2/2015");
+        /// <summary>
+        /// Gets the max date.
+        /// </summary>
+        /// <value>The max date.</value>
         public static DateTime MaxDate { get; private set; } = DateTime.Parse("7/9/2016");
 
+        /// <summary>
+        /// Gets or sets the state selection.
+        /// </summary>
+        /// <value>The state selection.</value>
         public static StateType StateSelection { get; set; } = StateType.VIC;
+        /// <summary>
+        /// Gets or sets the start date.
+        /// </summary>
+        /// <value>The start date.</value>
         public static DateTime StartDate { get; set; } = MinDate;
+        /// <summary>
+        /// Gets or sets the end date.
+        /// </summary>
+        /// <value>The end date.</value>
         public static DateTime EndDate { get; set; } = MaxDate;
-
+        /// <summary>
+        /// The data storage for imparted data.
+        /// </summary>
         static List<double> fData = new List<double>();
 
+        /// <summary>
+        /// Gets the length, of the data imported or returns 1000 if testing is turned on.
+        /// </summary>
+        /// <returns>The length.</returns>
         public static int getLength()
         {
-            if (Testing)
-            {
-                return 1000;
-            }
-            return fData.Count;
+            return (Testing) ? 1000 : fData.Count;
         }
 
+        /// <summary>
+        /// Gets the imported data relating to the supplied index point x
+        /// if testing is true then it will return a value based on a Sin equation.
+        /// </summary>
+        /// <returns>The actual y.</returns>
+        /// <param name="x">The x coordinate.</param>
         public static double getActualY(int x)
         {
             if (Testing)
             {
-                return 1.5 * Math.Sin(2 * Math.Pow(x, 2)) + 3.3;
+                //return (1 / Math.Sqrt(2 * Math.PI)) * (Math.Pow(Math.E, -Math.Pow(x - 0, 2) / (2 * 0.5)));
+                return -1 * Math.Sin(2 * Math.Pow(x, 1)) + 0;
             }
             if (x >= 0 && x < fData.Count)
                 return fData[x];
             return double.PositiveInfinity;
         }
 
-        public static void LoadMin(StateType aState)
+        /// <summary>
+        /// Loads the 5 Minute data based on state, for full data range
+        /// </summary>
+        /// <param name="aState">A state.</param>
+        public static void LoadData(StateType aState)
         {
-            if (Testing)
-                return;
-            LoadMin(aState, StartDate, EndDate);
-        }
-        public static void LoadMin(string aGenCode)
-        {
-            if (Testing)
-                return;
-            LoadMin(aGenCode, StartDate, EndDate);
-        }
-        public static void LoadMin(AppType aApp)
-        {
-            if (Testing)
-                return;
-            LoadMin(aApp, StartDate, EndDate);
+            if (!Testing)
+                LoadData(aState, StartDate, EndDate);
         }
 
-        public static void LoadMin(StateType aState, DateTime aStartDate, DateTime aEndDate)
+        /// <summary>
+        /// Loads the 5 Minute data based on Generator Code, for full data range
+        /// </summary>
+        /// <param name="aGenCode">A gen code.</param>
+        public static void LoadData(string aGenCode)
+        {
+            if (!Testing)
+                LoadData(aGenCode, StartDate, EndDate);
+        }
+
+        /// <summary>
+        /// Loads the 5 Minute data based on Appliance, for full data range
+        /// </summary>
+        /// <param name="aApp">A app.</param>
+        public static void LoadData(AppType aApp)
+        {
+            if (!Testing)
+                LoadData(aApp, StartDate, EndDate);
+        }
+
+        /// <summary>
+        /// Loads the 5 Minute data based on state, for partial or full data range
+        /// </summary>
+        /// <param name="aState">A state.</param>
+        /// <param name="aStartDate">A start date.</param>
+        /// <param name="aEndDate">A end date.</param>
+        public static void LoadData(StateType aState, DateTime aStartDate, DateTime aEndDate)
         {
             if (Testing)
                 return;
-            fData.Clear();
+            fData = new List<double>();
             List<string> lGenerators = GeneratorLinks[aState.ToString()];
 
-            string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/5min";
+            string lRoot = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/5min";
 
-            string[] lFilePaths = Directory.GetFiles(Root, "*.csv", SearchOption.TopDirectoryOnly);
+            string[] lFilePaths = Directory.GetFiles(lRoot, "*.csv", SearchOption.TopDirectoryOnly);
 
             List<string> lFiles = new List<string>();
 
@@ -114,9 +164,9 @@ namespace EnergyPrediction
                 lFiles.Add(Path.GetFileNameWithoutExtension(s));
             }
 
-            DateTime timeStamp = DateTime.MinValue; //init value - not used
+            DateTime lTimeStamp = DateTime.MinValue; //init value - not used
 
-            double wattage = 0;
+            double lWattage = 0;
             foreach (string s in lFiles)
             {
                 DateTime temp = DateTime.Parse(s);
@@ -126,40 +176,47 @@ namespace EnergyPrediction
                     {
                         break;
                     }
-                    string path = Root + "/" + s + ".csv";
+                    string path = lRoot + "/" + s + ".csv";
                     List<string> lColumns = new List<string>();
-                    using (var reader = new CsvFileReader(path))
+                    using (var lReader = new CsvFileReader(path))
                     {
-                        while (reader.ReadRow(lColumns))
+                        while (lReader.ReadRow(lColumns))
                         {
                             if (lGenerators.Contains(lColumns[1]))
                             {
-                                if (timeStamp == DateTime.Parse(lColumns[0]))
+                                if (lTimeStamp == DateTime.Parse(lColumns[0]))
                                 {
-                                    wattage += Double.Parse(lColumns[2]);
+                                    lWattage += Double.Parse(lColumns[2]);
                                 }
                                 else
                                 {
-                                    if (timeStamp != DateTime.MinValue)
+                                    if (lTimeStamp != DateTime.MinValue)
                                     {
-                                        fData.Add(wattage);
+                                        fData.Add(lWattage);
                                     }
-                                    timeStamp = DateTime.Parse(lColumns[0]);
-                                    wattage = Double.Parse(lColumns[2]);
+                                    lTimeStamp = DateTime.Parse(lColumns[0]);
+                                    lWattage = Double.Parse(lColumns[2]);
                                 }
                             }
                         }
-                        fData.Add(wattage);
+                        fData.Add(lWattage);
                     }
+
                 }
             }
         }
 
-        public static void LoadMin(string aGenCode, DateTime aStartDate, DateTime aEndDate)
+        /// <summary>
+        /// Loads the 5 Minute data based on Generator Code, for partial or full data range
+        /// </summary>
+        /// <param name="aGenCode">A gen code.</param>
+        /// <param name="aStartDate">A start date.</param>
+        /// <param name="aEndDate">A end date.</param>
+        public static void LoadData(string aGenCode, DateTime aStartDate, DateTime aEndDate)
         {
             if (Testing)
                 return;
-            fData.Clear();
+            fData = new List<double>();
             string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/5min";
             string[] lFilePaths = Directory.GetFiles(Root, "*.csv", SearchOption.TopDirectoryOnly);
             List<string> lFiles = new List<string>();
@@ -193,11 +250,17 @@ namespace EnergyPrediction
             }
         }
 
-        public static void LoadMin(AppType aApp, DateTime aStartData, DateTime aEndDate)
+        /// <summary>
+        /// Loads the 5 Minute data based on Appliance, for partial or full data range
+        /// </summary>
+        /// <param name="aApp">A app.</param>
+        /// <param name="aStartData">A start data.</param>
+        /// <param name="aEndDate">A end date.</param>
+        public static void LoadData(AppType aApp, DateTime aStartData, DateTime aEndDate)
         {
             if (Testing)
                 return;
-            fData.Clear();
+            fData = new List<double>();
             string Root = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/Data/App";
             string[] lFilePaths = Directory.GetFiles(Root, "*.csv", SearchOption.TopDirectoryOnly);
             List<string> lFiles = new List<string>();
@@ -225,6 +288,84 @@ namespace EnergyPrediction
                     }
                 }
             }
+        }
+
+        public static void AggregateData(StateType aState, int aTimeInterval)
+        {
+            AggregateData(aState, StartDate, EndDate, aTimeInterval);
+        }
+
+        public static void AggregateData(string aGenCode, int aTimeInterval)
+        {
+            AggregateData(aGenCode, StartDate, EndDate, aTimeInterval);
+        }
+
+        public static void AggregateData(AppType aApp, int aTimeInterval)
+        {
+            AggregateData(aApp, StartDate, EndDate, aTimeInterval);
+        }
+
+        public static void AggregateData(StateType aState, DateTime aStartDate, DateTime aEndDate, int aTimeInterval)
+        {
+            if (!Testing)
+            {
+                LoadData(aState, aStartDate, aEndDate);
+                AggregateDataSet(aTimeInterval);
+            }
+        }
+
+        public static void AggregateData(string aGenCode, DateTime aStartDate, DateTime aEndDate, int aTimeInterval)
+        {
+            if (!Testing)
+            {
+                LoadData(aGenCode, aStartDate, aEndDate);
+                AggregateDataSet(aTimeInterval);
+            }
+        }
+
+        public static void AggregateData(AppType aApp, DateTime aStartDate, DateTime aEndDate, int aNumTimeIntervals)
+        {
+            if (!Testing)
+            {
+                LoadData(aApp, aStartDate, aEndDate);
+                AggregateDataSet(aNumTimeIntervals);
+            }
+        }
+
+        private static void AggregateDataSet(int aTimeInterval)
+        {
+            List<double> lTemp = new List<double>();
+            double lWattage = 0;
+            for (int i = 0; i < fData.Count; i++)
+            {
+                if ((i + 1) % aTimeInterval == 0)
+                {
+                    lTemp.Add(lWattage);
+                    lWattage = 0;
+                }
+                lWattage += fData[i];
+            }
+            if (fData.Count % aTimeInterval != 0)
+            {
+                lTemp.Add(lWattage);
+            }
+            fData = new List<double>();
+            fData.AddRange(lTemp);
+        }
+
+        public static void TestingFunction(int a)
+        {
+            bool testingTemp = Testing;
+            Testing = false;
+            Console.WriteLine("\nLoad Data Test");
+            LoadData(AppType.Heater, DateTime.Parse("1/12/15"), DateTime.Parse("1/12/15"));
+            Console.WriteLine(fData.Count);
+
+            Console.WriteLine("\nAggregate Data Test");
+            AggregateData(AppType.Heater, DateTime.Parse("1/12/15"), DateTime.Parse("1/12/15"), a);
+            Console.WriteLine(fData.Count);
+
+            Testing = testingTemp;
         }
     }
 }
