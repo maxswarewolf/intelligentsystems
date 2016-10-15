@@ -34,8 +34,16 @@
       <HintPath>..\packages\Eto.Forms.2.2.0\lib\net45\Eto.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Eto.OxyPlot, Version=1.0.5377.38510, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Eto.OxyPlot.1.0.5377.38510\lib\net45\Eto.OxyPlot.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Eto.WinForms, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Eto.Platform.Windows.2.2.0\lib\net45\Eto.WinForms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OxyPlot, Version=2014.1.474.0, Culture=neutral, PublicKeyToken=638079a8f0bd61e9, processorArchitecture=MSIL">
+      <HintPath>..\packages\OxyPlot.Core.2014.1.474\lib\portable-net4+sl4+wp71+win8\OxyPlot.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -109,6 +117,7 @@
     <Compile Include="Genetic Algorithim\AlgoOnePointCrossover.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
