@@ -50,7 +50,13 @@ namespace EnergyPrediction
         public double getCalculatedY(int x)
         {
             //return ((double)this.GetGene(0).Value / Math.Sqrt((double)this.GetGene(1).Value * Math.PI)) * (Math.Pow(Math.E, -Math.Pow(x - (double)this.GetGene(2).Value, 2) / (2 * (double)this.GetGene(3).Value)));
-            return (double)this.GetGene(0).Value * Math.Sin((double)this.GetGene(1).Value * (double)this.GetGene(2).Value) + (double)this.GetGene(3).Value;
+            //return (double)this.GetGene(0).Value * Math.Sin((double)this.GetGene(1).Value * (double)this.GetGene(2).Value) + (double)this.GetGene(3).Value;
+            double result = 0;
+            for (int i = 0; i < Length; i++)
+            {
+                result += (double)GetGene(i).Value * Math.Pow(x, i);
+            }
+            return result;
         }
 
         /// <summary>
@@ -60,7 +66,7 @@ namespace EnergyPrediction
         /// <param name="geneIndex">Gene index.</param>
         public override Gene GenerateGene(int geneIndex)
         {
-            return new Gene(Randomizer.NextDouble(RangePeek * -1, RangePeek));
+            return new Gene(Math.Round(Randomizer.NextDouble(RangePeek * -1, RangePeek), 4));
         }
 
         /// <summary>
@@ -70,6 +76,34 @@ namespace EnergyPrediction
         public override IChromosome CreateNew()
         {
             return new GeneticAlgoChromosome(RangePeek, Length);
+        }
+
+        public override string ToString()
+        {
+            string result = "y = ";
+            if ((double)GetGene(0).Value < 0.0)
+            {
+                result += " -";
+            }
+            for (int i = 0; i < Length; i++)
+            {
+                result += Math.Abs((double)GetGene(i).Value) + " * x^" + i;
+                if (i < Length - 1)
+                {
+                    if ((double)GetGene(i + 1).Value < 0.0)
+                    {
+                        result += " - ";
+                    }
+                    else {
+                        result += " + ";
+                    }
+                }
+            }
+            result += "\n";
+            result += "Reliability: " + Reliability + "\n";
+            result += "Fitness: " + Fitness + "\n";
+            result += "+- Peek Value: " + RangePeek + "\n";
+            return result;
         }
     }
 }

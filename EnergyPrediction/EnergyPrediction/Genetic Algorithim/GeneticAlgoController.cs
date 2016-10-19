@@ -50,16 +50,13 @@ namespace EnergyPrediction
         public override bool DefaultDraw(IChromosome aChromosome)
         {
             //var lBest = aChromosome.GetGenes();
-            //var lChromosome = aChromosome as GeneticAlgoChromosome;
-            //Console.Clear();
+            var lChromosome = aChromosome as GeneticAlgoChromosome;
+            Console.Clear();
 
-            //Console.WriteLine();
-            //Console.WriteLine("Generations: {0}, Population Size: {1}", fGA.Population.GenerationsNumber, fGA.Population.CurrentGeneration.Chromosomes.Count);
-            //Console.WriteLine("Fitness: {0:###,###,###.##########}", aChromosome.Fitness);
-            //Console.WriteLine("Reliability: {0}", lChromosome.Reliability);
-            //Console.WriteLine("+- Range Value: {0}", lChromosome.RangePeek);
-            //Console.WriteLine("Genes: {0:0.####}, {1:0.####}, {2:0.####}, {3:0.####}", lBest[0].Value, lBest[1].Value, lBest[2].Value, lBest[3].Value);
-            //Console.WriteLine("Time: {0}", fGA.TimeEvolving);
+            Console.WriteLine();
+            Console.WriteLine("Generations: {0}, Population Size: {1}", fGA.Population.GenerationsNumber, fGA.Population.CurrentGeneration.Chromosomes.Count);
+            Console.WriteLine(lChromosome);
+            Console.WriteLine("Time: {0}", fGA.TimeEvolving);
             return true;
         }
 

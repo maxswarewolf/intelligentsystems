@@ -27,3 +27,4 @@
 /Users/Adrian/intelligentsystems/EnergyPrediction/EnergyPrediction/bin/Debug/MonoMac.dll
 /Users/Adrian/intelligentsystems/EnergyPrediction/EnergyPrediction/bin/Debug/Eto.Gtk2.dll
 /Users/katieclark/Documents/WS16IntelligentSystems/EnergyPrediction/EnergyPrediction/bin/Debug/Eto.Gtk2.dll
+/Users/Adrian/intelligentsystems/EnergyPrediction/EnergyPrediction/bin/Debug/Eto.WinForms.dll
