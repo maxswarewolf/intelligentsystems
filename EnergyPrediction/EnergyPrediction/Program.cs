@@ -51,13 +51,13 @@ namespace EnergyPrediction
                 int interations = Int32.Parse(args[7]);
 
                 ControllerBase Test = null;
-                DataIO.AggregateData(StateType.VIC, DateTime.Parse("20/8/16"), DataIO.EndDate, 60);
+                DataIO.AggregateData(StateType.VIC, DateTime.Parse("21/2/15"), DateTime.Parse("21/2/16"), 288);
                 for (int i = 0; i < interations; i++)
                 {
                     switch (args[0])
                     {
                         case "Algo":
-                            Console.WriteLine("Starting Genetic Algorithim Batch Run");
+                            Console.WriteLine("Starting Genetic Algorithim Batch Run {0}", i + 1);
                             Test = new GeneticAlgoController(new GeneticAlgoChromosome(ResPeek, Length),
                                                          new AlgoOnePointCrossover(),
                                                          new FitnessFunctions(),
@@ -68,7 +68,7 @@ namespace EnergyPrediction
                                                          Pop);
                             break;
                         case "Prog":
-                            Console.WriteLine("Starting Genetic Programming Batch Run");
+                            Console.WriteLine("Starting Genetic Programming Batch Run {0}", i + 1);
                             Test = new GeneticProgController(new GeneticProgChromosome(ResPeek, Length),
                                                          new BranchCrossover(),
                                                          new FitnessFunctions(),

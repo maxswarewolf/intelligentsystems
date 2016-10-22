@@ -73,7 +73,6 @@ namespace EnergyPrediction
         {
             IPopulation lPop = new Population(PopulationCount, PopulationCount * 2, Chromosome);
             lPop.GenerationStrategy = new PerformanceGenerationStrategy(100);
-            //todo: Dicusss the Need or want for a generation strategy 
             fGA = new GeneticAlgorithm(lPop, Fitness, Selection, Crossover, Mutation);
             fGA.Termination = Termination;
             fGA.CrossoverProbability = CrossoverProbability;
@@ -82,9 +81,9 @@ namespace EnergyPrediction
 
             base.Start();
 
-            var lBest = fGA.Population.BestChromosome.GetGenes();
+            var lBest = fGA.Population.BestChromosome;
             Console.WriteLine();
-            Console.WriteLine("Evolved: " + lBest[0].Value + ", " + lBest[1].Value + ", " + lBest[2].Value + ", " + lBest[3].Value);
+            Console.WriteLine("Evolved: " + lBest);
         }
     }
 }

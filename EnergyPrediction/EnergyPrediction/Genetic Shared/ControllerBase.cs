@@ -136,7 +136,6 @@ namespace EnergyPrediction
                 Console.ReadKey();
                 return;
             }
-            Console.WriteLine("DONE");
         }
         public virtual void Stop()
         {

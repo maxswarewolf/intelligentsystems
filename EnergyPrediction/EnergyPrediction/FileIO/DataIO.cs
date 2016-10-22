@@ -268,9 +268,10 @@ namespace EnergyPrediction
             {
                 lFiles.Add(Path.GetFileNameWithoutExtension(s));
             }
+            bool lGrabAll = ((int)aApp >= 12);
             foreach (string s in lFiles)
             {
-                DateTime temp = DateTime.Parse(s.Substring(0, 10));
+                DateTime temp = DateTime.Parse(s);
                 if (temp >= aStartData)
                 {
                     if (temp > aEndDate)
@@ -283,7 +284,18 @@ namespace EnergyPrediction
                     {
                         while (reader.ReadRow(lColumns))
                         {
-                            fData.Add(Double.Parse(lColumns[(int)aApp]));
+                            double total = 0;
+                            if (lGrabAll)
+                            {
+                                foreach (String col in lColumns)
+                                {
+                                    total += Double.Parse(col);
+                                }
+                            }
+                            else {
+                                total = Double.Parse(lColumns[(int)aApp]);
+                            }
+                            fData.Add(total);
                         }
                     }
                 }
@@ -358,11 +370,11 @@ namespace EnergyPrediction
             bool testingTemp = Testing;
             Testing = false;
             Console.WriteLine("\nLoad Data Test");
-            LoadData(AppType.Heater, DateTime.Parse("1/12/15"), DateTime.Parse("1/12/15"));
+            LoadData(AppType.All, DateTime.Parse("1/12/15"), DateTime.Parse("1/12/15"));
             Console.WriteLine(fData.Count);
 
             Console.WriteLine("\nAggregate Data Test");
-            AggregateData(AppType.Heater, DateTime.Parse("1/12/15"), DateTime.Parse("1/12/15"), a);
+            AggregateData(AppType.All, DateTime.Parse("1/12/15"), DateTime.Parse("1/12/15"), a);
             Console.WriteLine(fData.Count);
 
             Testing = testingTemp;
