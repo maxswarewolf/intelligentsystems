@@ -58,7 +58,7 @@ namespace EnergyPrediction
         protected List<Func<IChromosome, bool>> fGenerationRanEventChromosome = new List<Func<IChromosome, bool>>();
         protected List<Func<Generation, bool>> fGenerationRanEventGeneration = new List<Func<Generation, bool>>();
 
-        public ControllerBase(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, IReinsertion aRein, int aFitnessThres, int aGenCap, int MaxElapMin, int aPop)
+        public ControllerBase(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, IReinsertion aRein, int aFitnessThres, int aGenCap, double MaxElapMin, int aPop)
         {
             Chromosome = aChromo;
             Crossover = aCross;
@@ -98,12 +98,24 @@ namespace EnergyPrediction
             fGenerationRanEventGeneration.Add(aFunction);
         }
 
+        public abstract string prediction();
+
         public virtual void removeEventFunction(Func<Generation, bool> aFunction)
         {
             fGenerationRanEventGeneration.Remove(aFunction);
         }
 
-        public abstract bool DefaultDraw(IChromosome aChromosome);
+        public virtual bool DefaultDraw(IChromosome aChromosome)
+        {
+            double cal = 150 - 16 * Math.Log(PopulationCount);
+            int modBy = (cal < 10) ? 10 : (int)cal;
+            if (fGA.Population.GenerationsNumber % modBy == 0)
+            {
+                Console.WriteLine("Generations: {0}, Population Size: {1}", fGA.Population.GenerationsNumber, fGA.Population.CurrentGeneration.Chromosomes.Count);
+                Console.WriteLine("Time: {0}", fGA.TimeEvolving);
+            }
+            return true;
+        }
         public abstract bool DefaultDrawGeneration(Generation aGeneration);
         public virtual void Start()
         {
@@ -136,6 +148,9 @@ namespace EnergyPrediction
                 Console.ReadKey();
                 return;
             }
+
+            //Console.WriteLine("Generations: {0}, Population Size: {1}", fGA.Population.GenerationsNumber, fGA.Population.CurrentGeneration.Chromosomes.Count);
+            Console.WriteLine("Time: {0}", fGA.TimeEvolving);
         }
         public virtual void Stop()
         {

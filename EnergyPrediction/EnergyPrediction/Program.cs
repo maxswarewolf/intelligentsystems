@@ -27,12 +27,8 @@
 // THE SOFTWARE.
 
 using System;
-using GeneticSharp.Domain.Crossovers;
 using GeneticSharp.Domain.Mutations;
 using GeneticSharp.Domain.Selections;
-using GeneticSharp.Domain.Terminations;
-using GeneticSharp.Domain.Reinsertions;
-using Eto.Forms;
 
 namespace EnergyPrediction
 {
@@ -40,61 +36,18 @@ namespace EnergyPrediction
     {
         public static void Main(string[] args)
         {
-            if (args.Length >= 8)
+            if (args.Length >= 1)
             {
-                int fitnessThresh = Int32.Parse(args[1]);
-                int GenThresh = Int32.Parse(args[2]);
-                int MinTimeOut = Int32.Parse(args[3]);
-                int Pop = Int32.Parse(args[4]);
-                int ResPeek = Int32.Parse(args[5]);
-                int Length = Int32.Parse(args[6]);
-                int interations = Int32.Parse(args[7]);
-
-                ControllerBase Test = null;
-                DataIO.AggregateData(StateType.VIC, DateTime.Parse("21/2/15"), DateTime.Parse("21/2/16"), 288);
-                for (int i = 0; i < interations; i++)
+                if (args[0] == "testing")
                 {
-                    switch (args[0])
-                    {
-                        case "Algo":
-                            Console.WriteLine("Starting Genetic Algorithim Batch Run {0}", i + 1);
-                            Test = new GeneticAlgoController(new GeneticAlgoChromosome(ResPeek, Length),
-                                                         new AlgoOnePointCrossover(),
-                                                         new FitnessFunctions(),
-                                                         new UniformMutation(),
-                                                         new TournamentSelection(2),
-                                                             fitnessThresh, GenThresh, MinTimeOut,
-                                                         new CombinedReinsertion(),
-                                                         Pop);
-                            break;
-                        case "Prog":
-                            Console.WriteLine("Starting Genetic Programming Batch Run {0}", i + 1);
-                            Test = new GeneticProgController(new GeneticProgChromosome(ResPeek, Length),
-                                                         new BranchCrossover(),
-                                                         new FitnessFunctions(),
-                                                         new UniformTreeMutation(),
-                                                         new TournamentSelection(2),
-                                                         fitnessThresh, GenThresh, MinTimeOut,
-                                                         new CombinedReinsertion(), Pop);
-                            break;
-                    }
-
-                    if (!Test.Equals(null))
-                    {
-                        Test.CrossoverProbability = 0.65f;
-                        Test.MutationProbability = 0.05f;
-                        Test.addEventFunction(Test.DefaultDraw);
-                        Test.Start();
-                        Console.WriteLine("FINSIHED\n");
-                    }
-                    else {
-                        Console.WriteLine("Something Went Wrong");
-                    }
+                    DataIO.AggregateData(StateType.VIC, DateTime.Parse("21/2/15"), DateTime.Parse("21/2/16"), 288);
+                    AssignmentAnalysis AA = new AssignmentAnalysis("Algo");
+                    AA.run();
+                    AA = new AssignmentAnalysis("Prog");
+                    AA.run();
                 }
             }
-            else {
-                new Application().Run(new MainForm());
-            }
+            //Seans UI stuff
         }
     }
 }
