@@ -65,7 +65,7 @@ namespace EnergyPrediction
 
         protected virtual IChromosome CreateChild(IChromosome leftParent, IChromosome rightParent)
         {
-            var cutGenesCount = 2;
+            var cutGenesCount = leftParent.GetGenes().Length / 2;
             var child = leftParent.CreateNew();
             child.ReplaceGenes(0, leftParent.GetGenes().Take(cutGenesCount).ToArray());
             child.ReplaceGenes(cutGenesCount, rightParent.GetGenes().Skip(cutGenesCount).ToArray());

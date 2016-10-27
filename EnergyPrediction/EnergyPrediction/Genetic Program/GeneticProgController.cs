@@ -44,40 +44,57 @@ namespace EnergyPrediction
             : base(aChromo, aCross, aFit, aMut, aSel, aRein, aTer, aPop)
         { }
 
-        public GeneticProgController(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, int aFitnessThres, int aGenCap, int MaxElapMin, IReinsertion aRein, int aPop)
+        public GeneticProgController(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, int aFitnessThres, int aGenCap, double MaxElapMin, IReinsertion aRein, int aPop)
             : base(aChromo, aCross, aFit, aMut, aSel, aRein, aFitnessThres, aGenCap, MaxElapMin, aPop)
         { }
 
-        public override bool DefaultDraw(IChromosome aChromosome)
-        {
-            Console.WriteLine();
-            GeneticProgChromosome lChromo = aChromosome as GeneticProgChromosome;
-            Console.WriteLine("Generation: {0}", fGA.Population.CurrentGeneration.Number);
-            Console.WriteLine("Equation: {0}", lChromo.Root);
-            Console.WriteLine("Fitness: {0}", lChromo.Fitness);
-
-            //Console.Clear();
-            //Console.WriteLine();
-            //Console.WriteLine("Generations: {0}", fGA.Population.GenerationsNumber);
-            //Console.WriteLine("Fitness: {0}", aChromosome.Fitness);
-            //Console.WriteLine("Time: {0}", fGA.TimeEvolving);
-            return true;
-        }
-
         public override bool DefaultDrawGeneration(Generation aGeneration)
         {
-
-            if (aGeneration.Number % 10 == 0)
-            {
-                return true;
-            }
             return false;
-            //foreach (GeneticProgChromosome gPC in aGeneration.Chromosomes)
-            //{
-            //    Console.WriteLine(gPC.Root);
-            //    Console.WriteLine();
-            //}
-            //return true;
+        }
+
+        public override string prediction()
+        {
+            GeneticProgChromosome temp = fGA.BestChromosome as GeneticProgChromosome;
+            double lNextDay = temp.getCalculatedY(DataIO.getLength());
+            double lNextWeek = temp.getCalculatedY(DataIO.getLength() + 7);
+            double lNextMonth = temp.getCalculatedY(DataIO.getLength() + 30);
+            double lNextQuarter = temp.getCalculatedY(DataIO.getLength() + 91);
+
+            double lTotalWeek = 0, lTotalMonth = 0, lTotalQuarter = 0;
+            for (int i = 0; i < 91; i++)
+            {
+                double value = temp.getCalculatedY(DataIO.getLength() + i);
+                lTotalWeek += (i < 7) ? value : 0;
+                lTotalMonth += (i < 30) ? value : 0;
+                lTotalQuarter += value;
+            }
+
+            double lActualNextDay = DataIO.getPredictY(0);
+            double lActualNextWeek = DataIO.getPredictY(7);
+            double lActualNextMonth = DataIO.getPredictY(30);
+            double lActualNextQuarter = DataIO.getPredictY(91);
+
+            double lActualTotalWeek = 0, lActualTotalMonth = 0, lActualTotalQuarter = 0;
+            for (int i = 0; i < 91; i++)
+            {
+                double value = DataIO.getPredictY(i);
+                lActualTotalWeek += (i < 7) ? value : 0;
+                lActualTotalMonth += (i < 30) ? value : 0;
+                lActualTotalQuarter += value;
+            }
+
+            String predictionString = "";
+            predictionString += "Next Day:      " + lNextDay + "W predicted || " + lActualNextDay + "W actual \n";
+            predictionString += "Next Week:     " + lNextWeek + "W predicted || " + lActualNextWeek + "W actual \n";
+            predictionString += "Next Month:    " + lNextMonth + "W predicted || " + lActualNextMonth + "W actual \n";
+            predictionString += "Next Quarter:  " + lNextQuarter + "W predicted || " + lActualNextQuarter + "W actual \n";
+            predictionString += "\n";
+            predictionString += "Aggerate Next Week:     " + lTotalWeek + "W predicted || " + lActualTotalWeek + "W actual \n";
+            predictionString += "Aggerate Next Month:    " + lTotalMonth + "W predicted || " + lActualTotalMonth + "W actual \n";
+            predictionString += "Aggerate Next Quarter:  " + lTotalQuarter + "W predicted || " + lActualTotalQuarter + "W actual \n";
+
+            return predictionString;
         }
 
         public override void Start()
@@ -92,9 +109,6 @@ namespace EnergyPrediction
             fGA.Reinsertion = Reinsertion;
 
             base.Start();
-
-            var lBest = (GeneticProgChromosome)fGA.Population.BestChromosome;
-            //Console.WriteLine(lBest.Root);
             //todo: add in final display of best chromosome or other display data
         }
     }

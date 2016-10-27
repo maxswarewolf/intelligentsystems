@@ -1,12 +1,13 @@
-﻿<Properties StartupItem="EnergyPrediction/EnergyPrediction.csproj" StartupConfiguration="{5DB6A5CF-9686-4359-B884-37B0FB21524D}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="EnergyPrediction/UI/GraphImage.cs">
+﻿<Properties StartupConfiguration="{5DB6A5CF-9686-4359-B884-37B0FB21524D}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EnergyPrediction/Genetic Program/UniformTreeMutation.cs">
     <Files>
-      <File FileName="EnergyPrediction/Genetic Program/GeneticProgChromosome.cs" Line="138" Column="2" />
-      <File FileName="EnergyPrediction/Genetic Program/BranchCrossover.cs" Line="58" Column="13" />
-      <File FileName="EnergyPrediction/Genetic Program/UniformTreeMutation.cs" Line="101" Column="14" />
-      <File FileName="EnergyPrediction/Genetic Program/TreeUtil/VisitorPattern.cs" Line="74" Column="4" />
-      <File FileName="EnergyPrediction/Genetic Program/TreeUtil/TreeNode.cs" Line="71" Column="70" />
-      <File FileName="EnergyPrediction/UI/GraphImage.cs" Line="2" Column="11" />
+      <File FileName="EnergyPrediction/Genetic Program/UniformTreeMutation.cs" Line="78" Column="72" />
+      <File FileName="EnergyPrediction/Genetic Program/GeneticProgChromosome.cs" Line="70" Column="128" />
+      <File FileName="EnergyPrediction/Genetic Program/Tree Math/MathObject.cs" Line="48" Column="38" />
+      <File FileName="EnergyPrediction/Genetic Program/TreeNode.cs" Line="112" Column="61" />
+      <File FileName="EnergyPrediction/Genetic Program/Tree Math/MathNumber.cs" Line="36" Column="10" />
+      <File FileName="EnergyPrediction/Genetic Program/Tree Math/MathSymbol.cs" Line="34" Column="26" />
+      <File FileName="EnergyPrediction/Genetic Program/BranchCrossover.cs" Line="74" Column="56" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
