@@ -1,18 +1,24 @@
-﻿using Eto.Forms;
-using Eto.Drawing;
-using Eto.OxyPlot;
+﻿using System;
+using Gtk;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace EnergyPrediction.UI
 {
-    class GraphImage : Panel
+    class ResultsWindow
     {
         private PlotModel geneticGraphingModel;
-        public GraphImage()
+        private Window resultsWindow;
+
+        public ResultsWindow()
         {
-            geneticGraphingModel = new PlotModel { Title = "Results" };
+            geneticGraphingModel = new PlotModel 
+            { 
+                Title = "Results",
+                PlotType = PlotType.Cartesian,
+                Background = OxyColors.White
+            };
             geneticGraphingModel.Axes.Add(new LinearAxis
             {
                 Position = AxisPosition.Left,
@@ -33,9 +39,7 @@ namespace EnergyPrediction.UI
                 MinorStep = 0.5,
                 MajorStep = 1.0
             });
-            var areaSeries = new AreaSeries();
-            geneticGraphingModel.Series.Add(areaSeries);
-            BackgroundColor = Colors.White;
+            geneticGraphingModel.Series.Add(new FunctionSeries(Math.Sin, -10, 10, 0.1, "sin(x)"));
         }
     }
 }
