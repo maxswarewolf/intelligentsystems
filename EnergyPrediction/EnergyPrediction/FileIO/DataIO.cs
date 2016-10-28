@@ -82,6 +82,7 @@ namespace EnergyPrediction
         /// The data storage for imparted data.
         /// </summary>
         static List<double> fData = new List<double>();
+        static List<double> fPrediction = new List<double>();
 
         /// <summary>
         /// Gets the length, of the data imported or returns 1000 if testing is turned on.
@@ -105,9 +106,16 @@ namespace EnergyPrediction
                 //return (1 / Math.Sqrt(2 * Math.PI)) * (Math.Pow(Math.E, -Math.Pow(x - 0, 2) / (2 * 0.5)));
                 return -1 * Math.Sin(2 * Math.Pow(x, 1)) + 0;
             }
-            if (x >= 0 && x < fData.Count)
-                return fData[x];
-            return double.PositiveInfinity;
+            return (x >= 0 && x < fData.Count) ? fData[x] : double.PositiveInfinity;
+        }
+
+        public static double getPredictY(int x)
+        {
+            return (x >= 0 && x < fPrediction.Count) ? fPrediction[x] : double.PositiveInfinity;
+        }
+        public static int getPredictLength()
+        {
+            return fPrediction.Count;
         }
 
         /// <summary>
@@ -172,36 +180,56 @@ namespace EnergyPrediction
                 DateTime temp = DateTime.Parse(s);
                 if (temp >= aStartDate)
                 {
-                    if (temp > aEndDate)
-                    {
-                        break;
-                    }
                     string path = lRoot + "/" + s + ".csv";
                     List<string> lColumns = new List<string>();
                     using (var lReader = new CsvFileReader(path))
                     {
-                        while (lReader.ReadRow(lColumns))
+                        if (temp > aEndDate)
                         {
-                            if (lGenerators.Contains(lColumns[1]))
+                            while (lReader.ReadRow(lColumns))
                             {
-                                if (lTimeStamp == DateTime.Parse(lColumns[0]))
+                                if (lGenerators.Contains(lColumns[1]))
                                 {
-                                    lWattage += Double.Parse(lColumns[2]);
-                                }
-                                else
-                                {
-                                    if (lTimeStamp != DateTime.MinValue)
+                                    if (lTimeStamp == DateTime.Parse(lColumns[0]))
                                     {
-                                        fData.Add(lWattage);
+                                        lWattage += Double.Parse(lColumns[2]);
                                     }
-                                    lTimeStamp = DateTime.Parse(lColumns[0]);
-                                    lWattage = Double.Parse(lColumns[2]);
+                                    else
+                                    {
+                                        if (lTimeStamp != DateTime.MinValue)
+                                        {
+                                            fPrediction.Add(lWattage);
+                                        }
+                                        lTimeStamp = DateTime.Parse(lColumns[0]);
+                                        lWattage = Double.Parse(lColumns[2]);
+                                    }
                                 }
                             }
+                            fPrediction.Add(lWattage);
                         }
-                        fData.Add(lWattage);
+                        else {
+                            while (lReader.ReadRow(lColumns))
+                            {
+                                if (lGenerators.Contains(lColumns[1]))
+                                {
+                                    if (lTimeStamp == DateTime.Parse(lColumns[0]))
+                                    {
+                                        lWattage += Double.Parse(lColumns[2]);
+                                    }
+                                    else
+                                    {
+                                        if (lTimeStamp != DateTime.MinValue)
+                                        {
+                                            fData.Add(lWattage);
+                                        }
+                                        lTimeStamp = DateTime.Parse(lColumns[0]);
+                                        lWattage = Double.Parse(lColumns[2]);
+                                    }
+                                }
+                            }
+                            fData.Add(lWattage);
+                        }
                     }
-
                 }
             }
         }
@@ -230,10 +258,6 @@ namespace EnergyPrediction
                 DateTime temp = DateTime.Parse(s);
                 if (temp >= aStartDate)
                 {
-                    if (temp > aEndDate)
-                    {
-                        break;
-                    }
                     string path = Root + "/" + s + ".csv";
                     List<string> lColumns = new List<string>();
                     using (var reader = new CsvFileReader(path))
@@ -242,7 +266,13 @@ namespace EnergyPrediction
                         {
                             if (aGenCode.Equals(lColumns[1]))
                             {
-                                fData.Add(Double.Parse(lColumns[2]));
+                                if (temp > aEndDate)
+                                {
+                                    fPrediction.Add(Double.Parse(lColumns[2]));
+                                }
+                                else {
+                                    fData.Add(Double.Parse(lColumns[2]));
+                                }
                             }
                         }
                     }
@@ -268,22 +298,37 @@ namespace EnergyPrediction
             {
                 lFiles.Add(Path.GetFileNameWithoutExtension(s));
             }
+            bool lGrabAll = ((int)aApp >= 12);
             foreach (string s in lFiles)
             {
-                DateTime temp = DateTime.Parse(s.Substring(0, 10));
+                DateTime temp = DateTime.Parse(s);
                 if (temp >= aStartData)
                 {
-                    if (temp > aEndDate)
-                    {
-                        break;
-                    }
                     string path = Root + "/" + s + ".csv";
                     List<string> lColumns = new List<string>();
                     using (var reader = new CsvFileReader(path))
                     {
                         while (reader.ReadRow(lColumns))
                         {
-                            fData.Add(Double.Parse(lColumns[(int)aApp]));
+                            double total = 0;
+                            if (lGrabAll)
+                            {
+                                foreach (String col in lColumns)
+                                {
+                                    total += Double.Parse(col);
+                                }
+                            }
+                            else {
+                                total = Double.Parse(lColumns[(int)aApp]);
+                            }
+                            if (temp > aEndDate)
+                            {
+                                fPrediction.Add(total);
+                            }
+                            else {
+                                fData.Add(total);
+                            }
+
                         }
                     }
                 }
@@ -351,6 +396,24 @@ namespace EnergyPrediction
             }
             fData = new List<double>();
             fData.AddRange(lTemp);
+
+            lTemp = new List<double>();
+            lWattage = 0;
+            for (int i = 0; i < fPrediction.Count; i++)
+            {
+                if ((i + 1) % aTimeInterval == 0)
+                {
+                    lTemp.Add(lWattage);
+                    lWattage = 0;
+                }
+                lWattage += fPrediction[i];
+            }
+            if (fPrediction.Count % aTimeInterval != 0)
+            {
+                lTemp.Add(lWattage);
+            }
+            fPrediction = new List<double>();
+            fPrediction.AddRange(lTemp);
         }
 
         public static void TestingFunction(int a)
@@ -358,11 +421,11 @@ namespace EnergyPrediction
             bool testingTemp = Testing;
             Testing = false;
             Console.WriteLine("\nLoad Data Test");
-            LoadData(AppType.Heater, DateTime.Parse("1/12/15"), DateTime.Parse("1/12/15"));
+            LoadData(AppType.All, DateTime.Parse("1/12/15"), DateTime.Parse("1/12/15"));
             Console.WriteLine(fData.Count);
 
             Console.WriteLine("\nAggregate Data Test");
-            AggregateData(AppType.Heater, DateTime.Parse("1/12/15"), DateTime.Parse("1/12/15"), a);
+            AggregateData(AppType.All, DateTime.Parse("1/12/15"), DateTime.Parse("1/12/15"), a);
             Console.WriteLine(fData.Count);
 
             Testing = testingTemp;
