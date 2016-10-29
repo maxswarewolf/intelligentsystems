@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using EnergyPrediction;
 using GeneticSharp.Domain.Chromosomes;
+using GeneticSharp.Domain.Fitnesses;
 using GeneticSharp.Domain.Randomizations;
 using Gtk;
 
@@ -38,7 +39,7 @@ namespace EnergyPrediction
     public class GeneticProgChromosome : ChromosomeBase, ChromosomeExt
     {
         public int Depth { get; private set; }
-        public int numXThreshold { get; private set; } = 1;
+        public int numXThreshold { get; private set; } = 2;
         public TreeNode<MathObject> Root { get; private set; }
 
         public GeneticProgChromosome(int aResultPeek, int aDepth) : base(2)
@@ -183,6 +184,18 @@ namespace EnergyPrediction
                 counter = aNumX - VisitorPattern.confirmNumXInOrder(Root, aNumX - counter, true);
             }
             return true;
+        }
+
+        public override string ToString()
+        {
+            if (Fitness == null)
+            {
+                IFitness com = new FitnessFunctions();
+                Fitness = com.Evaluate(this);
+            }
+            string res = "Fitness: " + Fitness + "\n";
+
+            return res + Root.ToString();
         }
     }
 }

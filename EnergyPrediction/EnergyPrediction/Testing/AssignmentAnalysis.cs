@@ -46,20 +46,21 @@ namespace EnergyPrediction
         float crossoverProbability = 0.65f;
         float mutationProbability = 0.05f;
         int generationCutoff = Int32.MaxValue;
-        int valuePeek = 1000;
+        int valuePeek = 10;
         int fitnessCutoff = 0;
         readonly string version;
         readonly List<test> TestToRun = new List<test>()
         {
-            new test(){time = 15, size = 1000, length = 10, name = "Test 1: "},
-            new test(){time = 30, size = 1000, length = 10, name = "Test 2: "},
-            new test(){time = 45, size = 1000, length = 10, name = "Test 3: "},
-            new test(){time = 60, size = 1000, length = 10, name = "Test 4: "},
-            new test(){time = 30, size = 2000, length = 10, name = "Test 5: "},
-            new test(){time = 30, size = 4000, length = 10, name = "Test 6: "},
-            new test(){time = 30, size = 8000, length = 10, name = "Test 7: "},
-            new test(){time = 30, size = 1000, length = 20, name = "Test 8: "},
-            new test(){time = 30, size = 1000, length = 40, name = "Test 9: "}
+            new test(){time = 5, size = 1000, length = 5, name = "Test 1: "}
+            //new test(){time = 15, size = 1000, length = 10, name = "Test 1: "},
+            //new test(){time = 30, size = 1000, length = 10, name = "Test 2: "},
+            //new test(){time = 45, size = 1000, length = 10, name = "Test 3: "},
+            //new test(){time = 60, size = 1000, length = 10, name = "Test 4: "},
+            //new test(){time = 30, size = 2000, length = 10, name = "Test 5: "},
+            //new test(){time = 30, size = 4000, length = 10, name = "Test 6: "},
+            //new test(){time = 30, size = 8000, length = 10, name = "Test 7: "},
+            //new test(){time = 30, size = 1000, length = 20, name = "Test 8: "},
+            //new test(){time = 30, size = 1000, length = 40, name = "Test 9: "}
         };
 
         public AssignmentAnalysis(string aType)
@@ -85,6 +86,7 @@ namespace EnergyPrediction
                                                              t.size / 2);
                         temp.CrossoverProbability = crossoverProbability;
                         temp.MutationProbability = mutationProbability;
+                        temp.addEventFunction(temp.DefaultDraw);
                         Console.WriteLine("Genetic Programming {0} {1} Minute Cut-off || Solution Depth {2} || Population Range: {3} - {4}", t.name, t.time, t.length, t.size, t.size * 2);
                         temp.Start();
                         Console.WriteLine("Finished {0} {1} Minute Cut-off || Solution Depth {2} || Population Range: {3} - {4}", t.name, t.time, t.length, t.size, t.size * 2);
@@ -108,6 +110,7 @@ namespace EnergyPrediction
                                                              t.size);
                         temp.CrossoverProbability = crossoverProbability;
                         temp.MutationProbability = mutationProbability;
+                        temp.addEventFunction(temp.DefaultDraw);
                         Console.WriteLine("Genetic Algorithm {0} {1} Minute Cut-off || Solution Depth {2} || Population Range: {3} - {4}", t.name, t.time, t.length, t.size, t.size * 2);
                         temp.Start();
                         Console.WriteLine("Finished {0} {1} Minute Cut-off || Solution Depth {2} || Population Range: {3} - {4}", t.name, t.time, t.length, t.size, t.size * 2);

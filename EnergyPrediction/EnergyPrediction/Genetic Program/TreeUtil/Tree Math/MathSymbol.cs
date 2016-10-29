@@ -58,10 +58,6 @@ namespace EnergyPrediction
                     return Math.Pow(aLeftValue, aRightValue);
                 case SymbolTypes.Sqrt:
                     return Math.Sqrt(aLeftValue * aRightValue);
-                case SymbolTypes.Sinh:
-                    return Math.Sinh(aLeftValue * aRightValue);
-                case SymbolTypes.Cosh:
-                    return Math.Cosh(aLeftValue * aRightValue);
                 default:
                     return 0;
             }
@@ -84,21 +80,17 @@ namespace EnergyPrediction
                 case SymbolTypes.Devide:
                     return "(" + aLeftValue + " / " + aRightValue + ")";
                 case SymbolTypes.Sin:
-                    return "Sin(" + aLeftValue + " * " + aRightValue + ")";
+                    return "sin(" + aLeftValue + " * " + aRightValue + ")";
                 case SymbolTypes.Cos:
-                    return "Cos(" + aLeftValue + " * " + aRightValue + ")";
+                    return "cos(" + aLeftValue + " * " + aRightValue + ")";
                 case SymbolTypes.Log:
-                    return "Log(" + aLeftValue + " * " + aRightValue + ")";
+                    return "log(" + aLeftValue + " * " + aRightValue + ")";
                 case SymbolTypes.Exp:
-                    return "Exp(" + aLeftValue + " * " + aRightValue + ")";
+                    return "exp(" + aLeftValue + " * " + aRightValue + ")";
                 case SymbolTypes.Pow:
                     return "(" + aLeftValue + "^" + aRightValue + ")";
                 case SymbolTypes.Sqrt:
-                    return "Sqrt(" + aLeftValue + " * " + aRightValue + ")";
-                case SymbolTypes.Sinh:
-                    return "Sinh(" + aLeftValue + " * " + aRightValue + ")";
-                case SymbolTypes.Cosh:
-                    return "Cosh(" + aLeftValue + " * " + aRightValue + ")";
+                    return "sqrt(" + aLeftValue + " * " + aRightValue + ")";
                 default:
                     return "";
             }

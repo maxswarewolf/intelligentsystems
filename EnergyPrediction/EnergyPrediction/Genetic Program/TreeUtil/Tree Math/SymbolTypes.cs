@@ -30,7 +30,7 @@ namespace EnergyPrediction
 {
     public enum SymbolTypes
     {
-        Add, Multiply, Devide, Sin, Cos, Sinh, Cosh, Log, Exp, Pow, Sqrt
+        Add, Multiply, Devide, Sin, Cos, Log, Exp, Pow, Sqrt
     }
 }
 

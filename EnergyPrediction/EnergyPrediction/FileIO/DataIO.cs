@@ -118,6 +118,17 @@ namespace EnergyPrediction
             return fPrediction.Count;
         }
 
+        public static void SaveAggerateData()
+        {
+            using (StreamWriter writer = File.AppendText(StateSelection + "-" + DateTime.Now.DayOfYear + ".csv"))
+            {
+                foreach (double d in fData)
+                {
+                    writer.WriteLine(d);
+                }
+            }
+        }
+
         /// <summary>
         /// Loads the 5 Minute data based on state, for full data range
         /// </summary>
@@ -427,9 +438,7 @@ namespace EnergyPrediction
             Console.WriteLine("\nAggregate Data Test");
             AggregateData(AppType.All, DateTime.Parse("1/12/15"), DateTime.Parse("1/12/15"), a);
             Console.WriteLine(fData.Count);
-
             Testing = testingTemp;
         }
     }
 }
-

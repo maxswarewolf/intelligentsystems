@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using GeneticSharp.Domain.Chromosomes;
 using GeneticSharp.Domain.Populations;
 using GeneticSharp.Domain.Reinsertions;
+using GeneticSharp.Domain.Fitnesses;
 //USED FOR TESTING THE REINSERTION CODE
 namespace EnergyPrediction
 {
@@ -68,7 +69,11 @@ namespace EnergyPrediction
             {
                 lCombined = lCombined.Take(population.MaxSize).ToList();
             }
-
+            //IFitness fit = new FitnessFunctions();
+            foreach (IChromosome c in lCombined)
+            {
+                c.Fitness = null;
+            }
             return lCombined.OrderBy(c => c.Fitness).ToList();
         }
     }

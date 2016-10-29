@@ -40,10 +40,11 @@ namespace EnergyPrediction
             {
                 if (args[0] == "testing")
                 {
-                    DataIO.AggregateData(StateType.VIC, DateTime.Parse("21/2/15"), DateTime.Parse("21/2/16"), 288);
-                    AssignmentAnalysis AA = new AssignmentAnalysis("Algo");
+                    DataIO.AggregateData(StateType.VIC, DateTime.Parse("1/1/16"), DateTime.Parse("1/2/16"), 288);
+                    DataIO.SaveAggerateData();
+                    AssignmentAnalysis AA = new AssignmentAnalysis("Prog");
                     AA.run();
-                    AA = new AssignmentAnalysis("Prog");
+                    AA = new AssignmentAnalysis("Algo");
                     AA.run();
                 }
             }

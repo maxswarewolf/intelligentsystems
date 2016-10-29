@@ -109,10 +109,11 @@ namespace EnergyPrediction
         {
             double cal = 150 - 16 * Math.Log(PopulationCount);
             int modBy = (cal < 10) ? 10 : (int)cal;
-            if (fGA.Population.GenerationsNumber % modBy == 0)
+            if (fGA.Population.GenerationsNumber % 1 == 0)
             {
                 Console.WriteLine("Generations: {0}, Population Size: {1}", fGA.Population.GenerationsNumber, fGA.Population.CurrentGeneration.Chromosomes.Count);
                 Console.WriteLine("Time: {0}", fGA.TimeEvolving);
+                Console.WriteLine(aChromosome);
             }
             return true;
         }

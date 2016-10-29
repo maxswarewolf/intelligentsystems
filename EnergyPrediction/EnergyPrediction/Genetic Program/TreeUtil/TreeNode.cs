@@ -78,7 +78,6 @@ namespace EnergyPrediction
             this.ChildRight = aChild;
             this.ChildRight.Parent = this;
         }
-
         public void setChildLeft(TreeNode<T> aChild)
         {
             this.ChildLeft = aChild;

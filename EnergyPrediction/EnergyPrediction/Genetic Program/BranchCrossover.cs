@@ -55,7 +55,6 @@ namespace EnergyPrediction
             lParentOne.confirmNumX(lParentOne.numXThreshold);
             lParentTwo.confirmNumX(lParentTwo.numXThreshold);
 
-
             return new List<IChromosome>() { lParentOne, lParentTwo };
         }
 
