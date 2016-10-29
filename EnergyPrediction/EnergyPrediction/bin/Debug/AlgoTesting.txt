@@ -28,3 +28,18 @@ Aggerate Next Week:     -1.2803936957123E+15W predicted || 305677.673017W actual
 Aggerate Next Month:    -2.87889742548737E+17W predicted || 1135670.736625W actual 
 Aggerate Next Quarter:  -3.69467027164348E+20W predicted || 3532184.391224W actual 
 
+Test 1: 15 Minute Cut-off || Solution Depth 10 || Population Range: 1000 - 2000
+	Equation: y = 907.1371 * x^0 - 199.1865 * x^1 - 132.0571 * x^2 - 643.8688 * x^3 + 615.278 * x^4 + 813.2121 * x^5 - 201.5283 * x^6 - 473.1085 * x^7 - 11.8002 * x^8 + 451.9163 * x^9
+Reliability: 1
+Fitness: 
++- Peek Value: 1000
+
+Next Day:      -1.56510306212755E+21W predicted || 18120.49201W actual 
+Next Week:     -2.01941223754814E+21W predicted || 36536.565923W actual 
+Next Month:    -4.41188221483462E+21W predicted || 15568.248962W actual 
+Next Quarter:  -2.53021393508399E+22W predicted || 93115.4279609999W actual 
+
+Aggerate Next Week:     -1.22612926432101E+22W predicted || 238991.973861W actual 
+Aggerate Next Month:    -8.19549122050368E+22W predicted || 1124112.888729W actual 
+Aggerate Next Quarter:  -8.25141645689582E+23W predicted || 4132215.231098W actual 
+

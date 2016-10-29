@@ -27,8 +27,7 @@
 // THE SOFTWARE.
 
 using System;
-using GeneticSharp.Domain.Mutations;
-using GeneticSharp.Domain.Selections;
+using Eto.Forms;
 
 namespace EnergyPrediction
 {
@@ -48,7 +47,7 @@ namespace EnergyPrediction
                     AA.run();
                 }
             }
-            //Seans UI stuff
+            new Application().Run( new MainForm() );
         }
     }
 }

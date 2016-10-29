@@ -1,6 +1,6 @@
 ﻿using Eto.Forms;
+using System;
 
-using System.Threading;
 using System.Collections.Generic;
 
 using GeneticSharp.Domain.Crossovers;
@@ -9,7 +9,8 @@ using GeneticSharp.Domain.Mutations;
 using GeneticSharp.Domain.Selections;
 using GeneticSharp.Domain.Terminations;
 using GeneticSharp.Domain.Reinsertions;
-using System.Security.Permissions;
+using GeneticSharp.Domain.Populations;
+using GeneticSharp.Domain;
 
 namespace EnergyPrediction.UI
 {
@@ -22,62 +23,63 @@ namespace EnergyPrediction.UI
     /// trigger an event to hide/show other elements that are specific to the selected option. 
     /// The final element is a button that triggers the Start Solution method using events.
     /// </summary>
-    class GeneticOptions : StackLayout
+    class ParameterStack : StackLayout
     {
+        #region Class Variables
         // Each of the following is a list of options that may be selected, followed by the combo box that will contain it
 
-        List<string> fSolutionOptions = new List<string>() { "Genetic Algorithm", "Genetic Programming" };
-        ComboBox fSolutionComboBox;
+        private List<string> fSolutionOptions = new List<string>() { "Genetic Algorithm", "Genetic Programming" };
+        private ComboBox fSolutionComboBox;
 
-        List<string> fCrossoversAlgo = new List<string>() { "Uniform", "One Point", "Two Point", "Three Parent" };
-        ComboBox fCrossoversAlgoComboBox;
+        private List<string> fCrossoversAlgo = new List<string>() { "Uniform", "One Point", "Two Point", "Three Parent" };
+        private List<string> fCrossoversProg = new List<string>() { "PLACE HOLDER" };
+        private ComboBox fCrossoverComboBox;
 
-        List<string> fCrossoversProg = new List<string>() { "PLACE HOLDER" };
-        ComboBox fCrossoversProgComboBox;
+        private List<string> fFitness = new List<string>() { "Error Sum" };
+        private ComboBox fFitnessComboBox;
 
-        List<string> fFitness = new List<string>() { "Error Sum" };
-        ComboBox fFitnessComboBox;
+        private List<string> fMutationAlgo = new List<string>() { "Uniform", "Twors", "Reverse Sequence" };
+        private List<string> fMutationProg = new List<string>() { "Uniform", "Branch", "Reverse Sequence" };
+        private ComboBox fMutationComboBox;
 
-        List<string> fMutationAlgo = new List<string>() { "Uniform", "Twors", "Reverse Sequence" };
-        ComboBox fMutationAlgoComboBox;
+        private List<string> fSelection = new List<string>() { "Elite", "Stochastic", "Inverse Elite" };
+        private ComboBox fSelectionComboBox;
 
-        List<string> fMutationProg = new List<string>() { "Uniform", "Branch", "Reverse Sequence" };
-        ComboBox fMutationProgComboBox;
+        private List<string> fReinsertion = new List<string>() { "PLACE HOLDER" };
+        private ComboBox fReinsertionComboBox;
 
-        List<string> fSelection = new List<string>() { "Elite", "Stochastic", "Inverse Elite" };
-        ComboBox fSelectionComboBox;
+        private List<string> fTimeFrames = new List<string>() { "Day", "Week", "Month", "Year" };
+        private ComboBox fTimeFramesComboBox;
 
-        List<string> fReinsertion = new List<string>() { "PLACE HOLDER" };
-        ComboBox fReinsertionComboBox;
+        private List<string> fStates = new List<string>() { "VIC", "NSW", "QLD", "ACT", "NT", "SA", "WA", "TAS" };
+        private ComboBox fStatesComboBox;
 
-        List<string> fTimeFrames = new List<string>() { "Day", "Week", "Month", "Year" };
-        ComboBox ffTimeFramesComboBox;
+        // Will use an events to trigger
+        private Button fStart;
+        private Button fStop;
+        private Button fResume;
+        private StackLayout fButtonStack;
 
-        List<string> fStates = new List<string>() { "VIC", "NSW", "QLD", "ACT", "NT", "SA", "WA", "TAS" };
-        ComboBox fStatesComboBox;
+        // Contains the currently running solution
+        private ControllerBase fSolution = null;
 
-        // This button will use an event to trigger the the start of a solution
-        Button fStartSolutionButton;
+        #endregion
 
-        // This thread class will run the solutions once they have been configured. This allows solutions to be cancelled, and does not freeze the UI
-        Thread solutionRunner = new Thread(StartSolution);
-
-        public GeneticOptions()
+        public ParameterStack()
         {
             // Initialise all of the combo boxes
             fSolutionComboBox = new ComboBox
             {
-                DataStore = fSolutionOptions
-            };
-
-            fCrossoversAlgoComboBox = new ComboBox
-            {
-                DataStore = fCrossoversAlgo,
+                DataStore = fSolutionOptions,
                 SelectedIndex = 0
             };
-            fCrossoversProgComboBox = new ComboBox
+
+            // Make sure that when the desired solution type is changed, the UI can trigger an update
+            fSolutionComboBox.SelectedValueChanged += new EventHandler<EventArgs>(SolutionValueChanged);
+
+            fCrossoverComboBox = new ComboBox
             {
-                DataStore = fCrossoversProg,
+                DataStore = fCrossoversAlgo,
                 SelectedIndex = 0
             };
             fFitnessComboBox = new ComboBox
@@ -85,14 +87,9 @@ namespace EnergyPrediction.UI
                 DataStore = fFitness,
                 SelectedIndex = 0
             };
-            fMutationAlgoComboBox = new ComboBox
+            fMutationComboBox = new ComboBox
             {
                 DataStore = fMutationAlgo,
-                SelectedIndex = 0
-            };
-            fMutationProgComboBox = new ComboBox
-            {
-                DataStore = fMutationProg,
                 SelectedIndex = 0
             };
             fSelectionComboBox = new ComboBox
@@ -105,7 +102,7 @@ namespace EnergyPrediction.UI
                 DataStore = fReinsertion,
                 SelectedIndex = 0
             };
-            ffTimeFramesComboBox = new ComboBox
+            fTimeFramesComboBox = new ComboBox
             {
                 DataStore = fTimeFrames,
                 SelectedIndex = 0
@@ -116,16 +113,18 @@ namespace EnergyPrediction.UI
                 SelectedIndex = 0
             };
 
-            // Initialise the button
-            fStartSolutionButton = new Button();
-            fStartSolutionButton.MouseDown += new System.EventHandler<Eto.Forms.MouseEventArgs>(CreateSolution);
-            fStartSolutionButton.Text = "Start Solution";
+            // Initialise the buttons
+            fStart = new Button();
+            fStart.MouseDown += new EventHandler<MouseEventArgs>(StartSolution);
+            fStart.Text = "Start Solution";
 
-            // Make sure that when the desired solution type is changed, the UI can trigger an update
-            fSolutionComboBox.SelectedValueChanged += new System.EventHandler<System.EventArgs>(SolutionValueChanged);
+            fStop = new Button();
+            fStop.MouseDown += new EventHandler<MouseEventArgs>(StopSolution);
+            fStop.Text = "Stop Solution";
 
-            // AFTER the combo boxes load, select an option to present the UI correctly
-            this.LoadComplete += new System.EventHandler<System.EventArgs>(SelectOnLoadComplete);
+            fResume = new Button();
+            fResume.MouseDown += new EventHandler<MouseEventArgs>(ResumeSolution);
+            fResume.Text = "Resume Solution";
 
             // The direction the list shall face (Top to bottom)
             Orientation = Orientation.Vertical;
@@ -149,8 +148,7 @@ namespace EnergyPrediction.UI
             {
                 Text = "Crossover"
             });
-            Items.Add(fCrossoversAlgoComboBox);
-            Items.Add(fCrossoversProgComboBox);
+            Items.Add(fCrossoverComboBox);
 
             Items.Add(new Label
             {
@@ -162,8 +160,7 @@ namespace EnergyPrediction.UI
             {
                 Text = "Mutation"
             });
-            Items.Add(fMutationAlgoComboBox);
-            Items.Add(fMutationProgComboBox);
+            Items.Add(fMutationComboBox);
 
             Items.Add(new Label
             {
@@ -187,39 +184,41 @@ namespace EnergyPrediction.UI
             {
                 Text = "Prediction Time Frame"
             });
-            Items.Add(ffTimeFramesComboBox);
+            Items.Add(fTimeFramesComboBox);
 
             Items.Add(new Label
             {
-                Text = "State to Predict From"
+                Text = "Start/Stop/Resume the prediction"
             });
-            Items.Add(fStatesComboBox);
-            Items.Add(fStartSolutionButton);
-            
-        }
 
-        private void SelectOnLoadComplete(object sender, System.EventArgs e)
-        {
-            fSolutionComboBox.SelectedIndex = 0;
+            fButtonStack = new StackLayout();
+            fButtonStack.Items.Add(fStart);
+            fButtonStack.Items.Add(fStop);
+            fButtonStack.Items.Add(fResume);
+            fButtonStack.Orientation = Orientation.Horizontal;
+
+            Items.Add(fButtonStack);
         }
 
         // Whenever the solution combo box value is changed, this method will be called
         // This will show/hide the appropriate combo boxes for the currently selected solution method
-        private void SolutionValueChanged(object sender, System.EventArgs e)
+        private void SolutionValueChanged(object sender, EventArgs e)
         {
             switch (fSolutionComboBox.SelectedValue.ToString())
             {
                 case "Genetic Algorithm":
-                    fCrossoversAlgoComboBox.Visible = true;
-                    fMutationAlgoComboBox.Visible = true;
-                    fCrossoversProgComboBox.Visible = false;
-                    fMutationProgComboBox.Visible = false;
+                    fCrossoverComboBox.DataStore = fCrossoversAlgo;
+                    fCrossoverComboBox.SelectedIndex = 0;
+
+                    fMutationComboBox.DataStore = fMutationAlgo;
+                    fMutationComboBox.SelectedIndex = 0;
                     break;
                 case "Genetic Programming":
-                    fCrossoversAlgoComboBox.Visible = false;
-                    fMutationAlgoComboBox.Visible = false;
-                    fCrossoversProgComboBox.Visible = true;
-                    fMutationProgComboBox.Visible = true;
+                    fCrossoverComboBox.DataStore = fCrossoversProg;
+                    fCrossoverComboBox.SelectedIndex = 0;
+
+                    fMutationComboBox.DataStore = fMutationProg;
+                    fMutationComboBox.SelectedIndex = 0;
                     break;
                 default:
                     break;
@@ -227,18 +226,15 @@ namespace EnergyPrediction.UI
         }
 
         // Triggered once the StartSolutionBUtton is clicked
-        private void CreateSolution(object sender, System.EventArgs e)
+        private void StartSolution(object sender, EventArgs e)
         {
+            if (fSolution != null)
+                if (fSolution.State == GeneticAlgorithmState.Started || fSolution.State == GeneticAlgorithmState.Resumed) fSolution.Stop();
 
-            //DataIO.LoadMin(StateType.VIC, DateTime.Parse("1/9/16"), DateTime.Parse("1/9/16"));
-            if (solutionRunner.IsAlive)
-            {
-                StopSolution();
-            }
             switch (fSolutionComboBox.SelectedValue.ToString())
             {
                 case "Genetic Algorithm":
-                    var GeneticAlgorithm = new GeneticAlgoController(new GeneticAlgoChromosome(1000, 4),
+                    fSolution = new GeneticAlgoController(new GeneticAlgoChromosome(1000, 4),
                                                      GetSelectedCrossoverMethod(),
                                                      GetSelectedFitnessFuntion(),
                                                      GetSelectedMutationMethod(),
@@ -246,12 +242,10 @@ namespace EnergyPrediction.UI
                                                      GetSelectedTerminationMethod(),
                                                      GetSelectedReinsertionMethod(), 
                                                      200);
-                    GeneticAlgorithm.CrossoverProbability = 0.6f;
-                    GeneticAlgorithm.MutationProbability = 0.6f;
-                    GeneticAlgorithm.addEventFunction(GeneticAlgorithm.DefaultDraw);
-                    GeneticAlgorithm.Start();
-                    solutionRunner = new Thread(StartSolution);
-                    solutionRunner.Start(GeneticAlgorithm);
+                    fSolution.CrossoverProbability = 0.6f;
+                    fSolution.MutationProbability = 0.6f;
+                    fSolution.addbestChromEvent(fSolution.DefaultDraw);
+                    fSolution.Start();
                     break;
                 case "Genetic Programming":
                     // The genetic programming equivalent of the previous block will go here
@@ -261,36 +255,19 @@ namespace EnergyPrediction.UI
             }
         }
 
-        // The following methods concern threading, and starting a solution in a new thread. If I don't do this, the UI freezes
-        // if you try to interact with it, and the solution is still running. As of writing this, the threading I have implemented doesn't
-        // stop the freezing either. There will need to be changes made to the base controller class, so that it accepts a bool, which will
-        // indicate whether it should stop or not (Say, upon each generation, if the thread has been signalled to stop, clean up and stop)
+        private void StopSolution(object sender, EventArgs e) { if (fSolution != null) fSolution.Stop(); }
 
-        // The method that shall be passed to a new thread. Accepts a genetic controller as a parameter, and runs that controller
-        private static void StartSolution(object aControllerToRun)
+        private void ResumeSolution(object sender, EventArgs e) { if (fSolution != null) fSolution.Resume(); }
+
+        // Will be called at the generation ran event of the solution. Will update the results window with the best chromosome every N generations
+        bool updateResults(Generation aCurrentGeneration)
         {
-            // Try to cast to an algo controller
-            var lAlgoController = aControllerToRun as GeneticAlgoController;
-
-            if (lAlgoController != null)
+            if (aCurrentGeneration.Number % 10 == 0)
             {
-                lAlgoController.Start();
+                //resultsWindow.update(aCurrentGeneration.BestChromosome);
+                return true;
             }
-
-            // If that failed, it must be a prog controller
-            var lProgController = aControllerToRun as GeneticProgController;
-
-            if (lProgController != null)
-            {
-                lProgController.Start();
-            }
-            // If THAT failed, something has gone horribly wrong
-            else throw new System.InvalidCastException("New controller could not be cast to either algo or prog - GeneticOptions, StartSolution");
-        }
-
-        private void StopSolution()
-        {
-            // In here will exist a reference to a class scoped boolean that will tell a thread to stop executing
+            return false;
         }
 
         // Depending on the selected solution, return the selected crossover
@@ -299,7 +276,7 @@ namespace EnergyPrediction.UI
             switch (fSolutionComboBox.SelectedValue.ToString())
             {
                 case "Genetic Algorithm":
-                    switch (fCrossoversAlgoComboBox.SelectedValue.ToString())
+                    switch (fCrossoverComboBox.SelectedValue.ToString())
                     {
                         case "Uniform":
                             return new UniformCrossover();
@@ -313,7 +290,7 @@ namespace EnergyPrediction.UI
                             return null;
                     }
                 case "Genetic Programming":
-                    switch (fCrossoversProgComboBox.SelectedValue.ToString())
+                    switch (fCrossoverComboBox.SelectedValue.ToString())
                     { // There are no programming crossovers
                         default:
                             return null;
@@ -341,7 +318,7 @@ namespace EnergyPrediction.UI
             switch (fSolutionComboBox.SelectedValue.ToString())
             {
                 case "Genetic Algorithm":
-                    switch (fMutationAlgoComboBox.SelectedValue.ToString())
+                    switch (fMutationComboBox.SelectedValue.ToString())
                     {
                         case "Uniform":
                             return new UniformMutation();
@@ -353,7 +330,7 @@ namespace EnergyPrediction.UI
                             return null;
                     }
                 case "Genetic Programming":
-                    switch (fMutationProgComboBox.SelectedValue.ToString())
+                    switch (fMutationComboBox.SelectedValue.ToString())
                     { // These cases are commented as there are no programming specific mutations as of yet
                         case "Uniform":
                             //return new UniformMutation();
@@ -391,9 +368,9 @@ namespace EnergyPrediction.UI
             switch (fSolutionComboBox.SelectedValue.ToString())
             {
                 case "Genetic Algorithm":
-                    return new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(System.TimeSpan.FromSeconds(90)));
+                    return new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromSeconds(90)));
                 case "Genetic Programming":
-                    return new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(System.TimeSpan.FromSeconds(90)));
+                    return new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromSeconds(90)));
                 default:
                     return null;
             }
