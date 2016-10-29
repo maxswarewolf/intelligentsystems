@@ -54,9 +54,12 @@ namespace EnergyPrediction
         public int PopulationCount { get; protected set; }
         public float CrossoverProbability { get; set; } = 0.8f;
         public float MutationProbability { get; set; } = 0.4f;
+        public GeneticAlgorithmState State { get { return fGA.State; } }
         protected GeneticAlgorithm fGA { get; set; }
-        protected List<Func<IChromosome, bool>> fGenerationRanEventChromosome = new List<Func<IChromosome, bool>>();
-        protected List<Func<Generation, bool>> fGenerationRanEventGeneration = new List<Func<Generation, bool>>();
+
+        // These events occur at the end of each generation
+        protected List<Func<IChromosome, bool>> fBestChromEvents = new List<Func<IChromosome, bool>>();
+        protected List<Func<Generation, bool>> fGenerationEvents = new List<Func<Generation, bool>>();
 
         public ControllerBase(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, IReinsertion aRein, int aFitnessThres, int aGenCap, double MaxElapMin, int aPop)
         {
@@ -82,28 +85,31 @@ namespace EnergyPrediction
             PopulationCount = aPop;
         }
 
-
-        public virtual void addEventFunction(Func<IChromosome, bool> aFunction)
+        // Add an event that will be triggered at the end of a generation, accepting the best chromosome of that generation
+        public virtual void addbestChromEvent(Func<IChromosome, bool> aFunction)
         {
-            fGenerationRanEventChromosome.Add(aFunction);
+            fBestChromEvents.Add(aFunction);
         }
 
-        public virtual void removeEventFunction(Func<IChromosome, bool> aFunction)
+        // Remove an event that will be triggered at the end of a generation, accepting the best chromosome of that generation
+        public virtual void removeBestChromEvent(Func<IChromosome, bool> aFunction)
         {
-            fGenerationRanEventChromosome.Remove(aFunction);
+            fBestChromEvents.Remove(aFunction);
         }
 
-        public virtual void addEventFunction(Func<Generation, bool> aFunction)
+        // Add an event that will be triggered at the end of a generation, accepting that generation
+        public virtual void addGenerationEvent(Func<Generation, bool> aFunction)
         {
-            fGenerationRanEventGeneration.Add(aFunction);
+            fGenerationEvents.Add(aFunction);
+        }
+
+        // Remove an event that will be triggered at the end of a generation, accepting that generation
+        public virtual void removeGenerationEvent(Func<Generation, bool> aFunction)
+        {
+            fGenerationEvents.Remove(aFunction);
         }
 
         public abstract string prediction();
-
-        public virtual void removeEventFunction(Func<Generation, bool> aFunction)
-        {
-            fGenerationRanEventGeneration.Remove(aFunction);
-        }
 
         public virtual bool DefaultDraw(IChromosome aChromosome)
         {
@@ -119,14 +125,14 @@ namespace EnergyPrediction
         public abstract bool DefaultDrawGeneration(Generation aGeneration);
         public virtual void Start()
         {
-            foreach (Func<Generation, bool> action in fGenerationRanEventGeneration)
+            foreach (Func<Generation, bool> action in fGenerationEvents)
             {
                 fGA.GenerationRan += delegate
                 {
                     action(fGA.Population.CurrentGeneration);
                 };
             }
-            foreach (Func<IChromosome, bool> action in fGenerationRanEventChromosome)
+            foreach (Func<IChromosome, bool> action in fBestChromEvents)
             {
                 fGA.GenerationRan += delegate
                 {

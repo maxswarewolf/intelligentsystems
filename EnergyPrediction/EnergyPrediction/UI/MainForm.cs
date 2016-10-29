@@ -28,28 +28,19 @@
 using Eto.Forms;
 using Eto.Drawing;
 using EnergyPrediction.UI;
+using System;
 
 public class MainForm : Form
 {
-    int MainFormWidth = 1000;
-    int MainFormHeight = 510;
+    int MainFormWidth = 275;
+    int MainFormHeight = 425;
     public MainForm()
     {
-        Title = "Intelligent Systems Assignment - Energy Prediction";
+        Title = "Energy Prediction";
         ClientSize = new Size(MainFormWidth, MainFormHeight);
-        Content =
-            // Will hold two controls, one to the left, one to the right
-            new Splitter
-            {
-                // Contained elements will be held horizontally adjacent
-                Orientation = Orientation.Horizontal,
-                // The left control (A custom panel, will contain the graph output)
-                Panel1 = new GraphImage(),
-                // The right control (A custom a stack layout, will contain all 
-                // of the options for starting a new genetic algo/prog)
-                Panel2 = new GeneticOptions(),
-                // The initial position for the split
-                Position = (int)(MainFormWidth - 210)
-            };
+        Content = new ParameterStack();
+        Maximizable = false;
+        Minimizable = false;
+        Resizable = false;
     }
 }

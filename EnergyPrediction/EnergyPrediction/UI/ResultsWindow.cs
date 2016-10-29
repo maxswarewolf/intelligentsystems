@@ -1,5 +1,5 @@
 ﻿using System;
-using Gtk;
+
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -8,18 +8,17 @@ namespace EnergyPrediction.UI
 {
     class ResultsWindow
     {
-        private PlotModel geneticGraphingModel;
-        private Window resultsWindow;
+        private PlotModel resultsModel;
 
         public ResultsWindow()
         {
-            geneticGraphingModel = new PlotModel 
-            { 
+            resultsModel = new PlotModel
+            {
                 Title = "Results",
                 PlotType = PlotType.Cartesian,
                 Background = OxyColors.White
             };
-            geneticGraphingModel.Axes.Add(new LinearAxis
+            resultsModel.Axes.Add(new LinearAxis
             {
                 Position = AxisPosition.Left,
                 MajorGridlineThickness = 3,
@@ -29,7 +28,7 @@ namespace EnergyPrediction.UI
                 MinorStep = 0.5,
                 MajorStep = 1.0
             });
-            geneticGraphingModel.Axes.Add(new DateTimeAxis
+            resultsModel.Axes.Add(new DateTimeAxis
             {
                 Position = AxisPosition.Bottom,
                 MajorGridlineThickness = 3,
@@ -39,7 +38,7 @@ namespace EnergyPrediction.UI
                 MinorStep = 0.5,
                 MajorStep = 1.0
             });
-            geneticGraphingModel.Series.Add(new FunctionSeries(Math.Sin, -10, 10, 0.1, "sin(x)"));
+            resultsModel.Series.Add(new FunctionSeries(Math.Sin, -10, 10, 0.1, "sin(x)"));
         }
     }
 }
