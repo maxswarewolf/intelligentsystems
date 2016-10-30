@@ -28,7 +28,6 @@
 
 using System;
 using Eto.Forms;
-
 namespace EnergyPrediction
 {
     class MainClass
@@ -47,7 +46,9 @@ namespace EnergyPrediction
                     AA.run();
                 }
             }
-            new Application().Run( new MainForm() );
+            //Seans UI stuff
+            new Application().Run(new MainForm());
+
         }
     }
 }

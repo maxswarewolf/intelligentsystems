@@ -240,11 +240,11 @@ namespace EnergyPrediction.UI
                                                      GetSelectedMutationMethod(),
                                                      GetSelectedSelectionMethod(),
                                                      GetSelectedTerminationMethod(),
-                                                     GetSelectedReinsertionMethod(), 
+                                                     GetSelectedReinsertionMethod(),
                                                      200);
                     fSolution.CrossoverProbability = 0.6f;
                     fSolution.MutationProbability = 0.6f;
-                    fSolution.addbestChromEvent(fSolution.DefaultDraw);
+                    fSolution.addEventFunction(fSolution.DefaultDraw);
                     fSolution.Start();
                     break;
                 case "Genetic Programming":
@@ -333,11 +333,11 @@ namespace EnergyPrediction.UI
                     switch (fMutationComboBox.SelectedValue.ToString())
                     { // These cases are commented as there are no programming specific mutations as of yet
                         case "Uniform":
-                            //return new UniformMutation();
+                        //return new UniformMutation();
                         case "Branch":
-                            //return new TworsMutation();
+                        //return new TworsMutation();
                         case "Reverse Sequence":
-                            //return new ReverseSequenceMutation();
+                        //return new ReverseSequenceMutation();
                         default:
                             return null;
                     }
@@ -356,7 +356,7 @@ namespace EnergyPrediction.UI
                 case "Stochastic":
                     return new StochasticSelection();
                 case "Inverse Elite": // Doesn't exist?
-                    //return new Inverse();
+                                      //return new Inverse();
                 default:
                     return null;
             }
