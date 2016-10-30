@@ -28,13 +28,12 @@
 using Eto.Forms;
 using Eto.Drawing;
 using EnergyPrediction.UI;
-using System;
 
-public class MainForm : Form
+public class ParameterForm : Form
 {
     int MainFormWidth = 275;
     int MainFormHeight = 425;
-    public MainForm()
+    public ParameterForm()
     {
         Title = "Energy Prediction";
         ClientSize = new Size(MainFormWidth, MainFormHeight);
