@@ -30,43 +30,36 @@ namespace EnergyPrediction
 {
     public static class VisitorPattern
     {
-        public static bool hasX(TreeNode<MathObject> root)
-        {
-            if (root.GetType().Equals(typeof(MathSymbol)))
-            {
-                if (hasX(root.ChildLeft))
-                {
-                    return true;
-                }
-                else if (hasX(root.ChildRight))
-                {
-                    return true;
-                }
-                return false;
-            }
-            else if (root.Data.isX)
-            {
-                return true;
-            }
-            return false;
-        }
-
         public static int NumX(TreeNode<MathObject> root)
         {
-            if (root.GetType().Equals(typeof(MathSymbol)))
+            if (root.ChildLeft != null)
             {
                 return NumX(root.ChildLeft) + NumX(root.ChildRight);
             }
             else {
-                if (root.Data.isX)
-                {
-                    return 1;
-                }
-                else {
-                    return 0;
-                }
+                return (root.Data.isX) ? 1 : 0;
             }
         }
+
+        public static int addXPostOrder(TreeNode<MathObject> root)
+        {
+            int counter = 0;
+            if (root != null)
+            {
+                counter += addXPostOrder(root.ChildLeft);
+                counter += addXPostOrder(root.ChildRight);
+                if (root.Data.GetType().Equals(typeof(MathNumber)))
+                {
+                    if (Randomizer.NextDouble(0, 1) > 0.80)
+                    {
+                        root.Data = new MathNumber(0);
+                        counter++;
+                    }
+                }
+            }
+            return counter;
+        }
+
 
         public static int confirmNumXInOrder(TreeNode<MathObject> root, int aXThreshold, bool aLeftFirst)
         {
@@ -95,6 +88,30 @@ namespace EnergyPrediction
                 return currentXThresh;
             }
             return aXThreshold;
+        }
+
+        public static double Calculate(TreeNode<MathObject> root, int x)
+        {
+            if (root.Data.GetType().Equals(typeof(MathNumber)))
+            {
+                return root.Data.doCalculation(x);
+            }
+            else {
+                return root.Data.doCalculation(Calculate(root.ChildLeft, x), Calculate(root.ChildRight, x));
+            }
+        }
+
+        public static string RootToString(TreeNode<MathObject> root)
+        {
+            if (root.ChildLeft == null)
+            {
+                MathNumber temp = root.Data as MathNumber;
+                return temp.ToString();
+            }
+            else {
+                MathSymbol temp = root.Data as MathSymbol;
+                return temp.ToString(RootToString(root.ChildLeft), RootToString(root.ChildRight));
+            }
         }
     }
 }

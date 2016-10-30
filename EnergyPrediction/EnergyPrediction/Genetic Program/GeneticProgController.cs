@@ -48,14 +48,14 @@ namespace EnergyPrediction
             : base(aChromo, aCross, aFit, aMut, aSel, aRein, aFitnessThres, aGenCap, MaxElapMin, aPop)
         { }
 
-        public override bool DefaultGeneration(Generation aGeneration)
+        public override bool DefaultDrawGeneration(Generation aGeneration)
         {
             return false;
         }
 
         public override string prediction()
         {
-            GeneticProgChromosome temp = fGA.BestChromosome as GeneticProgChromosome;
+            GeneticProgChromosome temp = Chromosome as GeneticProgChromosome;
             double lNextDay = temp.getCalculatedY(DataIO.getLength());
             double lNextWeek = temp.getCalculatedY(DataIO.getLength() + 7);
             double lNextMonth = temp.getCalculatedY(DataIO.getLength() + 30);

@@ -49,6 +49,10 @@ namespace EnergyPrediction
         {
             return isX ? x : Value;
         }
+        public override double doCalculation(double aLeftValue, double aRightValue)
+        {
+            throw new NotImplementedException();
+        }
 
         public override void ChangeValue()
         {

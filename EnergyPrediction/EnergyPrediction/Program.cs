@@ -42,12 +42,12 @@ namespace EnergyPrediction
                     DataIO.SaveAggerateData();
                     AssignmentAnalysis AA = new AssignmentAnalysis("Prog");
                     AA.run();
-                    AA = new AssignmentAnalysis("Algo");
-                    AA.run();
+                    //AA = new AssignmentAnalysis("Algo");
+                    //AA.run();
                 }
             }
             //Seans UI stuff
-            new Application().Run(new MainForm());
+            //new Application().Run(new MainForm());
 
         }
     }

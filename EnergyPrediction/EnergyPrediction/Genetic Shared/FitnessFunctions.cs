@@ -47,7 +47,7 @@ namespace EnergyPrediction
             {
                 lErrorSum += EvaluateErrorSquared(lChromosome.getCalculatedY(x), DataIO.getActualY(x));
             }
-            return (-1 * lErrorSum);
+            return (double.IsNaN(lErrorSum)) ? double.MinValue : lErrorSum * -1;
         }
 
         //ADD MORE FITNESS FUNCTIONS AS NEEDED

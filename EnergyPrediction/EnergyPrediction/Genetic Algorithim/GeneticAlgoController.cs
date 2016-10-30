@@ -47,7 +47,7 @@ namespace EnergyPrediction
             : base(aChromo, aCross, aFit, aMut, aSel, aRein, aFitnessThres, aGenCap, MaxElapMin, aPop)
         { }
 
-        public override bool DefaultGeneration(Generation aGeneration)
+        public override bool DefaultDrawGeneration(Generation aGeneration)
         {
             return true;
         }

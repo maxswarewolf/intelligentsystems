@@ -57,7 +57,7 @@ namespace EnergyPrediction
         {
             List<IChromosome> lCombined = new List<IChromosome>();
             lCombined.AddRange(offspring);
-            lCombined.Add(population.CurrentGeneration.BestChromosome);
+            //lCombined.Add(population.CurrentGeneration.BestChromosome);
 
             if (lCombined.Count < population.MinSize)
             {

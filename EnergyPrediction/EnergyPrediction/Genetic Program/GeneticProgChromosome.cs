@@ -48,9 +48,11 @@ namespace EnergyPrediction
             Depth = aDepth; //wanted depth in initial tree
             Queue<TreeNode<MathObject>> parentList = new Queue<TreeNode<MathObject>>();
 
-            Root = new TreeNode<MathObject>(new MathSymbol(), 1); //  data is randomly chosen at initiallization 
+            //Symbol is randomly selected
+            Root = new TreeNode<MathObject>(new MathSymbol());
             TreeNode<MathObject> currentNode;
 
+            //add the root of the tree to the queue
             parentList.Enqueue(Root);
 
             //initial construction of tree
@@ -61,14 +63,14 @@ namespace EnergyPrediction
                 {
                     if (currentNode.Depth + 1 < Depth)
                     {
-                        currentNode.setChildLeft(new TreeNode<MathObject>(MathObject.randomMathObject(), currentNode.Depth + 1));
-                        currentNode.setChildRight(new TreeNode<MathObject>(MathObject.randomMathObject(), currentNode.Depth + 1));
+                        currentNode.setChildLeft(new TreeNode<MathObject>(MathObject.randomMathObject()));
+                        currentNode.setChildRight(new TreeNode<MathObject>(MathObject.randomMathObject()));
                         parentList.Enqueue(currentNode.ChildLeft);
                         parentList.Enqueue(currentNode.ChildRight);
                     }
                     else {
-                        currentNode.setChildLeft(new TreeNode<MathObject>(new MathNumber(), currentNode.Depth + 1));
-                        currentNode.setChildRight(new TreeNode<MathObject>(new MathNumber(), currentNode.Depth + 1));
+                        currentNode.setChildLeft(new TreeNode<MathObject>(new MathNumber()));
+                        currentNode.setChildRight(new TreeNode<MathObject>(new MathNumber()));
                     }
                 }
             }
@@ -87,7 +89,7 @@ namespace EnergyPrediction
 
         public double getCalculatedY(int x)
         {
-            return Root.doCalculation(x);
+            return VisitorPattern.Calculate(Root, x);
         }
 
         /// <summary>
@@ -104,7 +106,10 @@ namespace EnergyPrediction
             return new Gene(Root);
         }
 
-        //returns a random node of the tree (not the root)
+        /// <summary>
+        /// Selects the rand node, and return is. This method exclused the root node.
+        /// </summary>
+        /// <returns>The rand node.</returns>
         public TreeNode<MathObject> selectRandNode()
         {
             TreeNode<MathObject> node = Root;
@@ -127,36 +132,41 @@ namespace EnergyPrediction
             return node;
         }
 
+        /// <summary>
+        /// Swap the specified aNode1 and aNode2.
+        /// </summary>
+        /// <param name="aNode1">A node1.</param>
+        /// <param name="aNode2">A node2.</param>
         public bool swap(TreeNode<MathObject> aNode1, TreeNode<MathObject> aNode2)
         {
-            TreeNode<MathObject> lP1 = aNode1.Parent;
-            TreeNode<MathObject> lP2 = aNode2.Parent;
+            TreeNode<MathObject> lNewNode1 = new TreeNode<MathObject>(aNode1);
+            TreeNode<MathObject> lNewNode2 = new TreeNode<MathObject>(aNode2);
 
-            bool aNode2isLeft = false;
-            if (lP2.ChildLeft == aNode2)
+            if (aNode1.isLeftChild)
             {
-                aNode2isLeft = true;
+                lNewNode1.Parent.setChildLeft(aNode2);
             }
-
-            if (lP1.ChildLeft == aNode1)
+            else
             {
-                lP1.setChildLeft(aNode2);
-            }
-            else {
-                lP1.setChildRight(aNode2);
+                lNewNode1.Parent.setChildRight(aNode2);
             }
 
-            if (aNode2isLeft)
+            if (aNode2.isLeftChild)
             {
-                lP2.setChildLeft(aNode1);
+                lNewNode2.Parent.setChildLeft(aNode1);
             }
-            else {
-                lP2.setChildRight(aNode2);
+            else
+            {
+                lNewNode2.Parent.setChildRight(aNode1);
             }
 
             return true;
         }
 
+        /// <summary>
+        /// Replaces the node vlaue, with a newly generated value.
+        /// </summary>
+        /// <param name="aTargetNode">A target node.</param>
         public void replaceNode(TreeNode<MathObject> aTargetNode)
         {
             if (aTargetNode.Data.GetType().Equals(typeof(MathSymbol)))
@@ -168,8 +178,8 @@ namespace EnergyPrediction
             else if (aTargetNode.Data.GetType().Equals(typeof(MathNumber)))
             {
                 aTargetNode.Data = new MathSymbol();
-                aTargetNode.setChildLeft(new TreeNode<MathObject>(new MathNumber(), aTargetNode.Depth + 1));
-                aTargetNode.setChildRight(new TreeNode<MathObject>(new MathNumber(), aTargetNode.Depth + 1));
+                aTargetNode.setChildLeft(new TreeNode<MathObject>(new MathNumber()));
+                aTargetNode.setChildRight(new TreeNode<MathObject>(new MathNumber()));
             }
             else
                 throw new NotSupportedException();
@@ -177,12 +187,12 @@ namespace EnergyPrediction
 
         public bool confirmNumX(int aNumX)
         {
-            int counter = VisitorPattern.NumX(Root);
-
-            while (counter < aNumX)
+            int counter = 0;
+            do
             {
-                counter = aNumX - VisitorPattern.confirmNumXInOrder(Root, aNumX - counter, true);
+                counter = VisitorPattern.addXPostOrder(Root);
             }
+            while (counter < aNumX);
             return true;
         }
 
@@ -195,7 +205,7 @@ namespace EnergyPrediction
             }
             string res = "Fitness: " + Fitness + "\n";
 
-            return res + Root.ToString();
+            return VisitorPattern.RootToString(Root) + "\n" + res;
         }
     }
 }
