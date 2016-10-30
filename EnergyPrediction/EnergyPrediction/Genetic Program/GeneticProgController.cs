@@ -55,7 +55,7 @@ namespace EnergyPrediction
 
         public override string prediction()
         {
-            GeneticProgChromosome temp = fGA.BestChromosome as GeneticProgChromosome;
+            GeneticProgChromosome temp = Chromosome as GeneticProgChromosome;
             double lNextDay = temp.getCalculatedY(DataIO.getLength());
             double lNextWeek = temp.getCalculatedY(DataIO.getLength() + 7);
             double lNextMonth = temp.getCalculatedY(DataIO.getLength() + 30);

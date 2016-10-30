@@ -32,7 +32,7 @@ using GeneticSharp.Domain.Randomizations;
 namespace EnergyPrediction
 {
 
-    public class MathObject
+    public abstract class MathObject
     {
         public static Random Rand = new Random();
         public static double RangePeek { get; set; }
@@ -40,7 +40,7 @@ namespace EnergyPrediction
 
         public static MathObject randomMathObject()
         {
-            if (Rand.NextDouble() > 0.75)
+            if (Rand.NextDouble() > 0.99)
             {
                 return new MathNumber();
             }
@@ -50,21 +50,8 @@ namespace EnergyPrediction
             }
         }
 
-        public virtual double doCalculation(double aLeftValue, double aRightValue)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public virtual double doCalculation(int x)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public virtual void ChangeValue()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract double doCalculation(double aLeftValue, double aRightValue);
+        public abstract double doCalculation(int x);
+        public abstract void ChangeValue();
     }
-
-
 }

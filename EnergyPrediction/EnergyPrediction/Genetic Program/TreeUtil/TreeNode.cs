@@ -35,25 +35,36 @@ namespace EnergyPrediction
     { // source: http://stackoverflow.com/questions/66893/tree-data-structure-in-c-sharp (scroll down!) 
 
         public T Data { get; set; }
+        public bool isLeftChild { get; private set; }
         public int Depth { get; private set; }
         public TreeNode<T> Parent { get; protected set; }
         public TreeNode<T> ChildRight { get; private set; }
         public TreeNode<T> ChildLeft { get; private set; }
 
-        public TreeNode(T data, int depth)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:EnergyPrediction.TreeNode`1"/> class.
+        /// </summary>
+        /// <param name="data">Data.</param>
+        public TreeNode(T data)
         {
             this.Data = data;
-            this.Depth = depth;
+            this.Depth = 1;
             this.ChildLeft = null;
             this.ChildRight = null;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:EnergyPrediction.TreeNode`1"/> class.
+        /// Copy Constructor
+        /// </summary>
+        /// <param name="root">Root.</param>
         public TreeNode(TreeNode<T> root)
         {
             this.Data = root.Data;
+            this.isLeftChild = root.isLeftChild;
             this.Depth = root.Depth;
             this.Parent = root.Parent;
-            if (!root.ChildLeft.Equals(null))
+            if (root.ChildLeft != null)
             {
                 this.ChildLeft = new TreeNode<T>(root.ChildLeft);
                 this.ChildRight = new TreeNode<T>(root.ChildRight);
@@ -64,78 +75,60 @@ namespace EnergyPrediction
             }
 
         }
+
+        /// <summary>
+        /// Sets the child right to null.
+        /// </summary>
         public void setChildRight()
         {
             this.ChildRight = null;
         }
+
+        /// <summary>
+        /// Sets the child right.
+        /// </summary>
+        /// <param name="aChild">A child.</param>
+        public void setChildRight(TreeNode<T> aChild)
+        {
+            this.ChildRight = aChild;
+            this.ChildRight.isLeftChild = false;
+            this.ChildRight.Depth = this.Depth + 1;
+            this.ChildRight.Parent = this;
+        }
+
+        /// <summary>
+        /// Sets the child left to null.
+        /// </summary>
         public void setChildLeft()
         {
             this.ChildLeft = null;
         }
 
-        public void setChildRight(TreeNode<T> aChild)
-        {
-            this.ChildRight = aChild;
-            this.ChildRight.Parent = this;
-        }
+        /// <summary>
+        /// Sets the child left.
+        /// </summary>
+        /// <param name="aChild">A child.</param>
         public void setChildLeft(TreeNode<T> aChild)
         {
             this.ChildLeft = aChild;
+            this.ChildLeft.isLeftChild = true;
+            this.ChildLeft.Depth = this.Depth + 1;
             this.ChildLeft.Parent = this;
         }
 
-        public TreeNode<T> cloneTree()
-        {
-            return new TreeNode<T>(this);
-        }
-
+        /// <summary>
+        /// Recursive Search to Find bottom most Child
+        /// </summary>
+        /// <returns>The max depth.</returns>
         public int getMaxDepth()
         {
-            //recursive search of bottom most child
-            if (ChildLeft == null && ChildRight == null)
+            if (ChildLeft != null)
             {
-                return Depth;
+                return Math.Max(ChildLeft.getMaxDepth(), ChildRight.getMaxDepth());
             }
-            else if (ChildLeft == null)
-            {
-                return ChildRight.getMaxDepth();
-            }
-            else if (ChildRight == null)
-            {
-                return ChildLeft.getMaxDepth();
-            }
-
-            return Math.Max(ChildLeft.getMaxDepth(), ChildRight.getMaxDepth());
+            return Depth;
         }
 
-        public double doCalculation(int x)
-        {
-            if (Data.GetType().Equals(typeof(MathNumber)))
-            {
-                MathNumber temp = Data as MathNumber;
-                return temp.doCalculation(x);
-            }
-            else
-            {
-                MathSymbol temp = Data as MathSymbol;
-                return temp.doCalculation(ChildLeft.doCalculation(x), ChildRight.doCalculation(x));
-            }
-        }
-
-        public override string ToString()
-        {
-            if (ChildLeft == null || ChildRight == null)
-            {
-                return Data.ToString();
-            }
-            else if (Data.GetType().Equals(typeof(MathSymbol)))
-            {
-                MathSymbol temp = Data as MathSymbol;
-                return temp.ToString(ChildLeft.ToString(), ChildRight.ToString());
-            }
-            return "";
-        }
     }
-
 }
 

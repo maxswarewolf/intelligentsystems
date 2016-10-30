@@ -35,7 +35,12 @@ namespace EnergyPrediction
         {
             this.ChangeValue();
         }
-        //todo: add in other operands
+
+        public MathSymbol(SymbolTypes type)
+        {
+            Symbol = type;
+        }
+
         public override double doCalculation(double aLeftValue, double aRightValue)
         {
             switch (Symbol)
@@ -61,6 +66,10 @@ namespace EnergyPrediction
                 default:
                     return 0;
             }
+        }
+        public override double doCalculation(int x)
+        {
+            throw new NotImplementedException();
         }
 
         public override void ChangeValue()

@@ -42,33 +42,23 @@ namespace EnergyPrediction
             GeneticProgChromosome lParentOne = parents[0] as GeneticProgChromosome;
             GeneticProgChromosome lParentTwo = parents[1] as GeneticProgChromosome;
 
+            GeneticProgChromosome lChild1 = new GeneticProgChromosome(new TreeNode<MathObject>(lParentOne.Root));
+            GeneticProgChromosome lChild2 = new GeneticProgChromosome(new TreeNode<MathObject>(lParentTwo.Root));
+
             //1) randomly select 1 node of each tree random 
 
-            TreeNode<MathObject> lNode1 = lParentOne.selectRandNode();
-            TreeNode<MathObject> lNode2 = lParentTwo.selectRandNode();
+            TreeNode<MathObject> lNode1 = lChild1.selectRandNode();
+            TreeNode<MathObject> lNode2 = lChild2.selectRandNode();
 
             //2) swap all references 
 
-            lParentOne.swap(lNode1, lNode2);
+            lChild1.swap(lNode1, lNode2);
 
             //3) Validate has Enough X references 
-            lParentOne.confirmNumX(lParentOne.numXThreshold);
-            lParentTwo.confirmNumX(lParentTwo.numXThreshold);
+            lChild1.confirmNumX(lChild1.numXThreshold);
+            lChild2.confirmNumX(lChild2.numXThreshold);
 
-            return new List<IChromosome>() { lParentOne, lParentTwo };
+            return new List<IChromosome>() { lChild1, lChild2 };
         }
-
-        //void swap(TreeNode<MathObject> lNode1, TreeNode<MathObject> lNode2)
-        //{
-        //    TreeNode<MathObject> parent1 = lNode1.Parent;
-        //    if (parent1.ChildLeft == lNode1)
-        //    {
-        //        parent1.setChildLeft(lNode2);
-        //    }
-        //    else
-        //    {
-        //        parent1.setChildRight(lNode2);
-        //    }
-        //}
     }
 }

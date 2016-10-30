@@ -16,3 +16,4 @@
 /Users/Adrian/intelligentsystems/EnergyPrediction/EnergyPrediction/bin/Debug/EnergyPrediction.exe
 /Users/Adrian/intelligentsystems/EnergyPrediction/EnergyPrediction/obj/x86/Debug/EnergyPrediction.exe
 /Users/Adrian/intelligentsystems/EnergyPrediction/EnergyPrediction/obj/x86/Debug/EnergyPrediction.exe.mdb
+/Users/Adrian/intelligentsystems/EnergyPrediction/EnergyPrediction/bin/Debug/EnergyPrediction.exe.config

@@ -52,8 +52,8 @@ namespace EnergyPrediction
         public int GenerationCap { get; protected set; }
         public int MaxElapsedMin { get; protected set; }
         public int PopulationCount { get; protected set; }
-        public float CrossoverProbability { get; set; } = 0.65f;
-        public float MutationProbability { get; set; } = 0.1f;
+        public float CrossoverProbability { get; set; } = 0.8f;
+        public float MutationProbability { get; set; } = 0.4f;
         public GeneticAlgorithmState State { get { return fGA.State; } }
         protected GeneticAlgorithm fGA { get; set; }
         protected List<Func<IChromosome, bool>> fGenerationRanEventChromosome = new List<Func<IChromosome, bool>>();
@@ -131,9 +131,7 @@ namespace EnergyPrediction
         /// <param name="aChromosome">A chromosome.</param>
         public virtual bool DefaultDrawChromosome(IChromosome aChromosome)
         {
-            double cal = 150 - 16 * Math.Log(PopulationCount);
-            int modBy = (cal < 10) ? 10 : (int)cal;
-            if (fGA.Population.GenerationsNumber % modBy == 0)
+            if (fGA.Population.GenerationsNumber % 25 == 0)
             {
                 Console.WriteLine("Generations: {0}, Population Size: {1}", fGA.Population.GenerationsNumber, fGA.Population.CurrentGeneration.Chromosomes.Count);
                 Console.WriteLine("Time: {0}", fGA.TimeEvolving);
@@ -183,8 +181,9 @@ namespace EnergyPrediction
                 Console.ReadKey();
                 return;
             }
-
+            Chromosome = fGA.BestChromosome;
             Console.WriteLine("Time: {0}", fGA.TimeEvolving);
+            Console.WriteLine("Best Solution: {0}", fGA.BestChromosome);
         }
 
         /// <summary>
