@@ -83,30 +83,53 @@ namespace EnergyPrediction
             PopulationCount = aPop;
         }
 
-
+        /// <summary>
+        /// Adds an Event to be ran at the end of each generation, which takes the parameter of a Chromosome
+        /// </summary>
+        /// <param name="aFunction">A function.</param>
         public virtual void addEventFunction(Func<IChromosome, bool> aFunction)
         {
             fGenerationRanEventChromosome.Add(aFunction);
         }
 
+        /// <summary>
+        /// Removes an Event to be ran at the end of each generation, which takes the parameter of a Chromosome 
+        /// </summary>
+        /// <param name="aFunction">A function.</param>
         public virtual void removeEventFunction(Func<IChromosome, bool> aFunction)
         {
             fGenerationRanEventChromosome.Remove(aFunction);
         }
 
+        /// <summary>
+        /// Adds an Event to be ran at the end of each generation, which takes the whole generation as a parameter
+        /// </summary>
+        /// <param name="aFunction">A function.</param>
         public virtual void addEventFunction(Func<Generation, bool> aFunction)
         {
             fGenerationRanEventGeneration.Add(aFunction);
         }
 
-        public abstract string prediction();
-
+        /// <summary>
+        /// Removes an Event to be ran at the end of each generation, which takes the whole generation as a parameter
+        /// </summary>
+        /// <param name="aFunction">A function.</param>
         public virtual void removeEventFunction(Func<Generation, bool> aFunction)
         {
             fGenerationRanEventGeneration.Remove(aFunction);
         }
 
-        public virtual bool DefaultDraw(IChromosome aChromosome)
+        /// <summary>
+        /// Prediction this instance.
+        /// </summary>
+        public abstract string prediction();
+
+        /// <summary>
+        /// Defaults the draw chromosome.
+        /// </summary>
+        /// <returns><c>true</c>, if draw chromosome was defaulted, <c>false</c> otherwise.</returns>
+        /// <param name="aChromosome">A chromosome.</param>
+        public virtual bool DefaultDrawChromosome(IChromosome aChromosome)
         {
             double cal = 150 - 16 * Math.Log(PopulationCount);
             int modBy = (cal < 10) ? 10 : (int)cal;
@@ -119,8 +142,16 @@ namespace EnergyPrediction
             return true;
         }
 
+        /// <summary>
+        /// Defaults the draw generation.
+        /// </summary>
+        /// <returns><c>true</c>, if draw generation was defaulted, <c>false</c> otherwise.</returns>
+        /// <param name="aGeneration">A generation.</param>
         public abstract bool DefaultDrawGeneration(Generation aGeneration);
 
+        /// <summary>
+        /// Start this instance of the Genetic solution
+        /// </summary>
         public virtual void Start()
         {
             foreach (Func<Generation, bool> action in fGenerationRanEventGeneration)
@@ -153,14 +184,21 @@ namespace EnergyPrediction
                 return;
             }
 
-            //Console.WriteLine("Generations: {0}, Population Size: {1}", fGA.Population.GenerationsNumber, fGA.Population.CurrentGeneration.Chromosomes.Count);
             Console.WriteLine("Time: {0}", fGA.TimeEvolving);
         }
 
+        /// <summary>
+        /// Stop this instance of the genetic solution
+        /// </summary>
         public virtual void Stop()
         {
             fGA.Stop();
         }
+
+        /// <summary>
+        /// Resume this stoped instance of the genetic solution
+        /// if the instance isn't stoped, it has no effect
+        /// </summary>
         public virtual void Resume()
         {
             fGA.Resume();

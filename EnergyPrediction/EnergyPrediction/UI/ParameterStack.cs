@@ -244,7 +244,7 @@ namespace EnergyPrediction.UI
                                                      200);
                     fSolution.CrossoverProbability = 0.6f;
                     fSolution.MutationProbability = 0.6f;
-                    fSolution.addEventFunction(fSolution.DefaultDraw);
+                    fSolution.addEventFunction(fSolution.DefaultDrawChromosome);
                     fSolution.Start();
                     break;
                 case "Genetic Programming":

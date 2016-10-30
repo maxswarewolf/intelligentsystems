@@ -86,7 +86,7 @@ namespace EnergyPrediction
                                                              t.size / 2);
                         temp.CrossoverProbability = crossoverProbability;
                         temp.MutationProbability = mutationProbability;
-                        temp.addEventFunction(temp.DefaultDraw);
+                        temp.addEventFunction(temp.DefaultDrawChromosome);
                         Console.WriteLine("Genetic Programming {0} {1} Minute Cut-off || Solution Depth {2} || Population Range: {3} - {4}", t.name, t.time, t.length, t.size, t.size * 2);
                         temp.Start();
                         Console.WriteLine("Finished {0} {1} Minute Cut-off || Solution Depth {2} || Population Range: {3} - {4}", t.name, t.time, t.length, t.size, t.size * 2);
@@ -110,7 +110,7 @@ namespace EnergyPrediction
                                                              t.size);
                         temp.CrossoverProbability = crossoverProbability;
                         temp.MutationProbability = mutationProbability;
-                        temp.addEventFunction(temp.DefaultDraw);
+                        temp.addEventFunction(temp.DefaultDrawChromosome);
                         Console.WriteLine("Genetic Algorithm {0} {1} Minute Cut-off || Solution Depth {2} || Population Range: {3} - {4}", t.name, t.time, t.length, t.size, t.size * 2);
                         temp.Start();
                         Console.WriteLine("Finished {0} {1} Minute Cut-off || Solution Depth {2} || Population Range: {3} - {4}", t.name, t.time, t.length, t.size, t.size * 2);
