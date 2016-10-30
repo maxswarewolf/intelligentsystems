@@ -27,7 +27,10 @@
 // THE SOFTWARE.
 
 using System;
-using Eto.Forms;
+using System.Threading;
+using EnergyPrediction.UI;
+using System.IO;
+
 namespace EnergyPrediction
 {
     class MainClass
@@ -47,8 +50,16 @@ namespace EnergyPrediction
                 }
             }
             //Seans UI stuff
-            new Application().Run(new MainForm());
+            Thread parameterThread = new Thread(() => new Eto.Forms.Application().Run(new ParameterForm()));
+            parameterThread.Start();
 
+            Thread resultThread = new Thread(() =>
+            {
+                Gtk.Application.Init();
+                new ResultsWindow();
+                Gtk.Application.Run();
+            });
+            resultThread.Start();
         }
     }
 }
