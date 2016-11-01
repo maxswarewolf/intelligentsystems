@@ -48,6 +48,8 @@ namespace EnergyPrediction
             : base(aChromo, aCross, aFit, aMut, aSel, aRein, aFitnessThres, aGenCap, MaxElapMin, aPop)
         { }
 
+        protected override void InitPopulation() { fPopulation = new ProgPopulation(PopulationCount, PopulationCount * 2, Chromosome); }
+
         public override bool DefaultDrawGeneration(Generation aGeneration)
         {
             return false;
@@ -95,21 +97,6 @@ namespace EnergyPrediction
             predictionString += "Aggerate Next Quarter:  " + lTotalQuarter + "W predicted || " + lActualTotalQuarter + "W actual \n";
 
             return predictionString;
-        }
-
-        public override void Start()
-        {
-            IPopulation lPop = new ProgPopulation(PopulationCount, PopulationCount * 2, Chromosome);
-            lPop.GenerationStrategy = new PerformanceGenerationStrategy(100);
-
-            fGA = new GeneticAlgorithm(lPop, Fitness, Selection, Crossover, Mutation);
-            fGA.Termination = Termination;
-            fGA.CrossoverProbability = CrossoverProbability;
-            fGA.MutationProbability = MutationProbability;
-            fGA.Reinsertion = Reinsertion;
-
-            base.Start();
-            //todo: add in final display of best chromosome or other display data
         }
     }
 }

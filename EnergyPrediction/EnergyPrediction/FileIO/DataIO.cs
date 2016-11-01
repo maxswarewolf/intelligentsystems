@@ -41,7 +41,7 @@ namespace EnergyPrediction
         static bool Testing = false;
 
         /// <summary>
-        /// The generator links.
+        /// The generator links.A
         /// </summary>
         public readonly static IDictionary<string, List<string>> GeneratorLinks = new Dictionary<string, List<string>>() {
                 { "ACT", new List<string>() { "ROYALLA1" }},

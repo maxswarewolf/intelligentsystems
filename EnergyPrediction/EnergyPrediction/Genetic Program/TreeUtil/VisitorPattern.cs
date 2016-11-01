@@ -90,7 +90,7 @@ namespace EnergyPrediction
             return aXThreshold;
         }
 
-        public static double Calculate(TreeNode<MathObject> root, int x)
+        public static double Calculate(TreeNode<MathObject> root, double x)
         {
             if (root.Data.GetType().Equals(typeof(MathNumber)))
             {

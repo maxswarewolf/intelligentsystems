@@ -29,10 +29,12 @@ using Eto.Forms;
 using Eto.Drawing;
 using EnergyPrediction.UI;
 
-public class ParameterForm : Form
+// Contains and defines a new form. Will be used to contain the ParameterStack
+class ParameterForm : Form
 {
     int MainFormWidth = 275;
     int MainFormHeight = 425;
+
     public ParameterForm()
     {
         Title = "Energy Prediction";

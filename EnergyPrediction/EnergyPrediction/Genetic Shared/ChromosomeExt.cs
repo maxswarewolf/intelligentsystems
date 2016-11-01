@@ -30,6 +30,6 @@ namespace EnergyPrediction
 {
     public interface ChromosomeExt
     {
-        double getCalculatedY(int x);
+        double getCalculatedY(double x);
     }
 }
