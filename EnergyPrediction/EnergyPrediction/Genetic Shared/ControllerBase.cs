@@ -41,6 +41,7 @@ namespace EnergyPrediction
 {
     public abstract class ControllerBase
     {
+        public IPopulation fPopulation { get; protected set; }
         public IChromosome Chromosome { get; protected set; }
         public ICrossover Crossover { get; protected set; }
         public IFitness Fitness { get; protected set; }
@@ -69,6 +70,16 @@ namespace EnergyPrediction
             Termination = new OrTermination(new FitnessThresholdTermination(aFitnessThres), new GenerationNumberTermination(aGenCap), new TimeEvolvingTermination(System.TimeSpan.FromMinutes(MaxElapMin)));
             Reinsertion = aRein;
             PopulationCount = aPop;
+
+            // Defined in the calling child
+            InitPopulation();
+            fPopulation.GenerationStrategy = new PerformanceGenerationStrategy(100);
+
+            fGA = new GeneticAlgorithm(fPopulation, Fitness, Selection, Crossover, Mutation);
+            fGA.Termination = Termination;
+            fGA.CrossoverProbability = CrossoverProbability;
+            fGA.MutationProbability = MutationProbability;
+            fGA.Reinsertion = Reinsertion;
         }
 
         public ControllerBase(IChromosome aChromo, ICrossover aCross, IFitness aFit, IMutation aMut, ISelection aSel, IReinsertion aRein, ITermination aTer, int aPop)
@@ -81,7 +92,22 @@ namespace EnergyPrediction
             Termination = aTer;
             Reinsertion = aRein;
             PopulationCount = aPop;
+
+            // Defined in the calling child
+            InitPopulation();
+            fPopulation.GenerationStrategy = new PerformanceGenerationStrategy(100);
+
+            fGA = new GeneticAlgorithm(fPopulation, Fitness, Selection, Crossover, Mutation);
+            fGA.Termination = Termination;
+            fGA.CrossoverProbability = CrossoverProbability;
+            fGA.MutationProbability = MutationProbability;
+            fGA.Reinsertion = Reinsertion;
         }
+
+        /// <summary>
+        /// To be called by ControllerBase upon construction.
+        /// </summary>
+        protected abstract void InitPopulation();
 
         /// <summary>
         /// Adds an Event to be ran at the end of each generation, which takes the parameter of a Chromosome

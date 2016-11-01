@@ -51,7 +51,7 @@ namespace EnergyPrediction
         }
 
         public abstract double doCalculation(double aLeftValue, double aRightValue);
-        public abstract double doCalculation(int x);
+        public abstract double doCalculation(double x);
         public abstract void ChangeValue();
     }
 }

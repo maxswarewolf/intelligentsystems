@@ -87,7 +87,7 @@ namespace EnergyPrediction
             Depth = lRoot1.getMaxDepth();
         }
 
-        public double getCalculatedY(int x)
+        public double getCalculatedY(double x)
         {
             return VisitorPattern.Calculate(Root, x);
         }

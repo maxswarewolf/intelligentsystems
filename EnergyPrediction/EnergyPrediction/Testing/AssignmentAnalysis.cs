@@ -51,7 +51,7 @@ namespace EnergyPrediction
         readonly string version;
         readonly List<test> TestToRun = new List<test>()
         {
-            //new test(){time = 1, size = 1000, length = 10, name = "Test"}
+            //new test(){time = 1, size = 1000, length = 10, name = "Test"},
             new test(){time = 15, size = 1000, length = 10, name = "Test 1"},
             new test(){time = 30, size = 1000, length = 10, name = "Test 2"},
             new test(){time = 45, size = 1000, length = 10, name = "Test 3"},

@@ -47,7 +47,7 @@ namespace EnergyPrediction
             }
         }
 
-        public double getCalculatedY(int x)
+        public double getCalculatedY(double x)
         {
             //return ((double)this.GetGene(0).Value / Math.Sqrt((double)this.GetGene(1).Value * Math.PI)) * (Math.Pow(Math.E, -Math.Pow(x - (double)this.GetGene(2).Value, 2) / (2 * (double)this.GetGene(3).Value)));
             //return (double)this.GetGene(0).Value * Math.Sin((double)this.GetGene(1).Value * (double)this.GetGene(2).Value) + (double)this.GetGene(3).Value;

@@ -11,17 +11,16 @@ using GeneticSharp.Domain.Terminations;
 using GeneticSharp.Domain.Reinsertions;
 using GeneticSharp.Domain.Populations;
 using GeneticSharp.Domain;
+using GeneticSharp.Domain.Chromosomes;
 
 namespace EnergyPrediction.UI
 {
     /// <summary>
-    /// Genetic Options is a Stack Layout derived from Eto.Forms that contains all of the elements
+    /// ParameterStack is a Stack Layout derived from Eto.Forms that contains all of the elements
     /// used to define what solution shall be run, and with what parameters. This is done in the form 
     /// of combo boxes, each of which are labeled. Each of the critical combo boxes will also affect 
     /// the UI through events and event handlers e.g The very first combo box contains options as to 
-    /// which solution shall be used, either a Genetic Algorithm, or Genetic Programming. This will 
-    /// trigger an event to hide/show other elements that are specific to the selected option. 
-    /// The final element is a button that triggers the Start Solution method using events.
+    /// which solution shall be used, either a Genetic Algorithm, or Genetic Programming.
     /// </summary>
     class ParameterStack : StackLayout
     {
@@ -63,6 +62,8 @@ namespace EnergyPrediction.UI
         // Contains the currently running solution
         private ControllerBase fSolution = null;
 
+        public Func<IChromosome, bool> resultsDelegate { get; set; }
+
         #endregion
 
         public ParameterStack()
@@ -77,6 +78,8 @@ namespace EnergyPrediction.UI
             // Make sure that when the desired solution type is changed, the UI can trigger an update
             fSolutionComboBox.SelectedValueChanged += new EventHandler<EventArgs>(SolutionValueChanged);
 
+            // To start, Algorithm is selected by default. This means the initial data store for both
+            // Crossovers and Mutations will also be for Algorithm
             fCrossoverComboBox = new ComboBox
             {
                 DataStore = fCrossoversAlgo,
@@ -135,6 +138,7 @@ namespace EnergyPrediction.UI
             InitItems();
         }
 
+        // Initialise the list of items contained in the StackLayout
         private void InitItems()
         {
             // Add a label for each option, followed by the accompanying combo box / element
@@ -191,6 +195,7 @@ namespace EnergyPrediction.UI
                 Text = "Start/Stop/Resume the prediction"
             });
 
+            // The control buttons will sit in a horizontal stack
             fButtonStack = new StackLayout();
             fButtonStack.Items.Add(fStart);
             fButtonStack.Items.Add(fStop);
@@ -201,7 +206,7 @@ namespace EnergyPrediction.UI
         }
 
         // Whenever the solution combo box value is changed, this method will be called
-        // This will show/hide the appropriate combo boxes for the currently selected solution method
+        // This will switch the data store of the appropriate combo boxes for the currently selected solution method
         private void SolutionValueChanged(object sender, EventArgs e)
         {
             switch (fSolutionComboBox.SelectedValue.ToString())
@@ -225,26 +230,30 @@ namespace EnergyPrediction.UI
             }
         }
 
-        // Triggered once the StartSolutionBUtton is clicked
+        // Triggered once the fStart button is clicked
         private void StartSolution(object sender, EventArgs e)
         {
             if (fSolution != null)
-                if (fSolution.State == GeneticAlgorithmState.Started || fSolution.State == GeneticAlgorithmState.Resumed) fSolution.Stop();
+                if (fSolution.State == GeneticAlgorithmState.Started || fSolution.State == GeneticAlgorithmState.Resumed)
+                    fSolution.Stop();
 
             switch (fSolutionComboBox.SelectedValue.ToString())
             {
                 case "Genetic Algorithm":
-                    fSolution = new GeneticAlgoController(new GeneticAlgoChromosome(1000, 4),
-                                                     GetSelectedCrossoverMethod(),
-                                                     GetSelectedFitnessFuntion(),
-                                                     GetSelectedMutationMethod(),
-                                                     GetSelectedSelectionMethod(),
-                                                     GetSelectedTerminationMethod(),
-                                                     GetSelectedReinsertionMethod(),
-                                                     200);
-                    fSolution.CrossoverProbability = 0.6f;
-                    fSolution.MutationProbability = 0.6f;
+                    fSolution = new GeneticAlgoController(new GeneticAlgoChromosome(10, 40),
+                                                     new AlgoOnePointCrossover(),
+                                                     new FitnessFunctions(),
+                                                     new UniformMutation(),
+                                                     new TournamentSelection(),
+                                                     0,
+                                                     20000,
+                                                     10,
+                                                     new CombinedReinsertion(),
+                                                     1000);
+                    fSolution.CrossoverProbability = 0.7f;
+                    fSolution.MutationProbability = 0.1f;
                     fSolution.addEventFunction(fSolution.DefaultDrawChromosome);
+                    fSolution.addEventFunction(resultsDelegate);
                     fSolution.Start();
                     break;
                 case "Genetic Programming":
@@ -258,17 +267,6 @@ namespace EnergyPrediction.UI
         private void StopSolution(object sender, EventArgs e) { if (fSolution != null) fSolution.Stop(); }
 
         private void ResumeSolution(object sender, EventArgs e) { if (fSolution != null) fSolution.Resume(); }
-
-        // Will be called at the generation ran event of the solution. Will update the results window with the best chromosome every N generations
-        bool updateResults(Generation aCurrentGeneration)
-        {
-            if (aCurrentGeneration.Number % 10 == 0)
-            {
-                //resultsWindow.update(aCurrentGeneration.BestChromosome);
-                return true;
-            }
-            return false;
-        }
 
         // Depending on the selected solution, return the selected crossover
         private CrossoverBase GetSelectedCrossoverMethod()

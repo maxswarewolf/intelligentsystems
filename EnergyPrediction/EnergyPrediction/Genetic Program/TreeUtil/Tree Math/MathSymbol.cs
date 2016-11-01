@@ -67,7 +67,7 @@ namespace EnergyPrediction
                     return 0;
             }
         }
-        public override double doCalculation(int x)
+        public override double doCalculation(double x)
         {
             throw new NotImplementedException();
         }

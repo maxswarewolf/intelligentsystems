@@ -45,7 +45,7 @@ namespace EnergyPrediction
         /// Call object.Value instead
         /// </summary>
         /// <returns>Value.</returns>
-        public override double doCalculation(int x)
+        public override double doCalculation(double x)
         {
             return isX ? x : Value;
         }

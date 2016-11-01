@@ -1,0 +1,135 @@
+Test 1: 15 Minute Cut-off || Solution Depth 10 || Population Range: 1000 - 2000
+	Equation: y = 5.3607 * x^0 - 9.9999 * x^1 + 0.8855 * x^2 + 9.092 * x^3 + 9.7365 * x^4 - 3.2024 * x^5 + 2.3161 * x^6 + 3.7094 * x^7 + 6.6317 * x^8 - 0.2272 * x^9
+Reliability: 1
+Fitness: -5.74428912617078E+23
++- Peek Value: 10
+
+Next Day:      -1056842654276.85W predicted || 20992.280983W actual 
+Next Week:     -15480675255809.8W predicted || 34231.03498W actual 
+Next Month:    -1.89155484549444E+15W predicted || 35166.118993W actual 
+Next Quarter:  -1.20236082655145E+18W predicted || 115426.754102W actual 
+
+Aggerate Next Week:     -35172767655447.1W predicted || 305677.673017W actual 
+Aggerate Next Month:    -9.82091498706198E+15W predicted || 1135670.736625W actual 
+Aggerate Next Quarter:  -1.37996764660726E+19W predicted || 3532184.391224W actual 
+
+Test 2: 30 Minute Cut-off || Solution Depth 10 || Population Range: 1000 - 2000
+	Equation: y = 2.3382 * x^0 - 9.9999 * x^1 - 1.0424 * x^2 - 7.1001 * x^3 - 9.317 * x^4 - 4.5607 * x^5 - 4.3585 * x^6 + 1.5278 * x^7 + 3.7054 * x^8 - 0.1106 * x^9
+Reliability: 1
+Fitness: -4.84666083437739E+23
++- Peek Value: 10
+
+Next Day:      137490122579.636W predicted || 20992.280983W actual 
+Next Week:     -4477445947671.9W predicted || 34231.03498W actual 
+Next Month:    -803842626364422W predicted || 35166.118993W actual 
+Next Quarter:  -5.58781024586626E+17W predicted || 115426.754102W actual 
+
+Aggerate Next Week:     -7126089251197.67W predicted || 305677.673017W actual 
+Aggerate Next Month:    -4.02303151579944E+15W predicted || 1135670.736625W actual 
+Aggerate Next Quarter:  -6.36561003014504E+18W predicted || 3532184.391224W actual 
+
+Test 3: 45 Minute Cut-off || Solution Depth 10 || Population Range: 1000 - 2000
+	Equation: y =  -2.2954 * x^0 + 8.8845 * x^1 + 10 * x^2 + 1.9875 * x^3 + 9.8368 * x^4 - 1.0773 * x^5 + 1.5188 * x^6 + 2.521 * x^7 - 0.5185 * x^8 + 0.0062 * x^9
+Reliability: 1
+Fitness: -1.74995522769285E+23
++- Peek Value: 10
+
+Next Day:      -332099501255.021W predicted || 20992.280983W actual 
+Next Week:     -1353572144958.92W predicted || 34231.03498W actual 
+Next Month:    -21714907065666W predicted || 35166.118993W actual 
+Next Quarter:  1.51324099634271E+16W predicted || 115426.754102W actual 
+
+Aggerate Next Week:     -4732123262698.91W predicted || 305677.673017W actual 
+Aggerate Next Month:    -199124536133515W predicted || 1135670.736625W actual 
+Aggerate Next Quarter:  1.43807948672716E+17W predicted || 3532184.391224W actual 
+
+Test 4: 60 Minute Cut-off || Solution Depth 10 || Population Range: 1000 - 2000
+	Equation: y = 7.8783 * x^0 - 8.7214 * x^1 + 3.0918 * x^2 - 10 * x^3 - 9.6502 * x^4 + 3.5532 * x^5 + 0.043 * x^6 + 6.1452 * x^7 + 7.2094 * x^8 - 0.2422 * x^9
+Reliability: 1
+Fitness: -5.18045415039312E+23
++- Peek Value: 10
+
+Next Day:      -839417585680.809W predicted || 20992.280983W actual 
+Next Week:     -15236408756226.1W predicted || 34231.03498W actual 
+Next Month:    -1.97324362237737E+15W predicted || 35166.118993W actual 
+Next Quarter:  -1.27294516332821E+18W predicted || 115426.754102W actual 
+
+Aggerate Next Week:     -33246387874318.4W predicted || 305677.673017W actual 
+Aggerate Next Month:    -1.01817819410524E+16W predicted || 1135670.736625W actual 
+Aggerate Next Quarter:  -1.4592230475766E+19W predicted || 3532184.391224W actual 
+
+Test 5: 30 Minute Cut-off || Solution Depth 10 || Population Range: 2000 - 4000
+	Equation: y =  -6.6126 * x^0 + 10 * x^1 + 9.6269 * x^2 + 6.9694 * x^3 + 9.7761 * x^4 - 3.0838 * x^5 - 8.4078 * x^6 - 4.9944 * x^7 + 1.3425 * x^8 - 0.0404 * x^9
+Reliability: 1
+Fitness: -2.32040295024654E+22
++- Peek Value: 10
+
+Next Day:      -210741186620.682W predicted || 20992.280983W actual 
+Next Week:     -2645420737265.97W predicted || 34231.03498W actual 
+Next Month:    -318658391625655W predicted || 35166.118993W actual 
+Next Quarter:  -2.07254761601424E+17W predicted || 115426.754102W actual 
+
+Aggerate Next Week:     -6193622319298.93W predicted || 305677.673017W actual 
+Aggerate Next Month:    -1.65151179160095E+15W predicted || 1135670.736625W actual 
+Aggerate Next Quarter:  -2.37138734055085E+18W predicted || 3532184.391224W actual 
+
+Test 6: 30 Minute Cut-off || Solution Depth 10 || Population Range: 4000 - 8000
+	Equation: y =  -9.9999 * x^0 - 2.595 * x^1 - 0.6887 * x^2 + 7.739 * x^3 + 9.8681 * x^4 + 6.9801 * x^5 - 2.967 * x^6 - 0.754 * x^7 + 2.8152 * x^8 - 0.095 * x^9
+Reliability: 1
+Fitness: -1.18638098182985E+23
++- Peek Value: 10
+
+Next Day:      -485450418567.64W predicted || 20992.280983W actual 
+Next Week:     -6588932953343.72W predicted || 34231.03498W actual 
+Next Month:    -789752606234659W predicted || 35166.118993W actual 
+Next Quarter:  -5.01438553682028E+17W predicted || 115426.754102W actual 
+
+Aggerate Next Week:     -15205409143037.3W predicted || 305677.673017W actual 
+Aggerate Next Month:    -4.10704280494529E+15W predicted || 1135670.736625W actual 
+Aggerate Next Quarter:  -5.75456469727576E+18W predicted || 3532184.391224W actual 
+
+Test 7: 30 Minute Cut-off || Solution Depth 10 || Population Range: 8000 - 16000
+	Equation: y =  -4.8455 * x^0 - 7.9745 * x^1 + 9.9999 * x^2 + 8.9891 * x^3 + 9.8196 * x^4 - 7.4399 * x^5 + 3.9929 * x^6 + 2.349 * x^7 + 1.8555 * x^8 - 0.0681 * x^9
+Reliability: 1
+Fitness: -1.09005960460048E+23
++- Peek Value: 10
+
+Next Day:      -446042656097.786W predicted || 20992.280983W actual 
+Next Week:     -5291322638205.59W predicted || 34231.03498W actual 
+Next Month:    -594714604835967W predicted || 35166.118993W actual 
+Next Quarter:  -3.67213856966168E+17W predicted || 115426.754102W actual 
+
+Aggerate Next Week:     -12610237425830.9W predicted || 305677.673017W actual 
+Aggerate Next Month:    -3.11930287812954E+15W predicted || 1135670.736625W actual 
+Aggerate Next Quarter:  -4.22588505666104E+18W predicted || 3532184.391224W actual 
+
+Test 8: 30 Minute Cut-off || Solution Depth 20 || Population Range: 1000 - 2000
+	Equation: y =  -9.9853 * x^0 - 2.7109 * x^1 - 6.7747 * x^2 + 7.5373 * x^3 - 3.0452 * x^4 + 0.3361 * x^5 + 1.0674 * x^6 - 2.3695 * x^7 - 5.0399 * x^8 - 9.5427 * x^9 - 8.5376 * x^10 + 4.8684 * x^11 - 9.9367 * x^12 + 7.354 * x^13 - 6.0641 * x^14 - 5.1242 * x^15 - 9.6487 * x^16 + 9.4774 * x^17 + 9.0272 * x^18 - 0.2955 * x^19
+Reliability: 1
+Fitness: -1.27847732618783E+53
++- Peek Value: 10
+
+Next Day:      -9.60940519719239E+26W predicted || 20992.280983W actual 
+Next Week:     -1.7605777399672E+29W predicted || 34231.03498W actual 
+Next Month:    -2.30761029726061E+33W predicted || 35166.118993W actual 
+Next Quarter:  -1.32293495727135E+39W predicted || 115426.754102W actual 
+
+Aggerate Next Week:     -2.04203688917548E+29W predicted || 305677.673017W actual 
+Aggerate Next Month:    -5.79775926876525E+33W predicted || 1135670.736625W actual 
+Aggerate Next Quarter:  -7.41390766906258E+39W predicted || 3532184.391224W actual 
+
+Test 9: 30 Minute Cut-off || Solution Depth 40 || Population Range: 1000 - 2000
+	Equation: y =  -4.1961 * x^0 - 7.1062 * x^1 - 0.2821 * x^2 + 5.9596 * x^3 + 4.5572 * x^4 - 2.8175 * x^5 + 6.222 * x^6 + 1.514 * x^7 + 5.2445 * x^8 - 4.8051 * x^9 - 7.5705 * x^10 + 6.9459 * x^11 - 3.2583 * x^12 + 1.069 * x^13 + 1.0961 * x^14 + 3.2675 * x^15 - 0.251 * x^16 - 9.5539 * x^17 + 7.5093 * x^18 + 5.4361 * x^19 - 4.7669 * x^20 + 2.5692 * x^21 + 1.2371 * x^22 + 0.7419 * x^23 + 8.5251 * x^24 + 2.6576 * x^25 - 4.242 * x^26 + 9.7817 * x^27 + 8.9232 * x^28 + 8.9847 * x^29 - 1.0038 * x^30 - 2.9619 * x^31 - 3.2851 * x^32 + 9.2836 * x^33 - 7.1569 * x^34 + 7.643 * x^35 + 4.8246 * x^36 - 4.789 * x^37 + 2.7028 * x^38 - 0.0702 * x^39
+Reliability: 1
+Fitness: -2.74612874461617E+113
++- Peek Value: 10
+
+Next Day:      1.24154680400538E+57W predicted || 20992.280983W actual 
+Next Week:     -1.67581983897524E+60W predicted || 34231.03498W actual 
+Next Month:    -4.25501726301084E+68W predicted || 35166.118993W actual 
+Next Quarter:  -2.14329907375418E+80W predicted || 115426.754102W actual 
+
+Aggerate Next Week:     -5.32160944436481E+59W predicted || 305677.673017W actual 
+Aggerate Next Month:    -4.55599001634093E+68W predicted || 1135670.736625W actual 
+Aggerate Next Quarter:  -5.55526663930735E+80W predicted || 3532184.391224W actual 
+

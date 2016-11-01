@@ -30,6 +30,8 @@ using System;
 using System.Threading;
 using EnergyPrediction.UI;
 using System.IO;
+using System.Collections.Generic;
+using GeneticSharp.Domain.Chromosomes;
 
 namespace EnergyPrediction
 {
@@ -37,30 +39,63 @@ namespace EnergyPrediction
     {
         public static void Main(string[] args)
         {
+            // If there is a command line argument
             if (args.Length >= 1)
             {
                 if (args[0] == "testing")
                 {
+                    // Do batch testing
                     DataIO.AggregateData(StateType.VIC, DateTime.Parse("1/1/16"), DateTime.Parse("1/2/16"), 288);
                     DataIO.SaveAggerateData();
-                    AssignmentAnalysis AA = new AssignmentAnalysis("Prog");
-                    AA.run();
-                    //AA = new AssignmentAnalysis("Algo");
+                    //AssignmentAnalysis AA = new AssignmentAnalysis("Prog");
                     //AA.run();
+                    AssignmentAnalysis AA = new AssignmentAnalysis("Algo");
+                    AA.run();
                 }
             }
-            //Seans UI stuff
-            //new Application().Run(new MainForm());
-            Thread parameterThread = new Thread(() => new Eto.Forms.Application().Run(new ParameterForm()));
-            parameterThread.Start();
-
-            Thread resultThread = new Thread(() =>
+            else // Run the program as normal
             {
-                Gtk.Application.Init();
-                new ResultsWindow();
-                Gtk.Application.Run();
-            });
-            resultThread.Start();
+                object _lock = new object();
+                Queue<Func<IChromosome, bool>> queue = new Queue<Func<IChromosome, bool>>();
+                AutoResetEvent signal = new AutoResetEvent(false);
+
+                // And a thread for the results window
+                Thread resultThread = new Thread(() =>
+                {
+                    Gtk.Application.Init();
+
+                    ResultsWindow resultsWindow = new ResultsWindow();
+
+                    lock (_lock)
+                    {
+                        queue.Enqueue(resultsWindow.UpdateResults);
+                    }
+
+                    signal.Set();
+
+                    Gtk.Application.Run();
+                });
+                resultThread.Start();
+
+                Thread parameterThread = new Thread(() =>
+                {
+                    Eto.Forms.Application formsApplication = new Eto.Forms.Application();
+
+                    ParameterForm parameterForm = new ParameterForm();
+
+                    signal.WaitOne();
+
+                    lock (_lock)
+                    {
+                        ParameterStack containedStack = parameterForm.Content as ParameterStack;
+                        if (containedStack != null) containedStack.resultsDelegate = queue.Dequeue();
+                        else throw new InvalidCastException("Could not covert parameterForm.Content to ParameterStack - this should never occur");
+                    }
+
+                    new Eto.Forms.Application().Run(parameterForm);
+                });
+                parameterThread.Start();
+            }
         }
     }
 }

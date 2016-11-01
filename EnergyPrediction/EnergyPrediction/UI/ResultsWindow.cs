@@ -7,8 +7,11 @@ using OxyPlot.GtkSharp;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
+using GeneticSharp.Domain.Chromosomes;
+
 namespace EnergyPrediction.UI
 {
+    // Will display the results of the solutions to the user as a visual graph
     class ResultsWindow : Window
     {
         private PlotModel resultsModel;
@@ -44,7 +47,6 @@ namespace EnergyPrediction.UI
                 MajorStep = 1.0,
                 FontSize = 10
             });
-            resultsModel.Series.Add(new FunctionSeries(Math.Sin, -10, 10, 0.1, "sin(x)"));
 
             plotView = new PlotView { Model = resultsModel, Visible = true };
 
@@ -52,6 +54,27 @@ namespace EnergyPrediction.UI
             Focus = plotView;
 
             ShowAll();
+        }
+
+        public bool UpdateResults(IChromosome aBestChromosome)
+        {
+            GeneticAlgoChromosome asAlgo = aBestChromosome as GeneticAlgoChromosome;
+            if (asAlgo != null)
+            {
+                resultsModel.InvalidatePlot(true);
+                resultsModel.Series.Add(new FunctionSeries(asAlgo.getCalculatedY, -10, 10, 0.1, "Results"));
+                return true;
+            }
+
+            GeneticProgChromosome asProg = aBestChromosome as GeneticProgChromosome;
+            if (asProg != null)
+            {
+                resultsModel.InvalidatePlot(true);
+                resultsModel.Series.Add(new FunctionSeries(asProg.getCalculatedY, -10, 10, 0.1, "Results"));
+                return true;
+            }
+            
+            return false;
         }
     }
 }
