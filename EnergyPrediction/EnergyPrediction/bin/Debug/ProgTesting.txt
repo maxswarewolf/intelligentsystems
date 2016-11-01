@@ -1,0 +1,104 @@
+Test 1: 15 Minute Cut-off || Solution Depth 10 || Population Range: 1000 - 2000
+	Equation: (x * (x * x))
+Fitness: -66227977240.0485
+
+Next Day:      35937W predicted || 20992.280983W actual 
+Next Week:     64000W predicted || 34231.03498W actual 
+Next Month:    250047W predicted || 35166.118993W actual 
+Next Quarter:  1906624W predicted || 115426.754102W actual 
+
+Aggerate Next Week:     329616W predicted || 305677.673017W actual 
+Aggerate Next Month:    3535425W predicted || 1135670.736625W actual 
+Aggerate Next Quarter:  57877092W predicted || 3532184.391224W actual 
+
+Test 2: 30 Minute Cut-off || Solution Depth 10 || Population Range: 1000 - 2000
+	Equation: (x * (x * x))
+Fitness: -66227977240.0485
+
+Next Day:      35937W predicted || 20992.280983W actual 
+Next Week:     64000W predicted || 34231.03498W actual 
+Next Month:    250047W predicted || 35166.118993W actual 
+Next Quarter:  1906624W predicted || 115426.754102W actual 
+
+Aggerate Next Week:     329616W predicted || 305677.673017W actual 
+Aggerate Next Month:    3535425W predicted || 1135670.736625W actual 
+Aggerate Next Quarter:  57877092W predicted || 3532184.391224W actual 
+
+Test 3: 45 Minute Cut-off || Solution Depth 10 || Population Range: 1000 - 2000
+	Equation: ((x * x) * x)
+Fitness: -66227977240.0485
+
+Next Day:      35937W predicted || 20992.280983W actual 
+Next Week:     64000W predicted || 34231.03498W actual 
+Next Month:    250047W predicted || 35166.118993W actual 
+Next Quarter:  1906624W predicted || 115426.754102W actual 
+
+Aggerate Next Week:     329616W predicted || 305677.673017W actual 
+Aggerate Next Month:    3535425W predicted || 1135670.736625W actual 
+Aggerate Next Quarter:  57877092W predicted || 3532184.391224W actual 
+
+Test 4: 60 Minute Cut-off || Solution Depth 10 || Population Range: 1000 - 2000
+	Equation: ((x * x) * x)
+Fitness: -66227977240.0485
+
+Next Day:      35937W predicted || 20992.280983W actual 
+Next Week:     64000W predicted || 34231.03498W actual 
+Next Month:    250047W predicted || 35166.118993W actual 
+Next Quarter:  1906624W predicted || 115426.754102W actual 
+
+Aggerate Next Week:     329616W predicted || 305677.673017W actual 
+Aggerate Next Month:    3535425W predicted || 1135670.736625W actual 
+Aggerate Next Quarter:  57877092W predicted || 3532184.391224W actual 
+
+Test 5: 30 Minute Cut-off || Solution Depth 10 || Population Range: 2000 - 4000
+	Equation: ((x + x) * (x * x))
+Fitness: -65986662635.8359
+
+Next Day:      71874W predicted || 20992.280983W actual 
+Next Week:     128000W predicted || 34231.03498W actual 
+Next Month:    500094W predicted || 35166.118993W actual 
+Next Quarter:  3813248W predicted || 115426.754102W actual 
+
+Aggerate Next Week:     659232W predicted || 305677.673017W actual 
+Aggerate Next Month:    7070850W predicted || 1135670.736625W actual 
+Aggerate Next Quarter:  115754184W predicted || 3532184.391224W actual 
+
+Test 6: 30 Minute Cut-off || Solution Depth 10 || Population Range: 4000 - 8000
+	Equation: (x * (x * x))
+Fitness: -66227977240.0485
+
+Next Day:      35937W predicted || 20992.280983W actual 
+Next Week:     64000W predicted || 34231.03498W actual 
+Next Month:    250047W predicted || 35166.118993W actual 
+Next Quarter:  1906624W predicted || 115426.754102W actual 
+
+Aggerate Next Week:     329616W predicted || 305677.673017W actual 
+Aggerate Next Month:    3535425W predicted || 1135670.736625W actual 
+Aggerate Next Quarter:  57877092W predicted || 3532184.391224W actual 
+
+Test 7: 30 Minute Cut-off || Solution Depth 10 || Population Range: 8000 - 16000
+	Equation: ((x * x) * (x + x))
+Fitness: -65986662635.8359
+
+Next Day:      71874W predicted || 20992.280983W actual 
+Next Week:     128000W predicted || 34231.03498W actual 
+Next Month:    500094W predicted || 35166.118993W actual 
+Next Quarter:  3813248W predicted || 115426.754102W actual 
+
+Aggerate Next Week:     659232W predicted || 305677.673017W actual 
+Aggerate Next Month:    7070850W predicted || 1135670.736625W actual 
+Aggerate Next Quarter:  115754184W predicted || 3532184.391224W actual 
+
+Test 8: 30 Minute Cut-off || Solution Depth 20 || Population Range: 1000 - 2000
+	Equation: ((x * x) * x)
+Fitness: -66227977240.0485
+
+Next Day:      35937W predicted || 20992.280983W actual 
+Next Week:     64000W predicted || 34231.03498W actual 
+Next Month:    250047W predicted || 35166.118993W actual 
+Next Quarter:  1906624W predicted || 115426.754102W actual 
+
+Aggerate Next Week:     329616W predicted || 305677.673017W actual 
+Aggerate Next Month:    3535425W predicted || 1135670.736625W actual 
+Aggerate Next Quarter:  57877092W predicted || 3532184.391224W actual 
+
