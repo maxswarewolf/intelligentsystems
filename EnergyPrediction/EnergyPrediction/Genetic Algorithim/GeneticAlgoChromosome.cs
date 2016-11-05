@@ -33,6 +33,7 @@ namespace EnergyPrediction
     {
         public double RangePeek { get; private set; }
         public double Reliability { get; set; } = 1;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="T:EnergyPrediction.GeneticAlgoChromosome"/> class.
         /// </summary>

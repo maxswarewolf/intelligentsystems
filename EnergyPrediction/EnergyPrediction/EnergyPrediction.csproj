@@ -87,6 +87,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\AxisType.cs" />
     <Compile Include="UI\ParameterForm.cs" />
     <Compile Include="Genetic Algorithim\GeneticAlgoChromosome.cs" />
     <Compile Include="Genetic Algorithim\GeneticAlgoController.cs" />

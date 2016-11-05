@@ -30,25 +30,36 @@ namespace EnergyPrediction.UI
         private List<string> fSolutionOptions = new List<string>() { "Genetic Algorithm", "Genetic Programming" };
         private ComboBox fSolutionComboBox;
 
-        private List<string> fCrossoversAlgo = new List<string>() { "Uniform", "One Point", "Two Point", "Three Parent" };
-        private List<string> fCrossoversProg = new List<string>() { "PLACE HOLDER" };
+        private List<string> fCrossoversAlgo = new List<string>() { "One Point" };
+        private List<string> fCrossoversProg = new List<string>() { "Branch" };
         private ComboBox fCrossoverComboBox;
 
-        private List<string> fFitness = new List<string>() { "Error Sum" };
+        private List<string> fFitnesses = new List<string>() { "Error Squared" };
         private ComboBox fFitnessComboBox;
 
-        private List<string> fMutationAlgo = new List<string>() { "Uniform", "Twors", "Reverse Sequence" };
-        private List<string> fMutationProg = new List<string>() { "Uniform", "Branch", "Reverse Sequence" };
+        private List<string> fMutationsAlgo = new List<string>() { "Uniform", "Twors" };
+        private List<string> fMutationsProg = new List<string>() { "Uniform" };
         private ComboBox fMutationComboBox;
 
-        private List<string> fSelection = new List<string>() { "Elite", "Stochastic", "Inverse Elite" };
+        private List<string> fSelections = new List<string>() { "Tournament", "Elite" };
         private ComboBox fSelectionComboBox;
 
-        private List<string> fReinsertion = new List<string>() { "PLACE HOLDER" };
+        private List<string> fReinsertions = new List<string>() { "Combined Reinsertion" };
         private ComboBox fReinsertionComboBox;
 
-        private List<string> fTimeFrames = new List<string>() { "Day", "Week", "Month", "Year" };
-        private ComboBox fTimeFramesComboBox;
+        // Will change the xAxis title, and the aggregation of the source data for time steps
+        private List<string> fPredictionUnits = new List<string>() { "Days", "Weeks", "Months" };
+        private ComboBox fPredictionUnitsComboBox;
+
+        // The number of a particular unit of time that will be predicted eg 5 fDaySteps will predict 5 days into the future
+        private List<string> fDaySteps = new List<string>() { "1", "2", "3", "4", "5", "6", "7" };
+        private List<string> fWeekSteps = new List<string>() { "1", "2", "3", "4" };
+        private List<string> fMonthSteps = new List<string>() { "1", "2", "3", "4", "5", "6" };
+        private ComboBox fPredictionStepsComboBox;
+
+        // The granuality of data to aggregate from for power usage levels
+        private List<string> fGranualities = new List<string>() { "Appliance", "Household", "Region" };
+        private ComboBox fGranualityComboBox;
 
         private List<string> fStates = new List<string>() { "VIC", "NSW", "QLD", "ACT", "NT", "SA", "WA", "TAS" };
         private ComboBox fStatesComboBox;
@@ -76,7 +87,7 @@ namespace EnergyPrediction.UI
             };
 
             // Make sure that when the desired solution type is changed, the UI can trigger an update
-            fSolutionComboBox.SelectedValueChanged += new EventHandler<EventArgs>(SolutionValueChanged);
+            fSolutionComboBox.SelectedValueChanged += new EventHandler<EventArgs>(SolutionChanged);
 
             // To start, Algorithm is selected by default. This means the initial data store for both
             // Crossovers and Mutations will also be for Algorithm
@@ -87,27 +98,40 @@ namespace EnergyPrediction.UI
             };
             fFitnessComboBox = new ComboBox
             {
-                DataStore = fFitness,
+                DataStore = fFitnesses,
                 SelectedIndex = 0
             };
             fMutationComboBox = new ComboBox
             {
-                DataStore = fMutationAlgo,
+                DataStore = fMutationsAlgo,
                 SelectedIndex = 0
             };
             fSelectionComboBox = new ComboBox
             {
-                DataStore = fSelection,
+                DataStore = fSelections,
                 SelectedIndex = 0
             };
             fReinsertionComboBox = new ComboBox
             {
-                DataStore = fReinsertion,
+                DataStore = fReinsertions,
                 SelectedIndex = 0
             };
-            fTimeFramesComboBox = new ComboBox
+            fPredictionUnitsComboBox = new ComboBox
             {
-                DataStore = fTimeFrames,
+                DataStore = fPredictionUnits,
+                SelectedIndex = 0
+            };
+
+            fPredictionUnitsComboBox.SelectedValueChanged += new EventHandler<EventArgs>(PredictionUnitChanged);
+
+            fPredictionStepsComboBox = new ComboBox
+            {
+                DataStore = fDaySteps,
+                SelectedIndex = 0
+            };
+            fGranualityComboBox = new ComboBox
+            {
+                DataStore = fGranualities,
                 SelectedIndex = 0
             };
             fStatesComboBox = new ComboBox
@@ -180,15 +204,27 @@ namespace EnergyPrediction.UI
 
             Items.Add(new Label
             {
-                Text = "Prediction Start Date"
+                Text = "Predict from State"
             });
-            Items.Add(new DateTimePicker());
+            Items.Add(fStatesComboBox);
 
             Items.Add(new Label
             {
-                Text = "Prediction Time Frame"
+                Text = "Predict by following unit"
             });
-            Items.Add(fTimeFramesComboBox);
+            Items.Add(fPredictionUnitsComboBox);
+
+            Items.Add(new Label
+            {
+                Text = "Prediction for N units"
+            });
+            Items.Add(fPredictionStepsComboBox);
+
+            Items.Add(new Label
+            {
+                Text = "Granuality"
+            });
+            Items.Add(fGranualityComboBox);
 
             Items.Add(new Label
             {
@@ -207,7 +243,7 @@ namespace EnergyPrediction.UI
 
         // Whenever the solution combo box value is changed, this method will be called
         // This will switch the data store of the appropriate combo boxes for the currently selected solution method
-        private void SolutionValueChanged(object sender, EventArgs e)
+        private void SolutionChanged(object sender, EventArgs e)
         {
             switch (fSolutionComboBox.SelectedValue.ToString())
             {
@@ -215,15 +251,38 @@ namespace EnergyPrediction.UI
                     fCrossoverComboBox.DataStore = fCrossoversAlgo;
                     fCrossoverComboBox.SelectedIndex = 0;
 
-                    fMutationComboBox.DataStore = fMutationAlgo;
+                    fMutationComboBox.DataStore = fMutationsAlgo;
                     fMutationComboBox.SelectedIndex = 0;
                     break;
                 case "Genetic Programming":
                     fCrossoverComboBox.DataStore = fCrossoversProg;
                     fCrossoverComboBox.SelectedIndex = 0;
 
-                    fMutationComboBox.DataStore = fMutationProg;
+                    fMutationComboBox.DataStore = fMutationsProg;
                     fMutationComboBox.SelectedIndex = 0;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // Whenever the prediction units combo box value is changed, this method will be called
+        // This will switch the data store of the appropriate combo boxes for the currently selected solution method
+        private void PredictionUnitChanged(object sender, EventArgs e)
+        {
+            switch (fPredictionUnitsComboBox.SelectedValue.ToString())
+            {
+                case "Days":
+                    fPredictionStepsComboBox.DataStore = fDaySteps;
+                    fPredictionStepsComboBox.SelectedIndex = 0;
+                    break;
+                case "Weeks":
+                    fPredictionStepsComboBox.DataStore = fWeekSteps;
+                    fPredictionStepsComboBox.SelectedIndex = 0;
+                    break;
+                case "Months":
+                    fPredictionStepsComboBox.DataStore = fMonthSteps;
+                    fPredictionStepsComboBox.SelectedIndex = 0;
                     break;
                 default:
                     break;
@@ -240,15 +299,15 @@ namespace EnergyPrediction.UI
             switch (fSolutionComboBox.SelectedValue.ToString())
             {
                 case "Genetic Algorithm":
-                    fSolution = new GeneticAlgoController(new GeneticAlgoChromosome(10, 40),
-                                                     new AlgoOnePointCrossover(),
-                                                     new FitnessFunctions(),
-                                                     new UniformMutation(),
-                                                     new TournamentSelection(),
+                    fSolution = new GeneticAlgoController(new GeneticAlgoChromosome(10, 10),
+                                                     CrossoverMethod(),
+                                                     FitnessFuntion(),
+                                                     MutationMethod(),
+                                                     SelectionMethod(),
                                                      0,
                                                      20000,
                                                      10,
-                                                     new CombinedReinsertion(),
+                                                     ReinsertionMethod(),
                                                      1000);
                     fSolution.CrossoverProbability = 0.7f;
                     fSolution.MutationProbability = 0.1f;
@@ -257,39 +316,49 @@ namespace EnergyPrediction.UI
                     fSolution.Start();
                     break;
                 case "Genetic Programming":
-                    // The genetic programming equivalent of the previous block will go here
+                    fSolution = new GeneticProgController(new GeneticProgChromosome(10, 10),
+                                                     CrossoverMethod(),
+                                                     FitnessFuntion(),
+                                                     MutationMethod(),
+                                                     SelectionMethod(),
+                                                     0,
+                                                     20000,
+                                                     10,
+                                                     ReinsertionMethod(),
+                                                     1000);
+                    fSolution.CrossoverProbability = 0.7f;
+                    fSolution.MutationProbability = 0.1f;
+                    fSolution.addEventFunction(fSolution.DefaultDrawChromosome);
+                    fSolution.addEventFunction(resultsDelegate);
+                    fSolution.Start();
                     break;
                 default:
                     break;
             }
         }
 
-        private void StopSolution(object sender, EventArgs e) { if (fSolution != null) fSolution.Stop(); }
+        private void StopSolution(object sender, EventArgs e) { if (fSolution != null && fSolution.State == GeneticAlgorithmState.Started || fSolution.State == GeneticAlgorithmState.Resumed) fSolution.Stop(); }
 
-        private void ResumeSolution(object sender, EventArgs e) { if (fSolution != null) fSolution.Resume(); }
+        private void ResumeSolution(object sender, EventArgs e) { if (fSolution != null && fSolution.State == GeneticAlgorithmState.Stopped) fSolution.Resume(); }
 
         // Depending on the selected solution, return the selected crossover
-        private CrossoverBase GetSelectedCrossoverMethod()
+        private CrossoverBase CrossoverMethod()
         {
             switch (fSolutionComboBox.SelectedValue.ToString())
             {
                 case "Genetic Algorithm":
                     switch (fCrossoverComboBox.SelectedValue.ToString())
                     {
-                        case "Uniform":
-                            return new UniformCrossover();
                         case "One Point":
-                            return new OnePointCrossover();
-                        case "Two Point":
-                            return new TwoPointCrossover();
-                        case "Three Point":
-                            return new ThreeParentCrossover();
+                            return new AlgoOnePointCrossover();
                         default:
                             return null;
                     }
                 case "Genetic Programming":
                     switch (fCrossoverComboBox.SelectedValue.ToString())
-                    { // There are no programming crossovers
+                    {
+                        case "Branch":
+                            return new BranchCrossover();
                         default:
                             return null;
                     }
@@ -298,20 +367,20 @@ namespace EnergyPrediction.UI
             }
         }
 
-        // Depending on the selected solution, return the selected crossover
-        private IFitness GetSelectedFitnessFuntion()
+        // Depending on the selected solution, return the selected fitness function
+        private IFitness FitnessFuntion()
         {
             switch (fFitnessComboBox.SelectedValue.ToString())
             {
-                case "Error Sum":
+                case "Error Squared":
                     return new FitnessFunctions();
                 default:
                     return null;
             }
         }
 
-        // Depending on the selected solution, return the selected crossover
-        private MutationBase GetSelectedMutationMethod()
+        // Depending on the selected solution, return the selected mutation method
+        private MutationBase MutationMethod()
         {
             switch (fSolutionComboBox.SelectedValue.ToString())
             {
@@ -322,20 +391,14 @@ namespace EnergyPrediction.UI
                             return new UniformMutation();
                         case "Twors":
                             return new TworsMutation();
-                        case "Reverse Sequence":
-                            return new ReverseSequenceMutation();
                         default:
                             return null;
                     }
                 case "Genetic Programming":
                     switch (fMutationComboBox.SelectedValue.ToString())
-                    { // These cases are commented as there are no programming specific mutations as of yet
+                    {
                         case "Uniform":
-                        //return new UniformMutation();
-                        case "Branch":
-                        //return new TworsMutation();
-                        case "Reverse Sequence":
-                        //return new ReverseSequenceMutation();
+                          return new UniformTreeMutation();
                         default:
                             return null;
                     }
@@ -344,43 +407,59 @@ namespace EnergyPrediction.UI
             }
         }
 
-        // Depending on the selected solution, return the selected crossover
-        private SelectionBase GetSelectedSelectionMethod()
-        {
-            switch (fSelectionComboBox.SelectedValue.ToString())
-            {
-                case "Elite":
-                    return new EliteSelection();
-                case "Stochastic":
-                    return new StochasticSelection();
-                case "Inverse Elite": // Doesn't exist?
-                                      //return new Inverse();
-                default:
-                    return null;
-            }
-        }
-
-        // Depending on the selected solution, return the selected crossover
-        private OrTermination GetSelectedTerminationMethod()
+        // Depending on the selected solution, return the selected selection method
+        private SelectionBase SelectionMethod()
         {
             switch (fSolutionComboBox.SelectedValue.ToString())
             {
                 case "Genetic Algorithm":
-                    return new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromSeconds(90)));
+                    switch (fSelectionComboBox.SelectedValue.ToString())
+                    {
+                        case "Tournament":
+                            return new TournamentSelection();
+                        case "Elite":
+                            return new EliteSelection();
+                        default:
+                            return null;
+                    }
                 case "Genetic Programming":
-                    return new OrTermination(new FitnessThresholdTermination(0), new TimeEvolvingTermination(TimeSpan.FromSeconds(90)));
+                    switch (fSelectionComboBox.SelectedValue.ToString())
+                    {
+                        case "Tournament":
+                            return new TournamentSelection();
+                        case "Elite":
+                            return new EliteSelection();
+                        default:
+                            return null;
+                    }
                 default:
                     return null;
             }
         }
 
-        // Depending on the selected solution, return the selected crossover
-        private ReinsertionBase GetSelectedReinsertionMethod()
+        // Depending on the selected solution, return the selected reinsertion method
+        private IReinsertion ReinsertionMethod()
         {
-            switch (fReinsertionComboBox.SelectedValue.ToString())
+            switch (fSolutionComboBox.SelectedValue.ToString())
             {
+                case "Genetic Algorithm":
+                    switch (fSelectionComboBox.SelectedValue.ToString())
+                    {
+                        case "Combined Reinsertion":
+                            return new CombinedReinsertion();
+                        default:
+                            return null;
+                    }
+                case "Genetic Programming":
+                    switch (fSelectionComboBox.SelectedValue.ToString())
+                    {
+                        case "Combined Reinsertion":
+                            return new CombinedReinsertion();
+                        default:
+                            return null;
+                    }
                 default:
-                    return new ElitistReinsertion();
+                    return null;
             }
         }
     }

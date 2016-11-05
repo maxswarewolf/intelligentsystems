@@ -33,7 +33,7 @@ using EnergyPrediction.UI;
 class ParameterForm : Form
 {
     int MainFormWidth = 275;
-    int MainFormHeight = 425;
+    int MainFormHeight = 520;
 
     public ParameterForm()
     {

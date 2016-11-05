@@ -16,10 +16,13 @@ namespace EnergyPrediction.UI
     {
         private PlotModel resultsModel;
         private PlotView plotView;
+        private string xAxisTitle;
+        private LinearAxis xAxis;
 
         public ResultsWindow() : base("Results Window")
         {
             SetDefaultSize(1200, 800);
+            xAxisTitle = "Hours";
 
             resultsModel = new PlotModel
             {
@@ -29,24 +32,23 @@ namespace EnergyPrediction.UI
             };
             resultsModel.Axes.Add(new LinearAxis
             {
+                Title = "Predicted Power Usage",
                 Position = AxisPosition.Left,
-                MajorGridlineThickness = 1,
-                MinorGridlineThickness = 1,
-                MajorGridlineColor = OxyColors.DarkSlateGray,
-                MinorGridlineColor = OxyColors.LightGray,
                 MajorStep = 1.0,
-                Minimum = 0.0
+                Minimum = 0.0,
+                MinorTickSize = 0
             });
-            resultsModel.Axes.Add(new DateTimeAxis
+
+            xAxis = new LinearAxis
             {
+                Title = xAxisTitle,
                 Position = AxisPosition.Bottom,
-                MajorGridlineThickness = 1,
-                MinorGridlineThickness = 1,
-                MajorGridlineColor = OxyColors.DarkSlateGray,
-                MinorGridlineColor = OxyColors.LightGray,
                 MajorStep = 1.0,
-                FontSize = 10
-            });
+                FontSize = 10,
+                MinorTickSize = 0
+            };
+
+            resultsModel.Axes.Add(xAxis);
 
             plotView = new PlotView { Model = resultsModel, Visible = true };
 
@@ -58,23 +60,52 @@ namespace EnergyPrediction.UI
 
         public bool UpdateResults(IChromosome aBestChromosome)
         {
+            plotView.InvalidatePlot(true);
+            resultsModel.InvalidatePlot(true);
+            resultsModel.Series.Clear();
+
             GeneticAlgoChromosome asAlgo = aBestChromosome as GeneticAlgoChromosome;
             if (asAlgo != null)
             {
-                resultsModel.InvalidatePlot(true);
-                resultsModel.Series.Add(new FunctionSeries(asAlgo.getCalculatedY, -10, 10, 0.1, "Results"));
+                resultsModel.Series.Add(new FunctionSeries(asAlgo.getCalculatedY, 0, 10, 0.1, "Results"));
                 return true;
             }
 
             GeneticProgChromosome asProg = aBestChromosome as GeneticProgChromosome;
             if (asProg != null)
             {
-                resultsModel.InvalidatePlot(true);
-                resultsModel.Series.Add(new FunctionSeries(asProg.getCalculatedY, -10, 10, 0.1, "Results"));
+                resultsModel.Series.Add(new FunctionSeries(asProg.getCalculatedY, 0, 10, 0.1, "Results"));
                 return true;
             }
             
             return false;
+        }
+
+        public bool SwitchTo(AxisType aAxisType)
+        {
+            switch (aAxisType)
+            {
+                case AxisType.Hours:
+                    plotView.InvalidatePlot(true);
+                    resultsModel.InvalidatePlot(true);
+                    resultsModel.Series.Clear();
+                    xAxis.Title = "Hours";
+                    return true;
+                case AxisType.Days:
+                    plotView.InvalidatePlot(true);
+                    resultsModel.InvalidatePlot(true);
+                    resultsModel.Series.Clear();
+                    xAxis.Title = "Days";
+                    return true;
+                case AxisType.Weeks:
+                    plotView.InvalidatePlot(true);
+                    resultsModel.InvalidatePlot(true);
+                    resultsModel.Series.Clear();
+                    xAxis.Title = "Weeks";
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }
