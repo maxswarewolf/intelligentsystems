@@ -193,20 +193,8 @@ namespace EnergyPrediction
                 };
             }
 
-            try
-            {
-                fGA.Start();
-            }
-            catch (Exception ex)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine();
-                Console.WriteLine("Error Message: {0}", ex.Message);
-                Console.WriteLine("Stack: {0}", ex.StackTrace);
-                Console.ResetColor();
-                Console.ReadKey();
-                return;
-            }
+            fGA.Start();
+
             Chromosome = fGA.BestChromosome;
             Console.WriteLine("Time: {0}", fGA.TimeEvolving);
             Console.WriteLine("Best Solution: {0}", fGA.BestChromosome);

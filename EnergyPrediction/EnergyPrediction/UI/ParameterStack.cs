@@ -7,11 +7,11 @@ using GeneticSharp.Domain.Crossovers;
 using GeneticSharp.Domain.Fitnesses;
 using GeneticSharp.Domain.Mutations;
 using GeneticSharp.Domain.Selections;
-using GeneticSharp.Domain.Terminations;
 using GeneticSharp.Domain.Reinsertions;
-using GeneticSharp.Domain.Populations;
 using GeneticSharp.Domain;
 using GeneticSharp.Domain.Chromosomes;
+using System.Threading;
+using GeneticSharp.Domain.Populations;
 
 namespace EnergyPrediction.UI
 {
@@ -48,32 +48,48 @@ namespace EnergyPrediction.UI
         private ComboBox fReinsertionComboBox;
 
         // Will change the xAxis title, and the aggregation of the source data for time steps
-        private List<string> fPredictionUnits = new List<string>() { "Days", "Weeks", "Months" };
+        private List<string> fPredictionUnits = new List<string>() { "Hours", "Days", "Weeks" };
         private ComboBox fPredictionUnitsComboBox;
 
         // The number of a particular unit of time that will be predicted eg 5 fDaySteps will predict 5 days into the future
+        private List<string> fHourSteps = new List<string>() { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24" };
         private List<string> fDaySteps = new List<string>() { "1", "2", "3", "4", "5", "6", "7" };
         private List<string> fWeekSteps = new List<string>() { "1", "2", "3", "4" };
-        private List<string> fMonthSteps = new List<string>() { "1", "2", "3", "4", "5", "6" };
         private ComboBox fPredictionStepsComboBox;
+
+        // How much real data is to be used for the prediction
+        private List<string> fHistoricalHours = new List<string>() { "24", "48", "72", "96", "120", "144", "168" };
+        private List<string> fHistoricalDays = new List<string>() { "1", "2", "3", "4", "5", "6", "7" };
+        private List<string> fHistoricalWeeks = new List<string>() { "1", "2", "3", "4" };
+        private ComboBox fHistoricalUnitsComboBox;
 
         // The granuality of data to aggregate from for power usage levels
         private List<string> fGranualities = new List<string>() { "Appliance", "Household", "Region" };
         private ComboBox fGranualityComboBox;
 
-        private List<string> fStates = new List<string>() { "VIC", "NSW", "QLD", "ACT", "NT", "SA", "WA", "TAS" };
+        // The appliancce to predict. Disabled if not predicting appliances
+        private List<string> fAppliances = new List<string>() { "TV", "Fan", "Fridge", "Laptop", "Heater", "Oven", "Washing Machine", "Microwave", "Toaster", "Wall Socket", "Cooker" };
+        private ComboBox fApplianceComboBox;
+
+        private List<string> fStates = new List<string>() { "VIC", "NSW", "QLD", "ACT", "SA", "TAS" };
         private ComboBox fStatesComboBox;
 
         // Will use an events to trigger
         private Button fStart;
         private Button fStop;
-        private Button fResume;
         private StackLayout fButtonStack;
+
+        // The start date for all real data 7/9/2015
+        private DateTime dataStartDate = new DateTime(2015, 9, 7);
 
         // Contains the currently running solution
         private ControllerBase fSolution = null;
 
-        public Func<IChromosome, bool> resultsDelegate { get; set; }
+        public Func<IChromosome, bool> updateResultsDelegate { get; set; }
+
+        public Func<string, bool> updateAxisTitleDelegate { get; set; }
+
+        public Func<string, bool> updatePredictionStepsDelegate { get; set; }
 
         #endregion
 
@@ -96,26 +112,31 @@ namespace EnergyPrediction.UI
                 DataStore = fCrossoversAlgo,
                 SelectedIndex = 0
             };
+
             fFitnessComboBox = new ComboBox
             {
                 DataStore = fFitnesses,
                 SelectedIndex = 0
             };
+
             fMutationComboBox = new ComboBox
             {
                 DataStore = fMutationsAlgo,
                 SelectedIndex = 0
             };
+
             fSelectionComboBox = new ComboBox
             {
                 DataStore = fSelections,
                 SelectedIndex = 0
             };
+
             fReinsertionComboBox = new ComboBox
             {
                 DataStore = fReinsertions,
                 SelectedIndex = 0
             };
+
             fPredictionUnitsComboBox = new ComboBox
             {
                 DataStore = fPredictionUnits,
@@ -123,17 +144,44 @@ namespace EnergyPrediction.UI
             };
 
             fPredictionUnitsComboBox.SelectedValueChanged += new EventHandler<EventArgs>(PredictionUnitChanged);
+            fPredictionUnitsComboBox.SelectedValueChanged += delegate
+            {
+                updateAxisTitleDelegate(fPredictionUnitsComboBox.SelectedValue.ToString());
+            };
 
             fPredictionStepsComboBox = new ComboBox
             {
-                DataStore = fDaySteps,
+                DataStore = fHourSteps,
                 SelectedIndex = 0
             };
+
+            fPredictionStepsComboBox.SelectedValueChanged += delegate
+            {
+                updatePredictionStepsDelegate(fPredictionStepsComboBox.SelectedValue.ToString());
+            };
+
+            fHistoricalUnitsComboBox = new ComboBox
+            {
+                DataStore = fHistoricalHours,
+                SelectedIndex = 0
+            };
+
+            fHistoricalUnitsComboBox.SelectedValueChanged += new EventHandler<EventArgs>(PredictionUnitChanged);
+
             fGranualityComboBox = new ComboBox
             {
                 DataStore = fGranualities,
                 SelectedIndex = 0
             };
+
+            fGranualityComboBox.SelectedValueChanged += new EventHandler<EventArgs>(GranualityChanged);
+
+            fApplianceComboBox = new ComboBox
+            {
+                DataStore = fAppliances,
+                SelectedIndex = 0
+            };
+
             fStatesComboBox = new ComboBox
             {
                 DataStore = fStates,
@@ -148,10 +196,6 @@ namespace EnergyPrediction.UI
             fStop = new Button();
             fStop.MouseDown += new EventHandler<MouseEventArgs>(StopSolution);
             fStop.Text = "Stop Solution";
-
-            fResume = new Button();
-            fResume.MouseDown += new EventHandler<MouseEventArgs>(ResumeSolution);
-            fResume.Text = "Resume Solution";
 
             // The direction the list shall face (Top to bottom)
             Orientation = Orientation.Vertical;
@@ -228,14 +272,19 @@ namespace EnergyPrediction.UI
 
             Items.Add(new Label
             {
-                Text = "Start/Stop/Resume the prediction"
+                Text = "Appliance to predict"
+            });
+            Items.Add(fApplianceComboBox);
+
+            Items.Add(new Label
+            {
+                Text = "Start/Stop the prediction"
             });
 
             // The control buttons will sit in a horizontal stack
             fButtonStack = new StackLayout();
             fButtonStack.Items.Add(fStart);
             fButtonStack.Items.Add(fStop);
-            fButtonStack.Items.Add(fResume);
             fButtonStack.Orientation = Orientation.Horizontal;
 
             Items.Add(fButtonStack);
@@ -270,21 +319,63 @@ namespace EnergyPrediction.UI
         // This will switch the data store of the appropriate combo boxes for the currently selected solution method
         private void PredictionUnitChanged(object sender, EventArgs e)
         {
-            switch (fPredictionUnitsComboBox.SelectedValue.ToString())
+            ComboBox senderBox = sender as ComboBox;
+            if (senderBox != null)
             {
-                case "Days":
-                    fPredictionStepsComboBox.DataStore = fDaySteps;
-                    fPredictionStepsComboBox.SelectedIndex = 0;
-                    break;
-                case "Weeks":
-                    fPredictionStepsComboBox.DataStore = fWeekSteps;
-                    fPredictionStepsComboBox.SelectedIndex = 0;
-                    break;
-                case "Months":
-                    fPredictionStepsComboBox.DataStore = fMonthSteps;
-                    fPredictionStepsComboBox.SelectedIndex = 0;
+                if (senderBox == fPredictionUnitsComboBox)
+                {
+                    switch (fPredictionUnitsComboBox.SelectedValue.ToString())
+                    {
+                        case "Hours":
+                            fPredictionStepsComboBox.DataStore = fHourSteps;
+                            fPredictionStepsComboBox.SelectedIndex = 0;
+                            break;
+                        case "Days":
+                            fPredictionStepsComboBox.DataStore = fDaySteps;
+                            fPredictionStepsComboBox.SelectedIndex = 0;
+                            break;
+                        case "Weeks":
+                            fPredictionStepsComboBox.DataStore = fWeekSteps;
+                            fPredictionStepsComboBox.SelectedIndex = 0;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if (senderBox == fHistoricalUnitsComboBox)
+                {
+                    switch (fPredictionUnitsComboBox.SelectedValue.ToString())
+                    {
+                        case "Hours":
+                            fHistoricalUnitsComboBox.DataStore = fHistoricalHours;
+                            fHistoricalUnitsComboBox.SelectedIndex = 0;
+                            break;
+                        case "Days":
+                            fHistoricalUnitsComboBox.DataStore = fHistoricalDays;
+                            fHistoricalUnitsComboBox.SelectedIndex = 0;
+                            break;
+                        case "Weeks":
+                            fHistoricalUnitsComboBox.DataStore = fHistoricalWeeks;
+                            fHistoricalUnitsComboBox.SelectedIndex = 0;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else throw new InvalidOperationException("SenderBox in ParameterStack is neither a fPredictionStepsComboBox or a fHistoricalUnitsComboBox - This should never happen");
+            }
+            else throw new InvalidCastException("Sender in ParameterStack PredictionUnitChanged is not a ComboBox - This should never happen");
+        }
+
+        private void GranualityChanged(object sender, EventArgs e)
+        {
+            switch (fGranualityComboBox.SelectedValue.ToString())
+            {
+                case "Appliance":
+                    fApplianceComboBox.Enabled = true;
                     break;
                 default:
+                    fApplianceComboBox.Enabled = false;
                     break;
             }
         }
@@ -293,53 +384,145 @@ namespace EnergyPrediction.UI
         private void StartSolution(object sender, EventArgs e)
         {
             if (fSolution != null)
-                if (fSolution.State == GeneticAlgorithmState.Started || fSolution.State == GeneticAlgorithmState.Resumed)
-                    fSolution.Stop();
+            {
+                if (fSolution.State == GeneticAlgorithmState.Stopped)
+                {
+                    CreateSolution();
+                    new Thread(() => { fSolution.Start(); }).Start();
+                }
+            }
+            else
+            {
+                CreateSolution();
+                new Thread(() => { fSolution.Start(); }).Start();
+            }
+        }
+
+        private void CreateSolution()
+        {
+            LoadData();
 
             switch (fSolutionComboBox.SelectedValue.ToString())
             {
                 case "Genetic Algorithm":
                     fSolution = new GeneticAlgoController(new GeneticAlgoChromosome(10, 10),
-                                                     CrossoverMethod(),
-                                                     FitnessFuntion(),
-                                                     MutationMethod(),
-                                                     SelectionMethod(),
-                                                     0,
-                                                     20000,
-                                                     10,
-                                                     ReinsertionMethod(),
-                                                     1000);
+                                                        CrossoverMethod(),
+                                                        FitnessFuntion(),
+                                                        MutationMethod(),
+                                                        SelectionMethod(),
+                                                        0,
+                                                        20000,
+                                                        10,
+                                                        ReinsertionMethod(),
+                                                        1000);
                     fSolution.CrossoverProbability = 0.7f;
                     fSolution.MutationProbability = 0.1f;
                     fSolution.addEventFunction(fSolution.DefaultDrawChromosome);
-                    fSolution.addEventFunction(resultsDelegate);
-                    fSolution.Start();
+                    fSolution.addEventFunction(updateResultsDelegate);
                     break;
                 case "Genetic Programming":
                     fSolution = new GeneticProgController(new GeneticProgChromosome(10, 10),
-                                                     CrossoverMethod(),
-                                                     FitnessFuntion(),
-                                                     MutationMethod(),
-                                                     SelectionMethod(),
-                                                     0,
-                                                     20000,
-                                                     10,
-                                                     ReinsertionMethod(),
-                                                     1000);
+                                                        CrossoverMethod(),
+                                                        FitnessFuntion(),
+                                                        MutationMethod(),
+                                                        SelectionMethod(),
+                                                        0,
+                                                        20000,
+                                                        10,
+                                                        ReinsertionMethod(),
+                                                        1000);
                     fSolution.CrossoverProbability = 0.7f;
                     fSolution.MutationProbability = 0.1f;
                     fSolution.addEventFunction(fSolution.DefaultDrawChromosome);
-                    fSolution.addEventFunction(resultsDelegate);
-                    fSolution.Start();
+                    fSolution.addEventFunction(updateResultsDelegate);
                     break;
                 default:
                     break;
             }
         }
 
-        private void StopSolution(object sender, EventArgs e) { if (fSolution != null && fSolution.State == GeneticAlgorithmState.Started || fSolution.State == GeneticAlgorithmState.Resumed) fSolution.Stop(); }
+        private void LoadData()
+        {
+            StateType selectedState = StateType.VIC;
 
-        private void ResumeSolution(object sender, EventArgs e) { if (fSolution != null && fSolution.State == GeneticAlgorithmState.Stopped) fSolution.Resume(); }
+            switch (fStatesComboBox.SelectedValue.ToString())
+            {
+                case "VIC":
+                    selectedState = StateType.VIC;
+                    break;
+                case "NSW":
+                    selectedState = StateType.NSW;
+                    break;
+                case "QLD":
+                    selectedState = StateType.QLD;
+                    break;
+                case "ACT":
+                    selectedState = StateType.ACT;
+                    break;
+                case "SA":
+                    selectedState = StateType.SA;
+                    break;
+                case "TAS":
+                    selectedState = StateType.TAS;
+                    break;
+                default:
+                    break;
+            }
+
+            int aggregationInterval = 12;
+
+            switch (fPredictionUnitsComboBox.SelectedValue.ToString())
+            {
+                case "Hours":
+                    // 12 5 minute clusters an hour
+                    aggregationInterval = 12;
+                    break;
+                case "Days":
+                    // 288 5 minute clusters a day
+                    aggregationInterval = 288;
+                    break;
+                case "Weeks":
+                    // 2016 5 minute clusters a week
+                    aggregationInterval = 2016;
+                    break;
+            }
+
+            DateTime endDate = new DateTime();
+
+            switch (fPredictionUnitsComboBox.SelectedValue.ToString())
+            {
+                case "Hours":
+                    int hourSteps = int.Parse(fPredictionStepsComboBox.SelectedValue.ToString());
+                    endDate = dataStartDate.AddHours(hourSteps);
+                    break;
+                case "Days":
+                    int daySteps = int.Parse(fPredictionStepsComboBox.SelectedValue.ToString());
+                    endDate = dataStartDate.AddDays(daySteps);
+                    break;
+                case "Weeks":
+                    int weekSteps = int.Parse(fPredictionStepsComboBox.SelectedValue.ToString()) * 7;
+                    endDate = dataStartDate.AddDays(weekSteps);
+                    break;
+            }
+
+            DataIO.AggregateData(selectedState, dataStartDate, endDate, aggregationInterval);
+        }
+
+        private void StopSolution(object sender, EventArgs e)
+        {
+            if (fSolution != null)
+            {
+                if (fSolution.State == GeneticAlgorithmState.Started || fSolution.State == GeneticAlgorithmState.Resumed) fSolution.Stop();
+            }
+        }
+
+        private void ResumeSolution(object sender, EventArgs e)
+        {
+            if (fSolution != null)
+            {
+                if (fSolution.State == GeneticAlgorithmState.Stopped) fSolution.Resume();
+            }
+        }
 
         // Depending on the selected solution, return the selected crossover
         private CrossoverBase CrossoverMethod()
@@ -443,7 +626,7 @@ namespace EnergyPrediction.UI
             switch (fSolutionComboBox.SelectedValue.ToString())
             {
                 case "Genetic Algorithm":
-                    switch (fSelectionComboBox.SelectedValue.ToString())
+                    switch (fReinsertionComboBox.SelectedValue.ToString())
                     {
                         case "Combined Reinsertion":
                             return new CombinedReinsertion();
@@ -451,7 +634,7 @@ namespace EnergyPrediction.UI
                             return null;
                     }
                 case "Genetic Programming":
-                    switch (fSelectionComboBox.SelectedValue.ToString())
+                    switch (fReinsertionComboBox.SelectedValue.ToString())
                     {
                         case "Combined Reinsertion":
                             return new CombinedReinsertion();

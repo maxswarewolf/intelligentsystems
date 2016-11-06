@@ -118,7 +118,7 @@ namespace EnergyPrediction
             return fPrediction.Count;
         }
 
-        public static void SaveAggerateData()
+        public static void SaveAggregateData()
         {
             using (StreamWriter writer = File.AppendText(StateSelection + "-" + DateTime.Now.DayOfYear + ".csv"))
             {

@@ -29,7 +29,6 @@
 using System;
 using System.Threading;
 using EnergyPrediction.UI;
-using System.IO;
 using System.Collections.Generic;
 using GeneticSharp.Domain.Chromosomes;
 
@@ -46,7 +45,7 @@ namespace EnergyPrediction
                 {
                     // Do batch testing
                     DataIO.AggregateData(StateType.VIC, DateTime.Parse("1/1/16"), DateTime.Parse("1/2/16"), 288);
-                    DataIO.SaveAggerateData();
+                    DataIO.SaveAggregateData();
                     //AssignmentAnalysis AA = new AssignmentAnalysis("Prog");
                     //AA.run();
                     AssignmentAnalysis AA = new AssignmentAnalysis("Algo");
@@ -56,7 +55,8 @@ namespace EnergyPrediction
             else // Run the program as normal
             {
                 object _lock = new object();
-                Queue<Func<IChromosome, bool>> queue = new Queue<Func<IChromosome, bool>>();
+                Queue<Func<IChromosome, bool>> chromDelegateQueue = new Queue<Func<IChromosome, bool>>();
+                Queue<Func<string, bool>> stringDelegateQueue = new Queue<Func<string, bool>>();
                 AutoResetEvent signal = new AutoResetEvent(false);
 
                 // And a thread for the results window
@@ -68,7 +68,9 @@ namespace EnergyPrediction
 
                     lock (_lock)
                     {
-                        queue.Enqueue(resultsWindow.UpdateResults);
+                        chromDelegateQueue.Enqueue(resultsWindow.UpdateResults);
+                        stringDelegateQueue.Enqueue(resultsWindow.UpdateAxisTitle);
+                        stringDelegateQueue.Enqueue(resultsWindow.UpdatePredictionSteps);
                     }
 
                     signal.Set();
@@ -88,7 +90,12 @@ namespace EnergyPrediction
                     lock (_lock)
                     {
                         ParameterStack containedStack = parameterForm.Content as ParameterStack;
-                        if (containedStack != null) containedStack.resultsDelegate = queue.Dequeue();
+                        if (containedStack != null)
+                        {
+                            containedStack.updateResultsDelegate = chromDelegateQueue.Dequeue();
+                            containedStack.updateAxisTitleDelegate = stringDelegateQueue.Dequeue();
+                            containedStack.updatePredictionStepsDelegate = stringDelegateQueue.Dequeue();
+                        }
                         else throw new InvalidCastException("Could not covert parameterForm.Content to ParameterStack - this should never occur");
                     }
 

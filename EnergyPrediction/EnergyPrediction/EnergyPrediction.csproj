@@ -80,9 +80,6 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Eto.Gtk2">
-      <HintPath>..\packages\Eto.Platform.Gtk.2.3.0\lib\net45\Eto.Gtk2.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
