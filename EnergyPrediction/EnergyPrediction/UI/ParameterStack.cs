@@ -266,7 +266,7 @@ namespace EnergyPrediction.UI
 
             Items.Add(new Label
             {
-                Text = "Granuality"
+                Text = "Granularity"
             });
             Items.Add(fGranularityComboBox);
 
