@@ -77,6 +77,8 @@ namespace EnergyPrediction.UI
         // Will use an events to trigger
         private Button fStart;
         private Button fStop;
+        // And this will hide/show real data
+        private Button fToggleReal;
         private StackLayout fButtonStack;
 
         // The start date for all real data 7/9/2015
@@ -90,6 +92,8 @@ namespace EnergyPrediction.UI
         public Func<string, bool> updateAxisTitleDelegate { get; set; }
 
         public Func<string, bool> updatePredictionStepsDelegate { get; set; }
+
+        public Func<string, bool> toggleRealDataDelegate { get; set; }
 
         #endregion
 
@@ -196,6 +200,15 @@ namespace EnergyPrediction.UI
             fStop = new Button();
             fStop.MouseDown += new EventHandler<MouseEventArgs>(StopSolution);
             fStop.Text = "Stop Solution";
+            fStop.Enabled = false;
+
+            fToggleReal = new Button();
+            fToggleReal.MouseDown += delegate
+            {
+                toggleRealDataDelegate("This string will not be used, but is necessary for a delegate");
+            };
+            fToggleReal.Text = "Toggle Real Data";
+            fToggleReal.Enabled = false;
 
             // The direction the list shall face (Top to bottom)
             Orientation = Orientation.Vertical;
@@ -285,6 +298,7 @@ namespace EnergyPrediction.UI
             fButtonStack = new StackLayout();
             fButtonStack.Items.Add(fStart);
             fButtonStack.Items.Add(fStop);
+            fButtonStack.Items.Add(fToggleReal);
             fButtonStack.Orientation = Orientation.Horizontal;
 
             Items.Add(fButtonStack);
@@ -389,12 +403,14 @@ namespace EnergyPrediction.UI
                 {
                     CreateSolution();
                     new Thread(() => { fSolution.Start(); }).Start();
+                    ToggleUIOnStart();
                 }
             }
             else
             {
                 CreateSolution();
                 new Thread(() => { fSolution.Start(); }).Start();
+                ToggleUIOnStart();
             }
         }
 
@@ -512,16 +528,54 @@ namespace EnergyPrediction.UI
         {
             if (fSolution != null)
             {
-                if (fSolution.State == GeneticAlgorithmState.Started || fSolution.State == GeneticAlgorithmState.Resumed) fSolution.Stop();
+                if (fSolution.State == GeneticAlgorithmState.Started || fSolution.State == GeneticAlgorithmState.Resumed) fSolution.Stop(); ToggleUIOnStop();
             }
         }
 
-        private void ResumeSolution(object sender, EventArgs e)
+        // Used to toggle the Enabled field of all of the UI elements. This will prevent weird behaviour while
+        // the solution is running
+        private void ToggleUIOnStart()
         {
-            if (fSolution != null)
+            fSolutionComboBox       .Enabled = !fSolutionComboBox.Enabled;
+            fCrossoverComboBox      .Enabled = !fCrossoverComboBox.Enabled;
+            fFitnessComboBox        .Enabled = !fFitnessComboBox.Enabled;
+            fMutationComboBox       .Enabled = !fMutationComboBox.Enabled;
+            fSelectionComboBox      .Enabled = !fSelectionComboBox.Enabled;
+            fReinsertionComboBox    .Enabled = !fReinsertionComboBox.Enabled;
+            fStatesComboBox         .Enabled = !fStatesComboBox.Enabled;
+            fPredictionUnitsComboBox.Enabled = !fPredictionUnitsComboBox.Enabled;
+            fPredictionStepsComboBox.Enabled = !fPredictionStepsComboBox.Enabled;
+            fGranularityComboBox    .Enabled = !fGranularityComboBox.Enabled;
+            if (fApplianceComboBox.Enabled) fApplianceComboBox.Enabled = false;
+            fStart                  .Enabled = !fStart.Enabled;
+            fStop                   .Enabled = !fStop.Enabled;
+            fToggleReal             .Enabled = !fToggleReal.Enabled;
+        }
+
+        private void ToggleUIOnStop()
+        {
+            fSolutionComboBox.Enabled = !fSolutionComboBox.Enabled;
+            fCrossoverComboBox.Enabled = !fCrossoverComboBox.Enabled;
+            fFitnessComboBox.Enabled = !fFitnessComboBox.Enabled;
+            fMutationComboBox.Enabled = !fMutationComboBox.Enabled;
+            fSelectionComboBox.Enabled = !fSelectionComboBox.Enabled;
+            fReinsertionComboBox.Enabled = !fReinsertionComboBox.Enabled;
+            fStatesComboBox.Enabled = !fStatesComboBox.Enabled;
+            fPredictionUnitsComboBox.Enabled = !fPredictionUnitsComboBox.Enabled;
+            fPredictionStepsComboBox.Enabled = !fPredictionStepsComboBox.Enabled;
+            fGranularityComboBox.Enabled = !fGranularityComboBox.Enabled;
+            switch (fGranularityComboBox.SelectedValue.ToString())
             {
-                if (fSolution.State == GeneticAlgorithmState.Stopped) fSolution.Resume();
+                case "Appliance":
+                    fApplianceComboBox.Enabled = true;
+                    break;
+                default:
+                    fApplianceComboBox.Enabled = false;
+                    break;
             }
+            fStart.Enabled = !fStart.Enabled;
+            fStop.Enabled = !fStop.Enabled;
+            fToggleReal.Enabled = !fToggleReal.Enabled;
         }
 
         // Depending on the selected solution, return the selected crossover

@@ -106,7 +106,9 @@ namespace EnergyPrediction
                 //return (1 / Math.Sqrt(2 * Math.PI)) * (Math.Pow(Math.E, -Math.Pow(x - 0, 2) / (2 * 0.5)));
                 return -1 * Math.Sin(2 * Math.Pow(x, 1)) + 0;
             }
-            return (x >= 0 && x < fData.Count) ? fData[(int)Math.Floor(x)] : double.PositiveInfinity;
+            // To render the real data to the screen, this function must accept a double. Subscript accessors only accept
+            // integers, so the x must be floored and cast. The final result is divided by 1000 to make it easier on OxyPlot
+            return (x >= 0 && x < fData.Count) ? fData[(int)Math.Floor(x)] / 1000 : double.PositiveInfinity;
         }
 
         public static double getPredictY(int x)

@@ -71,6 +71,7 @@ namespace EnergyPrediction
                         chromDelegateQueue.Enqueue(resultsWindow.UpdateResults);
                         stringDelegateQueue.Enqueue(resultsWindow.UpdateAxisTitle);
                         stringDelegateQueue.Enqueue(resultsWindow.UpdatePredictionSteps);
+                        stringDelegateQueue.Enqueue(resultsWindow.ToggleRealData);
                     }
 
                     signal.Set();
@@ -95,6 +96,7 @@ namespace EnergyPrediction
                             containedStack.updateResultsDelegate = chromDelegateQueue.Dequeue();
                             containedStack.updateAxisTitleDelegate = stringDelegateQueue.Dequeue();
                             containedStack.updatePredictionStepsDelegate = stringDelegateQueue.Dequeue();
+                            containedStack.toggleRealDataDelegate = stringDelegateQueue.Dequeue();
                         }
                         else throw new InvalidCastException("Could not covert parameterForm.Content to ParameterStack - this should never occur");
                     }

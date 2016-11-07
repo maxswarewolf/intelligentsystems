@@ -7,6 +7,7 @@ using OxyPlot.Series;
 
 using GeneticSharp.Domain.Chromosomes;
 using System;
+using System.Linq;
 
 namespace EnergyPrediction.UI
 {
@@ -16,9 +17,12 @@ namespace EnergyPrediction.UI
         private PlotModel resultsModel;
         private PlotView plotView;
         private LinearAxis xAxis;
+        private FunctionSeries resultSeries;
+        private FunctionSeries realDataSeries;
 
         private string xAxisTitle = "Hours";
         private int predictionSteps = 1;
+        private bool realDataShown = false;
 
         public ResultsWindow() : base("Results Window")
         {
@@ -68,19 +72,23 @@ namespace EnergyPrediction.UI
         {
             plotView.InvalidatePlot(true);
             resultsModel.InvalidatePlot(true);
-            resultsModel.Series.Clear();
+            var seriesToRemove = resultsModel.Series.SingleOrDefault(r => r == resultSeries);
+            if (seriesToRemove != null)
+                resultsModel.Series.Remove(resultSeries);
 
             GeneticAlgoChromosome asAlgo = aBestChromosome as GeneticAlgoChromosome;
             if (asAlgo != null)
             {
-                resultsModel.Series.Add(new FunctionSeries(asAlgo.getCalculatedY, 0, predictionSteps, 0.1, "Results"));
+                resultSeries = new FunctionSeries(asAlgo.getCalculatedY, 0, predictionSteps, 0.1, "Results");
+                resultsModel.Series.Add(resultSeries);
                 return true;
             }
 
             GeneticProgChromosome asProg = aBestChromosome as GeneticProgChromosome;
             if (asProg != null)
             {
-                resultsModel.Series.Add(new FunctionSeries(asProg.getCalculatedY, 0, predictionSteps, 0.1, "Results"));
+                resultSeries = new FunctionSeries(asProg.getCalculatedY, 0, predictionSteps, 0.1, "Results");
+                resultsModel.Series.Add(resultSeries);
                 return true;
             }
             
@@ -95,9 +103,28 @@ namespace EnergyPrediction.UI
 
         public bool UpdatePredictionSteps(string aSteps)
         {
-            System.Console.Write(aSteps);
+            Console.Write(aSteps);
             predictionSteps = int.Parse(aSteps);
-            System.Console.Write(predictionSteps);
+            Console.Write(predictionSteps);
+            return true;
+        }
+
+        public bool ToggleRealData(string aSteps)
+        {
+            plotView.InvalidatePlot(true);
+            resultsModel.InvalidatePlot(true);
+            realDataShown = !realDataShown;
+            if (realDataShown)
+            {
+                realDataSeries = new FunctionSeries(DataIO.getActualY, 0, 10, 0.1, "Real Data");
+                resultsModel.Series.Add(realDataSeries);
+            }
+            else
+            {
+                var seriesToRemove = resultsModel.Series.SingleOrDefault(r => r == realDataSeries);
+                if (seriesToRemove != null)
+                    resultsModel.Series.Remove(realDataSeries);
+            }
             return true;
         }
     }
