@@ -64,8 +64,8 @@ namespace EnergyPrediction.UI
         private ComboBox fHistoricalUnitsComboBox;
 
         // The granuality of data to aggregate from for power usage levels
-        private List<string> fGranualities = new List<string>() { "Appliance", "Household", "Region" };
-        private ComboBox fGranualityComboBox;
+        private List<string> fGranularities = new List<string>() { "Appliance", "Household", "Region" };
+        private ComboBox fGranularityComboBox;
 
         // The appliancce to predict. Disabled if not predicting appliances
         private List<string> fAppliances = new List<string>() { "TV", "Fan", "Fridge", "Laptop", "Heater", "Oven", "Washing Machine", "Microwave", "Toaster", "Wall Socket", "Cooker" };
@@ -168,13 +168,13 @@ namespace EnergyPrediction.UI
 
             fHistoricalUnitsComboBox.SelectedValueChanged += new EventHandler<EventArgs>(PredictionUnitChanged);
 
-            fGranualityComboBox = new ComboBox
+            fGranularityComboBox = new ComboBox
             {
-                DataStore = fGranualities,
+                DataStore = fGranularities,
                 SelectedIndex = 0
             };
 
-            fGranualityComboBox.SelectedValueChanged += new EventHandler<EventArgs>(GranualityChanged);
+            fGranularityComboBox.SelectedValueChanged += new EventHandler<EventArgs>(GranualityChanged);
 
             fApplianceComboBox = new ComboBox
             {
@@ -268,7 +268,7 @@ namespace EnergyPrediction.UI
             {
                 Text = "Granuality"
             });
-            Items.Add(fGranualityComboBox);
+            Items.Add(fGranularityComboBox);
 
             Items.Add(new Label
             {
@@ -369,7 +369,7 @@ namespace EnergyPrediction.UI
 
         private void GranualityChanged(object sender, EventArgs e)
         {
-            switch (fGranualityComboBox.SelectedValue.ToString())
+            switch (fGranularityComboBox.SelectedValue.ToString())
             {
                 case "Appliance":
                     fApplianceComboBox.Enabled = true;

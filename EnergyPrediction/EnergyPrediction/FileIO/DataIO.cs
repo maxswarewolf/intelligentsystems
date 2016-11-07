@@ -99,14 +99,14 @@ namespace EnergyPrediction
         /// </summary>
         /// <returns>The actual y.</returns>
         /// <param name="x">The x coordinate.</param>
-        public static double getActualY(int x)
+        public static double getActualY(double x)
         {
             if (Testing)
             {
                 //return (1 / Math.Sqrt(2 * Math.PI)) * (Math.Pow(Math.E, -Math.Pow(x - 0, 2) / (2 * 0.5)));
                 return -1 * Math.Sin(2 * Math.Pow(x, 1)) + 0;
             }
-            return (x >= 0 && x < fData.Count) ? fData[x] : double.PositiveInfinity;
+            return (x >= 0 && x < fData.Count) ? fData[(int)Math.Floor(x)] : double.PositiveInfinity;
         }
 
         public static double getPredictY(int x)
